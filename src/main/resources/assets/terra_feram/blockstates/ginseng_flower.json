@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "terra_feram:block/ginseng_flower"
+    },
+    "age=1": {
+      "model": "terra_feram:block/ginseng_flower"
+    },
+    "age=2": {
+      "model": "terra_feram:block/ginseng_flower"
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "terra_feram",
+  "version": "${version}",
+
+  "name": "Terra Feram",
+  "description": "The wild earth breathes to life!",
+  "authors": [
+    "kg583",
+    "VoidOfLithium"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "license": "MIT",
+  "icon": "assets/terra_feram/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "io.github.elysian_mods.terra_feram.TerraFeram"
+    ],
+    "client": [
+      "io.github.elysian_mods.terra_feram.client.TerraFeram"
+    ]
+  },
+  "mixins": [],
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.17.x",
+    "java": ">=16"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

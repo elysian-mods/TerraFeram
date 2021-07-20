@@ -28,10 +28,7 @@ public class GinsengFlower extends ConfiguredFeatureWrapper<DefaultFeatureConfig
         includeBiomes(
             List.of("minecraft:forest", "minecraft:flower_forest", "minecraft:birch_forest"));
     config = new DefaultFeatureConfig();
-    decorator =
-        Decorator.CHANCE
-            .configure(new ChanceDecoratorConfig(1))
-            .decorate(Decorator.SQUARE.configure(new NopeDecoratorConfig()));
+    chance = 1;
     step = GenerationStep.Feature.VEGETAL_DECORATION;
 
     configure();

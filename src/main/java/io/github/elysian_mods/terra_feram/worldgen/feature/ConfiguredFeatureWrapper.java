@@ -22,17 +22,17 @@ import java.util.function.Predicate;
 public abstract class ConfiguredFeatureWrapper<FC extends FeatureConfig> {
   public Feature<FC> feature;
   public ConfiguredFeature<?, ?> configuration;
-  public ConfiguredFeature<?, ?> decorated;
   public String name;
 
   public Predicate<BiomeSelectionContext> biomes;
+  public int chance = 1;
   public FC config;
   public ConfiguredDecorator<?> decorator;
   public GenerationStep.Feature step;
 
   public void configure() {
-    configuration = feature.configure(config);
-    decorated = configuration.decorate(decorator);
+    configuration = feature.configure(config).spreadHorizontally().applyChance(chance);
+    if (decorator != null) configuration = configuration.decorate(decorator);
   }
 
   public Predicate<BiomeSelectionContext> includeBiomes(List<String> biomes) {
@@ -46,7 +46,7 @@ public abstract class ConfiguredFeatureWrapper<FC extends FeatureConfig> {
   public ConfiguredFeature<?, ?> register() {
     RegistryKey<ConfiguredFeature<?, ?>> key =
         RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, new TerraFeram.Identifier(name));
-    Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, key.getValue(), decorated);
+    Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, key.getValue(), configuration);
     BiomeModifications.addFeature(biomes, step, key);
     return configuration;
   }

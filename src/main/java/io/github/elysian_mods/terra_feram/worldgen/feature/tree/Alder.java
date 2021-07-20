@@ -33,10 +33,7 @@ public class Alder extends ConfiguredFeatureWrapper<TreeFeatureConfig> {
             .build();
 
     biomes = includeBiomes(List.of("minecraft:forest", "minecraft:flower_forest"));
-    decorator =
-        Decorator.CHANCE
-            .configure(new ChanceDecoratorConfig(1))
-            .decorate(Decorator.SQUARE.configure(new NopeDecoratorConfig()));
+    chance = 1;
     feature = Feature.TREE;
     step = GenerationStep.Feature.VEGETAL_DECORATION;
 

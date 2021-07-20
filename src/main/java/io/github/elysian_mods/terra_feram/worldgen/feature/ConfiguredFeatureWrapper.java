@@ -21,6 +21,8 @@ import java.util.function.Predicate;
 
 public abstract class ConfiguredFeatureWrapper<FC extends FeatureConfig> {
   public Feature<FC> feature;
+  public ConfiguredFeature<?, ?> configuration;
+  public ConfiguredFeature<?, ?> decorated;
   public String name;
 
   public Predicate<BiomeSelectionContext> biomes;
@@ -28,20 +30,23 @@ public abstract class ConfiguredFeatureWrapper<FC extends FeatureConfig> {
   public ConfiguredDecorator<?> decorator;
   public GenerationStep.Feature step;
 
+  public void configure() {
+    configuration = feature.configure(config);
+    decorated = configuration.decorate(decorator);
+  }
+
   public Predicate<BiomeSelectionContext> includeBiomes(List<String> biomes) {
     ArrayList<RegistryKey<Biome>> keys = new ArrayList<>();
     for (String biome : biomes) {
-      String[] path = biome.split(":");
-      keys.add(RegistryKey.of(Registry.BIOME_KEY, new Identifier(path[0], path[1])));
+      keys.add(RegistryKey.of(Registry.BIOME_KEY, new Identifier(biome)));
     }
     return BiomeSelectors.includeByKey(keys);
   }
 
   public ConfiguredFeature<?, ?> register() {
-    ConfiguredFeature<?, ?> configuration = feature.configure(config).decorate(decorator);
     RegistryKey<ConfiguredFeature<?, ?>> key =
         RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, new TerraFeram.Identifier(name));
-    Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, key.getValue(), configuration);
+    Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, key.getValue(), decorated);
     BiomeModifications.addFeature(biomes, step, key);
     return configuration;
   }

@@ -19,6 +19,8 @@ import java.util.List;
 public class Alder extends ConfiguredFeatureWrapper<TreeFeatureConfig> {
   public Alder() {
     name = "alder";
+    feature = Feature.TREE;
+
     config =
         new TreeFeatureConfig.Builder(
                 new SimpleBlockStateProvider(RegisteredBlocks.NETHERITE_BLOCK.getDefaultState()),
@@ -33,9 +35,11 @@ public class Alder extends ConfiguredFeatureWrapper<TreeFeatureConfig> {
     biomes = includeBiomes(List.of("minecraft:forest", "minecraft:flower_forest"));
     decorator =
         Decorator.CHANCE
-            .configure(new ChanceDecoratorConfig(3))
+            .configure(new ChanceDecoratorConfig(1))
             .decorate(Decorator.SQUARE.configure(new NopeDecoratorConfig()));
     feature = Feature.TREE;
     step = GenerationStep.Feature.VEGETAL_DECORATION;
+
+    configure();
   }
 }

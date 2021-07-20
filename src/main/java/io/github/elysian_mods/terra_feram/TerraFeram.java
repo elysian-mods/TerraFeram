@@ -24,10 +24,10 @@ public class TerraFeram implements ModInitializer {
 
   @Override
   public void onInitialize() {
-    RegisteredFeatures.register();
-    RegisteredStructures.register();
-
     RegisteredBlocks.register();
     RegisteredItems.register();
+
+    RegisteredFeatures.register();
+    RegisteredStructures.register();
   }
 }

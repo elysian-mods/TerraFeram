@@ -30,9 +30,11 @@ public class GinsengFlower extends ConfiguredFeatureWrapper<DefaultFeatureConfig
     config = new DefaultFeatureConfig();
     decorator =
         Decorator.CHANCE
-            .configure(new ChanceDecoratorConfig(7))
+            .configure(new ChanceDecoratorConfig(1))
             .decorate(Decorator.SQUARE.configure(new NopeDecoratorConfig()));
     step = GenerationStep.Feature.VEGETAL_DECORATION;
+
+    configure();
   }
 
   public static class GinsengFlowerFeature extends Feature<DefaultFeatureConfig> {

@@ -5,11 +5,13 @@ import io.github.elysian_mods.terra_feram.registry.RegisteredBlocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static net.minecraft.block.Block.NOTIFY_ALL;
@@ -21,9 +23,8 @@ public class GinsengFlower extends ConfiguredFeatureWrapper<DefaultFeatureConfig
         Registry.register(
             Registry.FEATURE, new TerraFeram.Identifier(name), new GinsengFlowerFeature());
 
-    biomes =
-        includeBiomes(
-            List.of("minecraft:forest", "minecraft:flower_forest", "minecraft:birch_forest"));
+    biomes = Arrays.asList(BiomeKeys.FOREST, BiomeKeys.FLOWER_FOREST, BiomeKeys.BIRCH_FOREST,
+            BiomeKeys.BIRCH_FOREST_HILLS, BiomeKeys.WOODED_HILLS);
     config = new DefaultFeatureConfig();
     chance = 1;
     step = GenerationStep.Feature.VEGETAL_DECORATION;

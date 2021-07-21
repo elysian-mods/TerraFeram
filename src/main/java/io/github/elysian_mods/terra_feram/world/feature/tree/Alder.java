@@ -22,17 +22,18 @@ public class Alder extends ConfiguredFeatureWrapper<TreeFeatureConfig> {
 
     config =
         new TreeFeatureConfig.Builder(
-                new SimpleBlockStateProvider(RegisteredBlocks.NETHERITE_BLOCK.getDefaultState()),
-                new StraightTrunkPlacer(8, 3, 0),
-                new SimpleBlockStateProvider(RegisteredBlocks.DIAMOND_BLOCK.getDefaultState()),
+                new SimpleBlockStateProvider(RegisteredBlocks.ALDER_LOG.getDefaultState()),
+                new StraightTrunkPlacer(6, 3, 0),
+                new SimpleBlockStateProvider(RegisteredBlocks.ALDER_LEAVES.getDefaultState()),
                 new SimpleBlockStateProvider(RegisteredBlocks.ALDER_SAPLING.getDefaultState()),
                 new BlobFoliagePlacer(
-                    ConstantIntProvider.create(5), ConstantIntProvider.create(0), 3),
+                    ConstantIntProvider.create(2), ConstantIntProvider.create(0), 2),
                 new TwoLayersFeatureSize(1, 0, 1))
             .build();
 
     biomes = Arrays.asList(BiomeKeys.PLAINS, BiomeKeys.BEACH);
     chance = 1;
+    depth = 1;
     heightmap = Heightmap.Type.WORLD_SURFACE_WG;
     step = GenerationStep.Feature.VEGETAL_DECORATION;
 

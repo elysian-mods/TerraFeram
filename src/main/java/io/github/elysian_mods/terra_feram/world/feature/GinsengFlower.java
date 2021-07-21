@@ -31,6 +31,7 @@ public class GinsengFlower extends ConfiguredFeatureWrapper<DefaultFeatureConfig
             BiomeKeys.BIRCH_FOREST_HILLS,
             BiomeKeys.WOODED_HILLS);
     chance = 1;
+    depth = 0;
     heightmap = Heightmap.Type.WORLD_SURFACE_WG;
     step = GenerationStep.Feature.VEGETAL_DECORATION;
 

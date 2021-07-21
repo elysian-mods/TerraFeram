@@ -12,6 +12,7 @@ import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.decorator.ConfiguredDecorator;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.HeightmapDecoratorConfig;
+import net.minecraft.world.gen.decorator.WaterDepthThresholdDecoratorConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.FeatureConfig;
@@ -30,6 +31,7 @@ public abstract class ConfiguredFeatureWrapper<FC extends FeatureConfig> {
 
   public Collection<RegistryKey<Biome>> biomes;
   public int chance;
+  public int depth;
   public Heightmap.Type heightmap;
   public GenerationStep.Feature step;
 
@@ -38,6 +40,7 @@ public abstract class ConfiguredFeatureWrapper<FC extends FeatureConfig> {
     decorated =
         configuration
             .decorate(Decorator.HEIGHTMAP.configure(new HeightmapDecoratorConfig(heightmap)))
+            .decorate(Decorator.WATER_DEPTH_THRESHOLD.configure(new WaterDepthThresholdDecoratorConfig(depth)))
             .spreadHorizontally()
             .applyChance(chance);
     if (decorator != null) decorated = decorated.decorate(decorator);

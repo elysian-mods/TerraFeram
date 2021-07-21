@@ -1,6 +1,8 @@
 package io.github.elysian_mods.terra_feram.block;
 
+import io.github.elysian_mods.terra_feram.registry.RegisteredBlocks;
 import io.github.elysian_mods.terra_feram.registry.RegisteredItems;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.util.math.BlockPos;
@@ -23,7 +25,7 @@ public class GinsengFlower extends BlockWrapper {
         };
 
     public GinsengFlowerBlock() {
-      super(PLANT.ticksRandomly());
+      super(FabricBlockSettings.copyOf(RegisteredBlocks.OXEYE_DAISY).ticksRandomly());
     }
 
     protected boolean canPlantOnTop(BlockState floor, BlockView world, BlockPos pos) {

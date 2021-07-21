@@ -32,7 +32,8 @@ public abstract class ConfiguredFeatureWrapper<FC extends FeatureConfig> {
   public GenerationStep.Feature step;
 
   public void configure() {
-    configuration = feature.configure(config).spreadHorizontally().applyChance(chance).decorate(decorator);
+    configuration = feature.configure(config).spreadHorizontally().applyChance(chance);
+    if (decorator != null) configuration = configuration.decorate(decorator);
   }
 
   public Predicate<BiomeSelectionContext> includeBiomes(List<String> biomes) {

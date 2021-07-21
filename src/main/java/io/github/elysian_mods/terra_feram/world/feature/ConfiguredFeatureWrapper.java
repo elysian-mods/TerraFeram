@@ -1,4 +1,4 @@
-package io.github.elysian_mods.terra_feram.worldgen.feature;
+package io.github.elysian_mods.terra_feram.world.feature;
 
 import io.github.elysian_mods.terra_feram.TerraFeram;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+@SuppressWarnings("deprecation")
 public abstract class ConfiguredFeatureWrapper<FC extends FeatureConfig> {
   public Feature<FC> feature;
   public ConfiguredFeature<?, ?> configuration;
@@ -31,8 +32,7 @@ public abstract class ConfiguredFeatureWrapper<FC extends FeatureConfig> {
   public GenerationStep.Feature step;
 
   public void configure() {
-    configuration = feature.configure(config).spreadHorizontally().applyChance(chance);
-    if (decorator != null) configuration = configuration.decorate(decorator);
+    configuration = feature.configure(config).spreadHorizontally().applyChance(chance).decorate(decorator);
   }
 
   public Predicate<BiomeSelectionContext> includeBiomes(List<String> biomes) {

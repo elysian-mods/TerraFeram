@@ -1,4 +1,4 @@
-package io.github.elysian_mods.terra_feram.worldgen.feature;
+package io.github.elysian_mods.terra_feram.world.feature;
 
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 

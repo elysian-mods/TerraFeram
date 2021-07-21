@@ -1,4 +1,4 @@
-package io.github.elysian_mods.terra_feram.worldgen.feature;
+package io.github.elysian_mods.terra_feram.world.feature;
 
 import io.github.elysian_mods.terra_feram.TerraFeram;
 import io.github.elysian_mods.terra_feram.registry.RegisteredBlocks;
@@ -6,9 +6,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.decorator.ChanceDecoratorConfig;
-import net.minecraft.world.gen.decorator.Decorator;
-import net.minecraft.world.gen.decorator.NopeDecoratorConfig;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;

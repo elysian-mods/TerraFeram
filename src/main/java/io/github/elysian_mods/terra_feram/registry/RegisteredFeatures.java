@@ -1,7 +1,7 @@
 package io.github.elysian_mods.terra_feram.registry;
 
-import io.github.elysian_mods.terra_feram.worldgen.feature.GinsengFlower;
-import io.github.elysian_mods.terra_feram.worldgen.feature.tree.Alder;
+import io.github.elysian_mods.terra_feram.world.feature.GinsengFlower;
+import io.github.elysian_mods.terra_feram.world.feature.tree.Alder;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.ConfiguredFeatures;
 

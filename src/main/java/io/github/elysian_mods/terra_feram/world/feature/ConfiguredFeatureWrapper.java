@@ -19,6 +19,7 @@ import java.util.Collection;
 public abstract class ConfiguredFeatureWrapper<FC extends FeatureConfig> {
   public Feature<FC> feature;
   public ConfiguredFeature<?, ?> configuration;
+  public ConfiguredFeature<?, ?> decorated;
   public String name;
 
   public Collection<RegistryKey<Biome>> biomes;
@@ -28,14 +29,15 @@ public abstract class ConfiguredFeatureWrapper<FC extends FeatureConfig> {
   public GenerationStep.Feature step;
 
   public void configure() {
-    configuration = feature.configure(config).spreadHorizontally().applyChance(chance);
-    if (decorator != null) configuration = configuration.decorate(decorator);
+    configuration = feature.configure(config);
+    decorated = configuration.spreadHorizontally().applyChance(chance);
+    if (decorator != null) decorated = decorated.decorate(decorator);
   }
 
   public ConfiguredFeature<?, ?> register() {
     RegistryKey<ConfiguredFeature<?, ?>> key =
         RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, new TerraFeram.Identifier(name));
-    Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, key.getValue(), configuration);
+    Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, key.getValue(), decorated);
     BiomeModifications.addFeature(BiomeSelectors.includeByKey(biomes), step, key);
     return configuration;
   }

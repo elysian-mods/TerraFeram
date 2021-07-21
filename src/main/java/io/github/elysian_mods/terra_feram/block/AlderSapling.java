@@ -19,16 +19,14 @@ public class AlderSapling extends BlockWrapper {
 
   public static class AlderSaplingBlock extends SaplingBlock {
     public AlderSaplingBlock() {
-      super(
-              new AlderSaplingGenerator(),
-          FabricBlockSettings.copyOf(RegisteredBlocks.OAK_SAPLING));
+      super(new AlderSaplingGenerator(), FabricBlockSettings.copyOf(RegisteredBlocks.OAK_SAPLING));
     }
   }
 
   public static class AlderSaplingGenerator extends SaplingGenerator {
     @Nullable
     @Override
-    protected ConfiguredFeature<TreeFeatureConfig, ?> createTreeFeature(Random random, boolean bees) {
+    protected ConfiguredFeature<TreeFeatureConfig, ?> getTreeFeature(Random random, boolean bees) {
       return (ConfiguredFeature<TreeFeatureConfig, ?>) RegisteredFeatures.ALDER;
     }
   }

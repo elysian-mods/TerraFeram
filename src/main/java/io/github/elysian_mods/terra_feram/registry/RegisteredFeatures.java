@@ -10,6 +10,5 @@ public class RegisteredFeatures extends ConfiguredFeatures {
 
   public static final ConfiguredFeature<?, ?> GINSENG_FLOWER = new GinsengFlower().register();
 
-
   public static void register() {}
 }

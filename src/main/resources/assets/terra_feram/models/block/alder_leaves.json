@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/leaves",
   "textures": {
-    "layer0": "terra_feram:block/alder_leaves"
+    "all": "terra_feram:block/alder_leaves"
   }
 }

@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "terra_feram:block/alder_leaves"
-  }
+  "parent": "terra_feram:block/alder_leaves"
 }

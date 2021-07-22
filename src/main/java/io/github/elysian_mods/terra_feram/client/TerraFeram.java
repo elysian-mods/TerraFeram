@@ -12,6 +12,8 @@ import net.minecraft.client.render.RenderLayer;
 public class TerraFeram implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        render(RegisteredBlocks.ALDER_LEAVES, RenderType.TRANSPARENT);
+        render(RegisteredBlocks.ALDER_SAPLING, RenderType.TRANSPARENT);
         render(RegisteredBlocks.GINSENG_FLOWER, RenderType.TRANSPARENT);
     }
 

@@ -1,8 +1,11 @@
 {
-  "block.terra_feram.ginseng_flower": "Ginseng",
-  "item.terra_feram.ginseng_flower": "Ginseng",
-  "item.terra_feram.ginseng_root": "Ginseng Root",
-  "itemGroup.terra_feram.general": "Terra Feram",
   "block.terra_feram.alder_leaves": "Alder Leaves",
-  "block.terra_feram.alder_log": "Alder Log"
+  "block.terra_feram.alder_log": "Alder Log",
+  "block.terra_feram.alder_sapling": "Alder Sapling",
+  "block.terra_feram.ginseng_flower": "Ginseng",
+  "item.terra_feram.alder_leaves": "Alder Leaves",
+  "item.terra_feram.alder_log": "Alder Log",
+  "item.terra_feram.alder_sapling": "Alder Sapling",
+  "item.terra_feram.ginseng_root": "Ginseng Root",
+  "itemGroup.terra_feram.general": "Terra Feram"
 }

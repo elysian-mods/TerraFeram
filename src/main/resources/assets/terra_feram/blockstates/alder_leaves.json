@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "terra_feram:block/alder_leaves",
+      "model": "terra_feram:block/alder_leaves"
     }
   }
 }

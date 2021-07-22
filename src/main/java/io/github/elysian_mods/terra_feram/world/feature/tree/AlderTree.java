@@ -15,23 +15,28 @@ import net.minecraft.world.gen.trunk.StraightTrunkPlacer;
 
 import java.util.Arrays;
 
-public class Alder extends ConfiguredFeatureWrapper<TreeFeatureConfig> {
-  public Alder() {
+public class AlderTree extends ConfiguredFeatureWrapper<TreeFeatureConfig> {
+  public AlderTree() {
     name = "alder";
     feature = Feature.TREE;
 
     config =
         new TreeFeatureConfig.Builder(
                 new SimpleBlockStateProvider(RegisteredBlocks.ALDER_LOG.getDefaultState()),
-                new StraightTrunkPlacer(6, 3, 0),
+                new StraightTrunkPlacer(3, 2, 0),
                 new SimpleBlockStateProvider(RegisteredBlocks.ALDER_LEAVES.getDefaultState()),
                 new SimpleBlockStateProvider(RegisteredBlocks.ALDER_SAPLING.getDefaultState()),
                 new BlobFoliagePlacer(
-                    ConstantIntProvider.create(2), ConstantIntProvider.create(0), 2),
+                    ConstantIntProvider.create(2), ConstantIntProvider.create(0), 3),
                 new TwoLayersFeatureSize(1, 0, 1))
             .build();
 
-    biomes = Arrays.asList(BiomeKeys.PLAINS, BiomeKeys.BEACH);
+    biomes = Arrays.asList(
+            BiomeKeys.FOREST,
+            BiomeKeys.FLOWER_FOREST,
+            BiomeKeys.BIRCH_FOREST,
+            BiomeKeys.BIRCH_FOREST_HILLS,
+            BiomeKeys.WOODED_HILLS);
     chance = 1;
     depth = 1;
     heightmap = Heightmap.Type.WORLD_SURFACE_WG;

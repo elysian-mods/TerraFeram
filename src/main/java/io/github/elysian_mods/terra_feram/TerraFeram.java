@@ -8,26 +8,25 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Identifier;
 
 public class TerraFeram implements ModInitializer {
   public static final String MOD_ID = "terra_feram";
 
-  public static class Identifier extends net.minecraft.util.Identifier {
-    public Identifier(String name) {
-      super(MOD_ID, name);
-    }
-  }
-
   public static final ItemGroup GENERAL =
       FabricItemGroupBuilder.build(
-          new Identifier("general"), () -> new ItemStack(RegisteredBlocks.AZALEA));
+          identifier("general"), () -> new ItemStack(RegisteredBlocks.AZALEA));
+
+  public static Identifier identifier(String name) {
+    return new Identifier(MOD_ID, name);
+  }
 
   @Override
   public void onInitialize() {
-    RegisteredBlocks.register();
-    RegisteredItems.register();
-
     RegisteredFeatures.register();
     RegisteredStructures.register();
+
+    RegisteredBlocks.register();
+    RegisteredItems.register();
   }
 }

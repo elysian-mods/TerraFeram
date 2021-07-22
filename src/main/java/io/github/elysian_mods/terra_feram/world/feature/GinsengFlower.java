@@ -19,7 +19,7 @@ public class GinsengFlower extends ConfiguredFeatureWrapper<DefaultFeatureConfig
     name = "ginseng_flower";
     feature =
         Registry.register(
-            Registry.FEATURE, new TerraFeram.Identifier(name), new GinsengFlowerFeature());
+            Registry.FEATURE, TerraFeram.identifier(name), new GinsengFlowerFeature());
 
     config = new DefaultFeatureConfig();
 
@@ -30,9 +30,8 @@ public class GinsengFlower extends ConfiguredFeatureWrapper<DefaultFeatureConfig
             BiomeKeys.BIRCH_FOREST,
             BiomeKeys.BIRCH_FOREST_HILLS,
             BiomeKeys.WOODED_HILLS);
-    chance = 1;
-    depth = 0;
     heightmap = Heightmap.Type.WORLD_SURFACE_WG;
+    maxWaterDepth = 0;
     step = GenerationStep.Feature.VEGETAL_DECORATION;
 
     configure();

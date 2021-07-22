@@ -9,10 +9,7 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.decorator.ConfiguredDecorator;
-import net.minecraft.world.gen.decorator.Decorator;
-import net.minecraft.world.gen.decorator.HeightmapDecoratorConfig;
-import net.minecraft.world.gen.decorator.WaterDepthThresholdDecoratorConfig;
+import net.minecraft.world.gen.decorator.*;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.FeatureConfig;
@@ -30,25 +27,32 @@ public abstract class ConfiguredFeatureWrapper<FC extends FeatureConfig> {
   public ConfiguredFeature<?, ?> decorated;
 
   public Collection<RegistryKey<Biome>> biomes;
-  public int chance;
-  public int depth;
   public Heightmap.Type heightmap;
+  public int maxWaterDepth;
   public GenerationStep.Feature step;
+
+  protected int baseCount = 0;
+  protected float extraChance = 1;
+  protected int extraCount = 1;
 
   public void configure() {
     configuration = feature.configure(config);
     decorated =
         configuration
             .decorate(Decorator.HEIGHTMAP.configure(new HeightmapDecoratorConfig(heightmap)))
-            .decorate(Decorator.WATER_DEPTH_THRESHOLD.configure(new WaterDepthThresholdDecoratorConfig(depth)))
+            .decorate(
+                Decorator.WATER_DEPTH_THRESHOLD.configure(
+                    new WaterDepthThresholdDecoratorConfig(maxWaterDepth)))
             .spreadHorizontally()
-            .applyChance(chance);
+            .decorate(
+                Decorator.COUNT_EXTRA.configure(
+                    new CountExtraDecoratorConfig(baseCount, extraChance, extraCount)));
     if (decorator != null) decorated = decorated.decorate(decorator);
   }
 
   public ConfiguredFeature<?, ?> register() {
     RegistryKey<ConfiguredFeature<?, ?>> key =
-        RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, new TerraFeram.Identifier(name));
+        RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, TerraFeram.identifier(name));
     Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, key.getValue(), decorated);
     BiomeModifications.addFeature(BiomeSelectors.includeByKey(biomes), step, key);
     return configuration;

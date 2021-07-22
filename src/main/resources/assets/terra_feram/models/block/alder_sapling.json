@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "terra_feram:block/alder_sapling"
+  }
+}

@@ -2,6 +2,98 @@
 
 Hello! Here is how you can upload the content you make in a way that best streamlines the process by which it is implemented.
 
+## Trees
+
+If you're trying to add anything tree-related, these are the relevant instructions. Keep scrolling for anything else.
+
+### Log
+
+* Texture file
+    * Save the texture file as/copy it over to `assets/terra_feram/textures/block/<tree>_log.png`.
+* Block state
+    * Create the file `assets/terra_feram/blockstates/<tree>_log.json` with the following content:
+      ```json
+      {
+          "variants": {
+          "axis=x": {
+              "model": "terra_feram:block/<tree>_log_horizontal",
+              "x": 90,
+              "y": 90
+          },
+          "axis=y": {
+              "model": "terra_feram:block/<tree>_log"
+          },
+          "axis=z": {
+              "model": "terra_feram:block/<tree>_log_horizontal",
+              "x": 90
+              }
+          }
+      }
+      ```
+* Block model
+    * Create the file `assets/terra_feram/blockstates/<tree>_log.json` with the following content:
+      ```json
+      {
+        "parent": "minecraft:block/cube_column",
+        "textures": {
+            "end": "terra_feram:block/alder_log_top",
+            "side": "terra_feram:block/alder_log"
+        }
+      }
+      ```
+    * Make a duplicate of this file called `<tree>_log_horizontal.json`, and replace `cube_column` above with
+      `cube_column_horizontal`.
+* Item Model
+    * Create the file `assets/terra_feram/models/item/<tree>_log.json` with the following content:
+        ```json
+        {
+          "parent": "terra_feram:block/<tree>_log"
+        }  
+        ```
+* Translation
+    * Edit the file `assets/terra_feram/lang/en_us.json` and add the following line:
+      ```json
+      "block.terra_feram.<tree>_log": "Tree Log"
+      ```
+
+### Leaves
+
+* Texture file
+    * Save the texture file as/copy it over to `assets/terra_feram/textures/block/<tree>_leaves.png`.
+* Block state
+    * Create the file `assets/terra_feram/blockstates/<tree>_leaves.json` with the following content:
+      ```json
+      {
+        "variants": {
+          "": {
+            "model": "terra_feram:block/alder_leaves"
+          }
+        }     
+      }
+      ```
+* Block model
+    * Create the file `assets/terra_feram/blockstates/<tree>_leaves.json` with the following content:
+      ```json
+      {
+        "parent": "minecraft:block/leaves",
+        "textures": {
+            "all": "terra_feram:block/<tree>_leaves"
+        }
+      }
+      ```
+* Item Model
+    * Create the file `assets/terra_feram/models/item/<tree>_leaves.json` with the following content:
+        ```json
+        {
+          "parent": "terra_feram:block/<tree>_leaves"
+        }  
+        ```
+* Translation
+    * Edit the file `assets/terra_feram/lang/en_us.json` and add the following line:
+      ```json
+      "block.terra_feram.<tree>_leaves": "Tree Leaves"
+      ```
+
 ## Blocks
 
 The following components are necessary for a Block to appear in game, even if it doesn't (yet) do anything. Please do them if you can; they aren't too tricky.
@@ -26,7 +118,7 @@ The following components are necessary for a Block to appear in game, even if it
     {
         "parent": "minecraft:block/cube_all",
         "textures": {
-            "layer0": "terra_feram:block/<block_name>"
+            "all": "terra_feram:block/<block_name>"
         }
     }
        ```

@@ -2,14 +2,14 @@ package io.github.elysian_mods.terra_feram.world.feature.tree;
 
 import io.github.elysian_mods.terra_feram.registry.RegisteredBlocks;
 import io.github.elysian_mods.terra_feram.world.feature.ConfiguredFeatureWrapper;
-import net.minecraft.util.math.intprovider.ConstantIntProvider;
+import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
-import net.minecraft.world.gen.foliage.BlobFoliagePlacer;
+import net.minecraft.world.gen.foliage.SpruceFoliagePlacer;
 import net.minecraft.world.gen.stateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.trunk.StraightTrunkPlacer;
 
@@ -23,15 +23,20 @@ public class AlderTree extends ConfiguredFeatureWrapper<TreeFeatureConfig> {
     config =
         new TreeFeatureConfig.Builder(
                 new SimpleBlockStateProvider(RegisteredBlocks.ALDER_LOG.getDefaultState()),
-                new StraightTrunkPlacer(3, 2, 0),
+                new StraightTrunkPlacer(4, 1, 1),
                 new SimpleBlockStateProvider(RegisteredBlocks.ALDER_LEAVES.getDefaultState()),
                 new SimpleBlockStateProvider(RegisteredBlocks.ALDER_SAPLING.getDefaultState()),
-                new BlobFoliagePlacer(
-                    ConstantIntProvider.create(2), ConstantIntProvider.create(0), 3),
-                new TwoLayersFeatureSize(1, 0, 1))
+                new SpruceFoliagePlacer(
+                    UniformIntProvider.create(2, 2),
+                    UniformIntProvider.create(1, 1),
+                    UniformIntProvider.create(1, 2)),
+                new TwoLayersFeatureSize(2, 0, 2))
+            .ignoreVines()
+            .forceDirt()
             .build();
 
-    biomes = Arrays.asList(
+    biomes =
+        Arrays.asList(
             BiomeKeys.FOREST,
             BiomeKeys.FLOWER_FOREST,
             BiomeKeys.BIRCH_FOREST,

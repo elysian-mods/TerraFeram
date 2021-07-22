@@ -55,6 +55,10 @@ If you're trying to add anything tree-related, these are the relevant instructio
       ```json
       "block.terra_feram.<tree>_log": "Tree Log"
       ```
+    * Edit the file `data/minecraft/tags/blocks/logs_that_burn.json` and add the following entry to `values`:
+        ```json
+        "terra_feram:<tree>_log"
+        ```
 
 ### Leaves
 
@@ -92,6 +96,10 @@ If you're trying to add anything tree-related, these are the relevant instructio
     * Edit the file `assets/terra_feram/lang/en_us.json` and add the following line:
       ```json
       "block.terra_feram.<tree>_leaves": "Tree Leaves"
+      ```
+  * Edit the file `data/minecraft/tags/blocks/leaves.json` and add the following entry to `values`:
+      ```json
+      "terra_feram:<tree>_leaves"
       ```
 
 ## Blocks

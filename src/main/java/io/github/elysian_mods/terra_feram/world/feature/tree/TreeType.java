@@ -4,6 +4,7 @@ import io.github.elysian_mods.terra_feram.TerraFeram;
 import io.github.elysian_mods.terra_feram.mixin.AxeItemAccessor;
 import io.github.elysian_mods.terra_feram.registry.RegisteredBlocks;
 import io.github.elysian_mods.terra_feram.util.ItemUtil;
+import io.github.elysian_mods.terra_feram.util.LogsToBark;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -168,6 +169,8 @@ public abstract class TreeType {
     AxeItemAccessor.setStrippedBlocks(stripper);
 
     Registry.register(Registry.ITEM, TerraFeram.identifier(name + "_bark"), bark);
+    LogsToBark.put(log, bark, 4);
+    LogsToBark.put(wood, bark, 6);
 
     return configured;
   }

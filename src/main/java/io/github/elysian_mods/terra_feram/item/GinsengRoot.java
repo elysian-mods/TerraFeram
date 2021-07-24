@@ -1,7 +1,7 @@
 package io.github.elysian_mods.terra_feram.item;
 
 import io.github.elysian_mods.terra_feram.registry.RegisteredBlocks;
-import io.github.elysian_mods.terra_feram.util.Item;
+import io.github.elysian_mods.terra_feram.util.ItemUtil;
 import net.minecraft.item.AliasedBlockItem;
 
 public class GinsengRoot extends ItemWrapper {
@@ -15,7 +15,7 @@ public class GinsengRoot extends ItemWrapper {
     public GinsengRootItem() {
       super(
           RegisteredBlocks.GINSENG_FLOWER,
-          Item.DEFAULT_SETTINGS.food(Item.FOOD_SETTINGS.hunger(2).build()));
+          ItemUtil.DEFAULT_SETTINGS.food(ItemUtil.FOOD_SETTINGS.hunger(2).build()));
     }
   }
 }

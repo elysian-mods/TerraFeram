@@ -2,11 +2,25 @@ package io.github.elysian_mods.terra_feram.registry;
 
 import io.github.elysian_mods.terra_feram.TerraFeram;
 import io.github.elysian_mods.terra_feram.item.GinsengRoot;
+import io.github.elysian_mods.terra_feram.util.ItemUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.registry.Registry;
 
 public class RegisteredItems extends Items {
+  public static final Item OAK_BARK = Registry.register(Registry.ITEM, TerraFeram.identifier("oak_bark"),
+          new Item(ItemUtil.VANILLA_MISC));
+  public static final Item SPRUCE_BARK = Registry.register(Registry.ITEM, TerraFeram.identifier("spruce_bark"),
+          new Item(ItemUtil.VANILLA_MISC));
+  public static final Item BIRCH_BARK = Registry.register(Registry.ITEM, TerraFeram.identifier("birch_bark"),
+          new Item(ItemUtil.VANILLA_MISC));
+  public static final Item JUNGLE_BARK = Registry.register(Registry.ITEM, TerraFeram.identifier("jungle_bark"),
+          new Item(ItemUtil.VANILLA_MISC));
+  public static final Item ACACIA_BARK = Registry.register(Registry.ITEM, TerraFeram.identifier("acacia_bark"),
+          new Item(ItemUtil.VANILLA_MISC));
+  public static final Item DARK_OAK_BARK = Registry.register(Registry.ITEM, TerraFeram.identifier("dark_oak_bark"),
+          new Item(ItemUtil.VANILLA_MISC));
+
   public static final Item ALDER_LEAVES = Registry.ITEM.get(TerraFeram.identifier("alder_leaves"));
   public static final Item ALDER_LOG = Registry.ITEM.get(TerraFeram.identifier("alder_log"));
   public static final Item ALDER_SAPLING =
@@ -30,6 +44,7 @@ public class RegisteredItems extends Items {
   public static final Item ALDER_TRAPDOOR =
       Registry.ITEM.get(TerraFeram.identifier("alder_trapdoor"));
   public static final Item ALDER_WOOD = Registry.ITEM.get(TerraFeram.identifier("alder_wood"));
+  public static final Item ALDER_BARK = Registry.ITEM.get(TerraFeram.identifier("alder_bark"));
 
   public static final Item GINSENG_ROOT = new GinsengRoot().register();
 

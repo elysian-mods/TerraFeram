@@ -3,7 +3,7 @@ package io.github.elysian_mods.terra_feram.world.feature.tree;
 import io.github.elysian_mods.terra_feram.TerraFeram;
 import io.github.elysian_mods.terra_feram.mixin.AxeItemAccessor;
 import io.github.elysian_mods.terra_feram.registry.RegisteredBlocks;
-import io.github.elysian_mods.terra_feram.util.Item;
+import io.github.elysian_mods.terra_feram.util.ItemUtil;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.sapling.SaplingGenerator;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.util.SignType;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -74,6 +75,8 @@ public abstract class TreeType {
   protected Block trapdoor;
   protected Block wood;
 
+  protected Item bark;
+
   protected TreeType() {
     leaves = new Leaves();
     log = new Log();
@@ -92,6 +95,8 @@ public abstract class TreeType {
     stripped_wood = new StrippedWood();
     trapdoor = new Trapdoor();
     wood = new Wood();
+
+    bark = new Bark();
   }
 
   private TreeFeatureConfig build() {
@@ -162,6 +167,8 @@ public abstract class TreeType {
     stripper.put(wood, stripped_wood);
     AxeItemAccessor.setStrippedBlocks(stripper);
 
+    Registry.register(Registry.ITEM, TerraFeram.identifier(name + "_bark"), bark);
+
     return configured;
   }
 
@@ -170,7 +177,8 @@ public abstract class TreeType {
       String name = String.format(template, this.name);
       Registry.register(Registry.BLOCK, TerraFeram.identifier(name), block);
       Registry.register(
-          Registry.ITEM, TerraFeram.identifier(name), new BlockItem(block, Item.DEFAULT_SETTINGS));
+          Registry.ITEM, TerraFeram.identifier(name), new BlockItem(block,
+                      ItemUtil.DEFAULT_SETTINGS));
     }
   }
 
@@ -279,6 +287,12 @@ public abstract class TreeType {
   public static class Wood extends PillarBlock {
     public Wood() {
       super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_WOOD));
+    }
+  }
+
+  public static class Bark extends Item {
+    public Bark() {
+      super(ItemUtil.DEFAULT_SETTINGS);
     }
   }
 }

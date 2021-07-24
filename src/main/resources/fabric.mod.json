@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "terra_feram",
   "version": "${version}",
-
   "name": "Terra Feram",
   "description": "The wild earth breathes to life!",
   "authors": [
@@ -13,10 +12,8 @@
     "homepage": "",
     "sources": ""
   },
-
   "license": "MIT",
   "icon": "assets/terra_feram/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -26,8 +23,9 @@
       "io.github.elysian_mods.terra_feram.client.TerraFeram"
     ]
   },
-  "mixins": [],
-
+  "mixins": [
+    "terra_feram.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.11.3",
     "fabric": "*",

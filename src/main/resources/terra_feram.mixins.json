@@ -4,6 +4,7 @@
   "package": "io.github.elysian_mods.terra_feram.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "AxeItemAccessor"
   ],
   "client": [
   ],

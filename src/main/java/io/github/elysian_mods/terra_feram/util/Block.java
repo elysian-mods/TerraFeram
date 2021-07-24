@@ -5,5 +5,5 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 
 public class Block {
   public static final FabricBlockSettings DEFAULT_SETTINGS =
-          FabricBlockSettings.copyOf(RegisteredBlocks.STONE);
+      FabricBlockSettings.copyOf(RegisteredBlocks.STONE);
 }

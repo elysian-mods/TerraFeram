@@ -1,6 +1,7 @@
 package io.github.elysian_mods.terra_feram.world.feature.tree;
 
 import io.github.elysian_mods.terra_feram.TerraFeram;
+import io.github.elysian_mods.terra_feram.mixin.AxeItemAccessor;
 import io.github.elysian_mods.terra_feram.registry.RegisteredBlocks;
 import io.github.elysian_mods.terra_feram.util.Item;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
@@ -29,6 +30,8 @@ import net.minecraft.world.gen.trunk.TrunkPlacer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 @SuppressWarnings("deprecation")
@@ -66,6 +69,8 @@ public abstract class TreeType {
   protected Block sign;
   protected Block slab;
   protected Block stairs;
+  protected Block stripped_log;
+  protected Block stripped_wood;
   protected Block trapdoor;
   protected Block wood;
 
@@ -83,6 +88,8 @@ public abstract class TreeType {
     sign = new Sign();
     slab = new Slab();
     stairs = new Stairs();
+    stripped_log = new StrippedLog();
+    stripped_wood = new StrippedWood();
     trapdoor = new Trapdoor();
     wood = new Wood();
   }
@@ -121,35 +128,50 @@ public abstract class TreeType {
     Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, key.getValue(), decorated);
     BiomeModifications.addFeature(BiomeSelectors.includeByKey(biomes), step, key);
 
-    registerBlock(leaves, "leaves");
+    registerBlock(leaves, "%s_leaves");
     FlammableBlockRegistry.getDefaultInstance().add(leaves, 60, 30);
-    registerBlock(log, "log");
+    registerBlock(log, "%s_log");
     FlammableBlockRegistry.getDefaultInstance().add(log, 5, 5);
-    registerBlock(sapling, "sapling");
+    registerBlock(sapling, "%s_sapling");
 
-    registerBlock(button, "button");
-    registerBlock(door, "door");
-    registerBlock(fence, "fence");
+    registerBlock(button, "%s_button");
+    registerBlock(door, "%s_door");
+    registerBlock(fence, "%s_fence");
     FlammableBlockRegistry.getDefaultInstance().add(fence, 20, 5);
-    registerBlock(fence_gate, "fence_gate");
+    registerBlock(fence_gate, "%s_fence_gate");
     FlammableBlockRegistry.getDefaultInstance().add(fence_gate, 20, 5);
-    registerBlock(planks, "planks");
+    registerBlock(planks, "%s_planks");
     FlammableBlockRegistry.getDefaultInstance().add(planks, 20, 5);
-    registerBlock(pressure_plate, "pressure_plate");
-    registerBlock(sign, "sign");
-    registerBlock(trapdoor, "trapdoor");
-    registerBlock(wood, "wood");
+    registerBlock(pressure_plate, "%s_pressure_plate");
+    registerBlock(sign, "%s_sign");
+    registerBlock(slab, "%s_slab");
+    FlammableBlockRegistry.getDefaultInstance().add(slab, 20, 5);
+    registerBlock(stairs, "%s_stairs");
+    FlammableBlockRegistry.getDefaultInstance().add(stairs, 20, 5);
+    registerBlock(trapdoor, "%s_trapdoor");
+    registerBlock(wood, "%s_wood");
     FlammableBlockRegistry.getDefaultInstance().add(wood, 5, 5);
+
+    registerBlock(stripped_log, "stripped_%s_log");
+    FlammableBlockRegistry.getDefaultInstance().add(stripped_log, 5, 5);
+    registerBlock(stripped_wood, "stripped_%s_wood");
+    FlammableBlockRegistry.getDefaultInstance().add(stripped_wood, 5, 5);
+
+    Map<Block, Block> stripper = new HashMap<>(AxeItemAccessor.getStrippedBlocks());
+    stripper.put(log, stripped_log);
+    stripper.put(wood, stripped_wood);
+    AxeItemAccessor.setStrippedBlocks(stripper);
 
     return configured;
   }
 
-  private void registerBlock(Block block, String name) {
-    Registry.register(Registry.BLOCK, TerraFeram.identifier(this.name + "_" + name), block);
-    Registry.register(
-        Registry.ITEM,
-        TerraFeram.identifier(this.name + "_" + name),
-        new BlockItem(block, Item.DEFAULT_SETTINGS));
+  private void registerBlock(Block block, String template) {
+    if (block != null) {
+      String name = String.format(template, this.name);
+      Registry.register(Registry.BLOCK, TerraFeram.identifier(name), block);
+      Registry.register(
+          Registry.ITEM, TerraFeram.identifier(name), new BlockItem(block, Item.DEFAULT_SETTINGS));
+    }
   }
 
   public class Generator extends SaplingGenerator {
@@ -233,6 +255,18 @@ public abstract class TreeType {
       super(
           TreeType.this.planks.getDefaultState(),
           FabricBlockSettings.copyOf(RegisteredBlocks.OAK_STAIRS));
+    }
+  }
+
+  public static class StrippedLog extends PillarBlock {
+    public StrippedLog() {
+      super(FabricBlockSettings.copyOf(RegisteredBlocks.STRIPPED_OAK_LOG));
+    }
+  }
+
+  public static class StrippedWood extends PillarBlock {
+    public StrippedWood() {
+      super(FabricBlockSettings.copyOf(RegisteredBlocks.STRIPPED_OAK_WOOD));
     }
   }
 

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "terra_feram:block/%1$s_planks",
+    "top": "terra_feram:block/%1$s_planks",
+    "side": "terra_feram:block/%1$s_planks"
+  }
+}

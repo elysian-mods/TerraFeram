@@ -10,8 +10,7 @@ import java.util.Arrays;
 
 public class AlderTree extends TreeType {
   public AlderTree() {
-    super();
-    name = "alder";
+    super("alder");
 
     biomes =
         Arrays.asList(
@@ -30,6 +29,6 @@ public class AlderTree extends TreeType {
             UniformIntProvider.create(1, 2));
     size = new TwoLayersFeatureSize(2, 0, 2);
 
-    configure();
+    create();
   }
 }

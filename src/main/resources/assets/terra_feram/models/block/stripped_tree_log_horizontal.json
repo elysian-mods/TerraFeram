@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "terra_feran:block/stripped_%1$s_log_top",
+    "side": "terra_feran:block/stripped_%1$s_log"
+  }
+}

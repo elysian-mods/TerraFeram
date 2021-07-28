@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "terra_feram:block/%1$s_sapling"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/fence_side",
+  "textures": {
+    "texture": "terra_feram:block/%1$s_planks"
+  }
+}

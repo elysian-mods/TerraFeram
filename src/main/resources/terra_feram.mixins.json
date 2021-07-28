@@ -6,7 +6,8 @@
   "mixins": [
     "AxeItemAccessor",
     "BarkFromStrip",
-    "ModelInjector"
+    "ModelInjector",
+    "RecipeInjector"
   ],
   "client": [
   ],

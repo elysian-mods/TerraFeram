@@ -14,7 +14,10 @@ import java.util.Map;
 
 @Mixin(RecipeManager.class)
 public class RecipeInjector {
-    @Inject(method = "apply", at = @At("HEAD"))
-    public void addRecipe(Map<Identifier, JsonElement> map, ResourceManager resourceManager, Profiler profiler,
-                  CallbackInfo info) {}
+  @Inject(method = "apply", at = @At("HEAD"))
+  public void addRecipe(
+      Map<Identifier, JsonElement> map,
+      ResourceManager resourceManager,
+      Profiler profiler,
+      CallbackInfo info) {}
 }

@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/door_top_rh",
-  "textures": {
-    "top": "terra_feram:block/%1$s_door_top",
-    "bottom": "terra_feram:block/%1$s_door_bottom"
-  }
-}

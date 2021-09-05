@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/leaves",
-  "textures": {
-    "all": "terra_feram:block/%1$s_leaves"
-  }
-}

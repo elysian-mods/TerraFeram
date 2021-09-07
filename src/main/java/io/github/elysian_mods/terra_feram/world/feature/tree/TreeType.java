@@ -3,7 +3,6 @@ package io.github.elysian_mods.terra_feram.world.feature.tree;
 import io.github.elysian_mods.terra_feram.TerraFeram;
 import io.github.elysian_mods.terra_feram.mixin.AxeItemAccessor;
 import io.github.elysian_mods.terra_feram.registry.RegisteredBlocks;
-import io.github.elysian_mods.terra_feram.util.ItemUtil;
 import io.github.elysian_mods.terra_feram.util.LogsToBark;
 import net.devtech.arrp.json.blockstate.JState;
 import net.devtech.arrp.json.models.JModel;
@@ -40,6 +39,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import static io.github.elysian_mods.terra_feram.util.ARRPUtil.*;
+import static io.github.elysian_mods.terra_feram.util.ItemUtil.*;
 import static net.devtech.arrp.json.blockstate.JState.*;
 import static net.devtech.arrp.json.models.JModel.textures;
 
@@ -144,76 +145,71 @@ public abstract class TreeType {
   }
 
   private void implement() {
-    TerraFeram.RESOURCE_PACK.addModel(leaves.itemModel, leaves.itemId);
+    addModel(leaves.itemId, leaves.itemModel);
     addBlockModels(leaves.blockModels);
-    TerraFeram.RESOURCE_PACK.addBlockState(leaves.blockState, TerraFeram.identifier(leaves.name));
+    addBlockState(leaves.nameId, leaves.blockState);
 
-    TerraFeram.RESOURCE_PACK.addModel(log.itemModel, log.itemId);
+    addModel(log.itemId, log.itemModel);
     addBlockModels(log.blockModels);
-    TerraFeram.RESOURCE_PACK.addBlockState(log.blockState, TerraFeram.identifier(log.name));
+    addBlockState(log.nameId, log.blockState);
 
-    TerraFeram.RESOURCE_PACK.addModel(sapling.itemModel, sapling.itemId);
+    addModel(sapling.itemId, sapling.itemModel);
     addBlockModels(sapling.blockModels);
-    TerraFeram.RESOURCE_PACK.addBlockState(sapling.blockState, TerraFeram.identifier(sapling.name));
+    addBlockState(sapling.nameId, sapling.blockState);
 
-    TerraFeram.RESOURCE_PACK.addModel(planks.itemModel, planks.itemId);
+    addModel(planks.itemId, planks.itemModel);
     addBlockModels(planks.blockModels);
-    TerraFeram.RESOURCE_PACK.addBlockState(planks.blockState, TerraFeram.identifier(planks.name));
+    addBlockState(planks.nameId, planks.blockState);
 
-    TerraFeram.RESOURCE_PACK.addModel(button.itemModel, button.itemId);
+    addModel(button.itemId, button.itemModel);
     addBlockModels(button.blockModels);
-    TerraFeram.RESOURCE_PACK.addBlockState(button.blockState, TerraFeram.identifier(button.name));
+    addBlockState(button.nameId, button.blockState);
 
-    TerraFeram.RESOURCE_PACK.addModel(door.itemModel, door.itemId);
+    addModel(door.itemId, door.itemModel);
     addBlockModels(door.blockModels);
-    TerraFeram.RESOURCE_PACK.addBlockState(door.blockState, TerraFeram.identifier(door.name));
+    addBlockState(door.nameId, door.blockState);
 
-    TerraFeram.RESOURCE_PACK.addModel(fence.itemModel, fence.itemId);
+    addModel(fence.itemId, fence.itemModel);
     addBlockModels(fence.blockModels);
-    TerraFeram.RESOURCE_PACK.addBlockState(fence.blockState, TerraFeram.identifier(fence.name));
+    addBlockState(fence.nameId, fence.blockState);
 
-    TerraFeram.RESOURCE_PACK.addModel(fenceGate.itemModel, fenceGate.itemId);
+    addModel(fenceGate.itemId, fenceGate.itemModel);
     addBlockModels(fenceGate.blockModels);
-    TerraFeram.RESOURCE_PACK.addBlockState(
-        fenceGate.blockState, TerraFeram.identifier(fenceGate.name));
+    addBlockState(fenceGate.nameId, fenceGate.blockState);
 
-    TerraFeram.RESOURCE_PACK.addModel(pressurePlate.itemModel, pressurePlate.itemId);
+    addModel(pressurePlate.itemId, pressurePlate.itemModel);
     addBlockModels(pressurePlate.blockModels);
-    TerraFeram.RESOURCE_PACK.addBlockState(
-        pressurePlate.blockState, TerraFeram.identifier(pressurePlate.name));
+    addBlockState(pressurePlate.nameId, pressurePlate.blockState);
 
-    TerraFeram.RESOURCE_PACK.addModel(sign.itemModel, sign.itemId);
+    addModel(sign.itemId, sign.itemModel);
     addBlockModels(sign.blockModels);
-    TerraFeram.RESOURCE_PACK.addBlockState(sign.blockState, TerraFeram.identifier(sign.name));
+    addBlockState(sign.nameId, sign.blockState);
 
-    TerraFeram.RESOURCE_PACK.addModel(slab.itemModel, slab.itemId);
+    addModel(slab.itemId, slab.itemModel);
     addBlockModels(slab.blockModels);
-    TerraFeram.RESOURCE_PACK.addBlockState(slab.blockState, TerraFeram.identifier(slab.name));
+    addBlockState(slab.nameId, slab.blockState);
 
-    TerraFeram.RESOURCE_PACK.addModel(stairs.itemModel, stairs.itemId);
+    addModel(stairs.itemId, stairs.itemModel);
     addBlockModels(stairs.blockModels);
-    TerraFeram.RESOURCE_PACK.addBlockState(stairs.blockState, TerraFeram.identifier(stairs.name));
+    addBlockState(stairs.nameId, stairs.blockState);
 
-    TerraFeram.RESOURCE_PACK.addModel(strippedLog.itemModel, strippedLog.itemId);
+    addModel(strippedLog.itemId, strippedLog.itemModel);
     addBlockModels(strippedLog.blockModels);
-    TerraFeram.RESOURCE_PACK.addBlockState(
-        strippedLog.blockState, TerraFeram.identifier(strippedLog.name));
+    addBlockState(strippedLog.nameId, strippedLog.blockState);
 
-    TerraFeram.RESOURCE_PACK.addModel(strippedWood.itemModel, strippedWood.itemId);
+    addModel(strippedWood.itemId, strippedWood.itemModel);
     addBlockModels(strippedWood.blockModels);
-    TerraFeram.RESOURCE_PACK.addBlockState(
-        strippedWood.blockState, TerraFeram.identifier(strippedWood.name));
+    addBlockState(strippedWood.nameId, strippedWood.blockState);
 
-    TerraFeram.RESOURCE_PACK.addModel(trapdoor.itemModel, trapdoor.itemId);
+    addModel(trapdoor.itemId, trapdoor.itemModel);
     addBlockModels(trapdoor.blockModels);
-    TerraFeram.RESOURCE_PACK.addBlockState(
-        trapdoor.blockState, TerraFeram.identifier(trapdoor.name));
+    addBlockState(trapdoor.nameId, trapdoor.blockState);
 
-    TerraFeram.RESOURCE_PACK.addModel(wood.itemModel, wood.itemId);
+    addModel(wood.itemId, wood.itemModel);
     addBlockModels(wood.blockModels);
-    TerraFeram.RESOURCE_PACK.addBlockState(wood.blockState, TerraFeram.identifier(wood.name));
+    addBlockState(wood.nameId, wood.blockState);
 
-    TerraFeram.RESOURCE_PACK.addModel(bark.itemModel, bark.itemId);
+    addModel(bark.itemId, bark.itemModel);
   }
 
   public ConfiguredFeature<?, ?> register() {
@@ -264,24 +260,6 @@ public abstract class TreeType {
     return configured;
   }
 
-  private void addBlockModels(Map<Identifier, JModel> blockModels) {
-    for (Map.Entry<Identifier, JModel> model : blockModels.entrySet()) {
-      TerraFeram.RESOURCE_PACK.addModel(model.getValue(), model.getKey());
-    }
-  }
-
-  private Identifier blockId(String name) {
-    return genericId("block/%s", name);
-  }
-
-  private Identifier genericId(String format, String name) {
-    return TerraFeram.identifier(String.format(format, name));
-  }
-
-  private Identifier itemId(String name) {
-    return genericId("item/%s", name);
-  }
-
   @SafeVarargs
   private <K, V> Map<K, V> mapBuilder(Pair<K, V>... entries) {
     Map<K, V> map = new HashMap<>();
@@ -297,7 +275,7 @@ public abstract class TreeType {
       Registry.register(
           Registry.ITEM,
           TerraFeram.identifier(name),
-          new BlockItem(block, ItemUtil.DEFAULT_SETTINGS));
+          new BlockItem(block, DEFAULT_SETTINGS));
     }
   }
 
@@ -313,6 +291,7 @@ public abstract class TreeType {
     public String name = String.format("%s_leaves", TreeType.this.name);
     public Identifier blockId = blockId(name);
     public Identifier itemId = itemId(name);
+    public Identifier nameId = nameId(name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -331,8 +310,9 @@ public abstract class TreeType {
 
   protected class Log extends PillarBlock {
     public String name = String.format("%s_log", TreeType.this.name);
-    public Identifier blockId = TerraFeram.identifier(String.format("block/%s", name));
-    public Identifier itemId = TerraFeram.identifier(String.format("item/%s", name));
+    public Identifier blockId = blockId(name);
+    public Identifier itemId = itemId(name);
+    public Identifier nameId = nameId(name);
 
     public Identifier blockHorizontalId = genericId("block/%s_horizontal", name);
     public Identifier blockTopId = genericId("block/%s_top", name);
@@ -371,6 +351,7 @@ public abstract class TreeType {
     public String name = String.format("%s_sapling", TreeType.this.name);
     public Identifier blockId = blockId(name);
     public Identifier itemId = itemId(name);
+    public Identifier nameId = nameId(name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -392,6 +373,7 @@ public abstract class TreeType {
     public String name = String.format("%s_planks", TreeType.this.name);
     public Identifier blockId = blockId(name);
     public Identifier itemId = itemId(name);
+    public Identifier nameId = nameId(name);
 
     public Map<Identifier, JModel> blockModels =
             mapBuilder(
@@ -412,6 +394,7 @@ public abstract class TreeType {
     public String name = String.format("%s_button", TreeType.this.name);
     public Identifier blockId = blockId(name);
     public Identifier itemId = itemId(name);
+    public Identifier nameId = nameId(name);
 
     public Identifier blockInventoryId = genericId("block/%s_inventory", name);
     public Identifier blockPressedId = genericId("block/%s_pressed", name);
@@ -487,6 +470,7 @@ public abstract class TreeType {
     public String name = String.format("%s_door", TreeType.this.name);
     public Identifier blockId = blockId(name);
     public Identifier itemId = itemId(name);
+    public Identifier nameId = nameId(name);
 
     public Identifier blockBottomId = genericId("%s_bottom", name);
     public Identifier blockBottomHingeId = genericId("%s_bottom_hinge", name);
@@ -620,6 +604,7 @@ public abstract class TreeType {
     public String name = String.format("%s_fence", TreeType.this.name);
     public Identifier blockId = blockId(name);
     public Identifier itemId = itemId(name);
+    public Identifier nameId = nameId(name);
 
     public Identifier blockInventoryId = genericId("block/%s_inventory", name);
     public Identifier blockPostId = genericId("block/%s_post", name);
@@ -658,6 +643,7 @@ public abstract class TreeType {
     public String name = String.format("%s_fence_gate", TreeType.this.name);
     public Identifier blockId = blockId(name);
     public Identifier itemId = itemId(name);
+    public Identifier nameId = nameId(name);
 
     public Identifier blockOpenId = genericId("%s_open", name);
     public Identifier blockWallId = genericId("%s_wall", name);
@@ -712,6 +698,7 @@ public abstract class TreeType {
     public String name = String.format("%s_pressure_plate", TreeType.this.name);
     public Identifier blockId = blockId(name);
     public Identifier itemId = itemId(name);
+    public Identifier nameId = nameId(name);
 
     public Identifier blockDownId = genericId("block/%s_down", name);
 
@@ -744,6 +731,7 @@ public abstract class TreeType {
     public String name = String.format("%s_sign", TreeType.this.name);
     public Identifier blockId = blockId(name);
     public Identifier itemId = itemId(name);
+    public Identifier nameId = nameId(name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -764,6 +752,7 @@ public abstract class TreeType {
     public String name = String.format("%s_slab", TreeType.this.name);
     public Identifier blockId = blockId(name);
     public Identifier itemId = itemId(name);
+    public Identifier nameId = nameId(name);
 
     public Identifier blockTopId = genericId("block/%s_top", name);
 
@@ -803,6 +792,7 @@ public abstract class TreeType {
     public String name = String.format("%s_stairs", TreeType.this.name);
     public Identifier blockId = blockId(name);
     public Identifier itemId = itemId(name);
+    public Identifier nameId = nameId(name);
 
     public Identifier blockInnerId = genericId("block/%s_inner", name);
     public Identifier blockOuterId = genericId("block/%s_outer", name);
@@ -932,6 +922,7 @@ public abstract class TreeType {
     public String name = String.format("stripped_%s_log", TreeType.this.name);
     public Identifier blockId = blockId(name);
     public Identifier itemId = itemId(name);
+    public Identifier nameId = nameId(name);
 
     public Identifier blockHorizontalId = genericId("block/%s_horizontal", name);
     public Identifier blockTopId = genericId("block/%s_top", name);
@@ -970,6 +961,7 @@ public abstract class TreeType {
     public String name = String.format("stripped_%s_wood", TreeType.this.name);
     public Identifier blockId = blockId(name);
     public Identifier itemId = itemId(name);
+    public Identifier nameId = nameId(name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -998,6 +990,7 @@ public abstract class TreeType {
     public String name = String.format("%s_trapdoor", TreeType.this.name);
     public Identifier blockId = blockId(name);
     public Identifier itemId = itemId(name);
+    public Identifier nameId = nameId(name);
 
     public Identifier blockBottomId = genericId("block/%s_bottom", name);
     public Identifier blockOpenId = genericId("block/%s_open", name);
@@ -1048,6 +1041,7 @@ public abstract class TreeType {
     public String name = String.format("%s_wood", TreeType.this.name);
     public Identifier blockId = blockId(name);
     public Identifier itemId = itemId(name);
+    public Identifier nameId = nameId(name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -1075,12 +1069,13 @@ public abstract class TreeType {
   protected class Bark extends Item {
     public String name = String.format("%s_bark", TreeType.this.name);
     public Identifier itemId = itemId(name);
+    public Identifier nameId = nameId(name);
 
     public JModel itemModel =
         JModel.model("minecraft:item/generated").textures(textures().layer0(itemId.toString()));
 
     public Bark() {
-      super(ItemUtil.DEFAULT_SETTINGS);
+      super(DEFAULT_SETTINGS);
     }
   }
 }

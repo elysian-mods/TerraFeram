@@ -264,10 +264,22 @@ public abstract class TreeType {
     return configured;
   }
 
-  public void addBlockModels(Map<Identifier, JModel> blockModels) {
+  private void addBlockModels(Map<Identifier, JModel> blockModels) {
     for (Map.Entry<Identifier, JModel> model : blockModels.entrySet()) {
       TerraFeram.RESOURCE_PACK.addModel(model.getValue(), model.getKey());
     }
+  }
+
+  private Identifier blockId(String name) {
+    return genericId("block/%s", name);
+  }
+
+  private Identifier genericId(String format, String name) {
+    return TerraFeram.identifier(String.format(format, name));
+  }
+
+  private Identifier itemId(String name) {
+    return genericId("item/%s", name);
   }
 
   @SafeVarargs
@@ -299,8 +311,8 @@ public abstract class TreeType {
 
   protected class Leaves extends LeavesBlock {
     public String name = String.format("%s_leaves", TreeType.this.name);
-    public Identifier blockId = TerraFeram.identifier(String.format("block/%s", name));
-    public Identifier itemId = TerraFeram.identifier(String.format("item/%s", name));
+    public Identifier blockId = blockId(name);
+    public Identifier itemId = itemId(name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -322,9 +334,8 @@ public abstract class TreeType {
     public Identifier blockId = TerraFeram.identifier(String.format("block/%s", name));
     public Identifier itemId = TerraFeram.identifier(String.format("item/%s", name));
 
-    public Identifier blockHorizontalId =
-        TerraFeram.identifier(String.format("block/%s_horizontal", name));
-    public Identifier blockTopId = TerraFeram.identifier(String.format("block/%s_top", name));
+    public Identifier blockHorizontalId = genericId("block/%s_horizontal", name);
+    public Identifier blockTopId = genericId("block/%s_top", name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -358,8 +369,8 @@ public abstract class TreeType {
 
   protected class Sapling extends SaplingBlock {
     public String name = String.format("%s_sapling", TreeType.this.name);
-    public Identifier blockId = TerraFeram.identifier(String.format("block/%s", name));
-    public Identifier itemId = TerraFeram.identifier(String.format("item/%s", name));
+    public Identifier blockId = blockId(name);
+    public Identifier itemId = itemId(name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -377,15 +388,33 @@ public abstract class TreeType {
     }
   }
 
+  protected class Planks extends Block {
+    public String name = String.format("%s_planks", TreeType.this.name);
+    public Identifier blockId = blockId(name);
+    public Identifier itemId = itemId(name);
+
+    public Map<Identifier, JModel> blockModels =
+            mapBuilder(
+                    new Pair<>(
+                            blockId,
+                            JModel.model("minecraft:block/cube_all")
+                                    .textures(textures().var("all", blockId.toString()))));
+    public JModel itemModel = JModel.model(blockId);
+
+    public JState blockState = state(variant().put("", JState.model(blockId)));
+
+    public Planks() {
+      super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_PLANKS));
+    }
+  }
+
   protected class Button extends WoodenButtonBlock {
     public String name = String.format("%s_button", TreeType.this.name);
-    public Identifier blockId = TerraFeram.identifier(String.format("block/%s", name));
-    public Identifier itemId = TerraFeram.identifier(String.format("item/%s", name));
+    public Identifier blockId = blockId(name);
+    public Identifier itemId = itemId(name);
 
-    public Identifier blockInventoryId =
-        TerraFeram.identifier(String.format("block/%s_inventory", name));
-    public Identifier blockPressedId =
-        TerraFeram.identifier(String.format("block/%s_pressed", name));
+    public Identifier blockInventoryId = genericId("block/%s_inventory", name);
+    public Identifier blockPressedId = genericId("block/%s_pressed", name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -456,14 +485,13 @@ public abstract class TreeType {
 
   protected class Door extends DoorBlock {
     public String name = String.format("%s_door", TreeType.this.name);
-    public Identifier blockId = TerraFeram.identifier(String.format("block/%s", name));
-    public Identifier itemId = TerraFeram.identifier(String.format("item/%s", name));
+    public Identifier blockId = blockId(name);
+    public Identifier itemId = itemId(name);
 
-    public Identifier blockBottomId = TerraFeram.identifier(String.format("%s_bottom", name));
-    public Identifier blockBottomHingeId =
-        TerraFeram.identifier(String.format("%s_bottom_hinge", name));
-    public Identifier blockTopId = TerraFeram.identifier(String.format("%s_top", name));
-    public Identifier blockTopHingeId = TerraFeram.identifier(String.format("%s_top_hinge", name));
+    public Identifier blockBottomId = genericId("%s_bottom", name);
+    public Identifier blockBottomHingeId = genericId("%s_bottom_hinge", name);
+    public Identifier blockTopId = genericId("%s_top", name);
+    public Identifier blockTopHingeId = genericId("%s_top_hinge", name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -590,13 +618,12 @@ public abstract class TreeType {
 
   protected class Fence extends FenceBlock {
     public String name = String.format("%s_fence", TreeType.this.name);
-    public Identifier blockId = TerraFeram.identifier(String.format("block/%s", name));
-    public Identifier itemId = TerraFeram.identifier(String.format("item/%s", name));
+    public Identifier blockId = blockId(name);
+    public Identifier itemId = itemId(name);
 
-    public Identifier blockInventoryId =
-        TerraFeram.identifier(String.format("block/%s_inventory", name));
-    public Identifier blockPostId = TerraFeram.identifier(String.format("block/%s_post", name));
-    public Identifier blockSideId = TerraFeram.identifier(String.format("block/%s_side", name));
+    public Identifier blockInventoryId = genericId("block/%s_inventory", name);
+    public Identifier blockPostId = genericId("block/%s_post", name);
+    public Identifier blockSideId = genericId("block/%s_side", name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -629,12 +656,12 @@ public abstract class TreeType {
 
   protected class FenceGate extends FenceGateBlock {
     public String name = String.format("%s_fence_gate", TreeType.this.name);
-    public Identifier blockId = TerraFeram.identifier(String.format("block/%s", name));
-    public Identifier itemId = TerraFeram.identifier(String.format("item/%s", name));
+    public Identifier blockId = blockId(name);
+    public Identifier itemId = itemId(name);
 
-    public Identifier blockOpenId = TerraFeram.identifier(String.format("%s_open", name));
-    public Identifier blockWallId = TerraFeram.identifier(String.format("%s_wall", name));
-    public Identifier blockWallOpenId = TerraFeram.identifier(String.format("%s_wall_open", name));
+    public Identifier blockOpenId = genericId("%s_open", name);
+    public Identifier blockWallId = genericId("%s_wall", name);
+    public Identifier blockWallOpenId = genericId("%s_wall_open", name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -681,32 +708,12 @@ public abstract class TreeType {
     }
   }
 
-  protected class Planks extends Block {
-    public String name = String.format("%s_planks", TreeType.this.name);
-    public Identifier blockId = TerraFeram.identifier(String.format("block/%s", name));
-    public Identifier itemId = TerraFeram.identifier(String.format("item/%s", name));
-
-    public Map<Identifier, JModel> blockModels =
-        mapBuilder(
-            new Pair<>(
-                blockId,
-                JModel.model("minecraft:block/cube_all")
-                    .textures(textures().var("all", blockId.toString()))));
-    public JModel itemModel = JModel.model(blockId);
-
-    public JState blockState = state(variant().put("", JState.model(blockId)));
-
-    public Planks() {
-      super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_PLANKS));
-    }
-  }
-
   protected class PressurePlate extends PressurePlateBlock {
     public String name = String.format("%s_pressure_plate", TreeType.this.name);
-    public Identifier blockId = TerraFeram.identifier(String.format("block/%s", name));
-    public Identifier itemId = TerraFeram.identifier(String.format("item/%s", name));
+    public Identifier blockId = blockId(name);
+    public Identifier itemId = itemId(name);
 
-    public Identifier blockDownId = TerraFeram.identifier(String.format("block/%s_down", name));
+    public Identifier blockDownId = genericId("block/%s_down", name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -735,8 +742,8 @@ public abstract class TreeType {
 
   protected class Sign extends SignBlock {
     public String name = String.format("%s_sign", TreeType.this.name);
-    public Identifier blockId = TerraFeram.identifier(String.format("block/%s", name));
-    public Identifier itemId = TerraFeram.identifier(String.format("item/%s", name));
+    public Identifier blockId = blockId(name);
+    public Identifier itemId = itemId(name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -755,10 +762,10 @@ public abstract class TreeType {
 
   protected class Slab extends SlabBlock {
     public String name = String.format("%s_slab", TreeType.this.name);
-    public Identifier blockId = TerraFeram.identifier(String.format("block/%s", name));
-    public Identifier itemId = TerraFeram.identifier(String.format("item/%s", name));
+    public Identifier blockId = blockId(name);
+    public Identifier itemId = itemId(name);
 
-    public Identifier blockTopId = TerraFeram.identifier(String.format("block/%s_top", name));
+    public Identifier blockTopId = genericId("block/%s_top", name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -794,11 +801,11 @@ public abstract class TreeType {
 
   protected class Stairs extends StairsBlock {
     public String name = String.format("%s_stairs", TreeType.this.name);
-    public Identifier blockId = TerraFeram.identifier(String.format("block/%s", name));
-    public Identifier itemId = TerraFeram.identifier(String.format("item/%s", name));
+    public Identifier blockId = blockId(name);
+    public Identifier itemId = itemId(name);
 
-    public Identifier blockInnerId = TerraFeram.identifier(String.format("block/%s_inner", name));
-    public Identifier blockOuterId = TerraFeram.identifier(String.format("block/%s_outer", name));
+    public Identifier blockInnerId = genericId("block/%s_inner", name);
+    public Identifier blockOuterId = genericId("block/%s_outer", name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -923,12 +930,11 @@ public abstract class TreeType {
 
   protected class StrippedLog extends PillarBlock {
     public String name = String.format("stripped_%s_log", TreeType.this.name);
-    public Identifier blockId = TerraFeram.identifier(String.format("block/%s", name));
-    public Identifier itemId = TerraFeram.identifier(String.format("item/%s", name));
+    public Identifier blockId = blockId(name);
+    public Identifier itemId = itemId(name);
 
-    public Identifier blockHorizontalId =
-        TerraFeram.identifier(String.format("block/%s_horizontal", name));
-    public Identifier blockTopId = TerraFeram.identifier(String.format("block/%s_top", name));
+    public Identifier blockHorizontalId = genericId("block/%s_horizontal", name);
+    public Identifier blockTopId = genericId("block/%s_top", name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -962,8 +968,8 @@ public abstract class TreeType {
 
   protected class StrippedWood extends Block {
     public String name = String.format("stripped_%s_wood", TreeType.this.name);
-    public Identifier blockId = TerraFeram.identifier(String.format("block/%s", name));
-    public Identifier itemId = TerraFeram.identifier(String.format("item/%s", name));
+    public Identifier blockId = blockId(name);
+    public Identifier itemId = itemId(name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -990,12 +996,12 @@ public abstract class TreeType {
 
   protected class Trapdoor extends TrapdoorBlock {
     public String name = String.format("%s_trapdoor", TreeType.this.name);
-    public Identifier blockId = TerraFeram.identifier(String.format("block/%s", name));
-    public Identifier itemId = TerraFeram.identifier(String.format("item/%s", name));
+    public Identifier blockId = blockId(name);
+    public Identifier itemId = itemId(name);
 
-    public Identifier blockBottomId = TerraFeram.identifier(String.format("block/%s_bottom", name));
-    public Identifier blockOpenId = TerraFeram.identifier(String.format("block/%s_open", name));
-    public Identifier blockTopId = TerraFeram.identifier(String.format("block/%s_top", name));
+    public Identifier blockBottomId = genericId("block/%s_bottom", name);
+    public Identifier blockOpenId = genericId("block/%s_open", name);
+    public Identifier blockTopId = genericId("block/%s_top", name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -1040,8 +1046,8 @@ public abstract class TreeType {
 
   protected class Wood extends Block {
     public String name = String.format("%s_wood", TreeType.this.name);
-    public Identifier blockId = TerraFeram.identifier(String.format("block/%s", name));
-    public Identifier itemId = TerraFeram.identifier(String.format("item/%s", name));
+    public Identifier blockId = blockId(name);
+    public Identifier itemId = itemId(name);
 
     public Map<Identifier, JModel> blockModels =
         mapBuilder(
@@ -1068,7 +1074,7 @@ public abstract class TreeType {
 
   protected class Bark extends Item {
     public String name = String.format("%s_bark", TreeType.this.name);
-    public Identifier itemId = TerraFeram.identifier(String.format("item/%s", name));
+    public Identifier itemId = itemId(name);
 
     public JModel itemModel =
         JModel.model("minecraft:item/generated").textures(textures().layer0(itemId.toString()));

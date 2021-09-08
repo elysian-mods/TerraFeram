@@ -3,6 +3,7 @@ package io.github.elysian_mods.terra_feram.world.feature.tree;
 import io.github.elysian_mods.terra_feram.TerraFeram;
 import io.github.elysian_mods.terra_feram.mixin.AxeItemAccessor;
 import io.github.elysian_mods.terra_feram.registry.RegisteredBlocks;
+import io.github.elysian_mods.terra_feram.registry.RegisteredItems;
 import io.github.elysian_mods.terra_feram.util.LogsToBark;
 import net.devtech.arrp.json.blockstate.JState;
 import net.devtech.arrp.json.models.JModel;
@@ -40,9 +41,16 @@ import java.util.Map;
 import java.util.Random;
 
 import static io.github.elysian_mods.terra_feram.util.ARRPUtil.*;
-import static io.github.elysian_mods.terra_feram.util.ItemUtil.*;
+import static io.github.elysian_mods.terra_feram.util.ItemUtil.DEFAULT_SETTINGS;
 import static net.devtech.arrp.json.blockstate.JState.*;
 import static net.devtech.arrp.json.models.JModel.textures;
+import static net.devtech.arrp.json.recipe.JIngredient.ingredient;
+import static net.devtech.arrp.json.recipe.JIngredients.ingredients;
+import static net.devtech.arrp.json.recipe.JKeys.keys;
+import static net.devtech.arrp.json.recipe.JPattern.pattern;
+import static net.devtech.arrp.json.recipe.JRecipe.shaped;
+import static net.devtech.arrp.json.recipe.JRecipe.shapeless;
+import static net.devtech.arrp.json.recipe.JResult.stackedResult;
 
 @SuppressWarnings("deprecation")
 public abstract class TreeType {
@@ -220,31 +228,145 @@ public abstract class TreeType {
 
     registerBlock(leaves, leaves.name);
     FlammableBlockRegistry.getDefaultInstance().add(leaves, 60, 30);
+
     registerBlock(log, log.name);
     FlammableBlockRegistry.getDefaultInstance().add(log, 5, 5);
+    addRecipe(
+            log.nameId,
+            shaped(
+                    pattern(" _ ", "_#_", " _ "),
+                    keys()
+                            .key("#", ingredient().item(strippedLog.nameId.toString()))
+                            .key("_", ingredient().item(bark.nameId.toString())),
+                    stackedResult(log.nameId.toString(), 1)));
+
     registerBlock(sapling, sapling.name);
 
     registerBlock(planks, planks.name);
     FlammableBlockRegistry.getDefaultInstance().add(planks, 20, 5);
+    addDualTag("planks", new String[] {planks.name});
+    addRecipe(
+            genericId("%s_planks_from_bark", name),
+            shaped(
+                    pattern("###", "###", "###"),
+                    keys()
+                            .key("#", ingredient().item(bark.nameId.toString())),
+                    stackedResult(planks.nameId.toString(), 3)));
 
     registerBlock(button, button.name);
+    addDualTag("wooden_buttons", new String[] {button.name});
+    addRecipe(
+        button.nameId,
+        shapeless(
+            ingredients().add(ingredient().add(ingredient().item(planks.name))),
+            stackedResult(button.nameId.toString(), 1)));
+
     registerBlock(door, door.name);
+    addDualTag("wooden_doors", new String[] {door.name});
+    addRecipe(
+        door.nameId,
+        shaped(
+            pattern("##", "##", "##"),
+            keys().key("#", ingredient().item(planks.nameId.toString())),
+            stackedResult(door.nameId.toString(), 3)));
+
     registerBlock(fence, fence.name);
     FlammableBlockRegistry.getDefaultInstance().add(fence, 20, 5);
+    addDualTag("wooden_fences", new String[] {fence.name});
+    addRecipe(
+        fence.nameId,
+        shaped(
+            pattern("#|#", "#|#"),
+            keys()
+                .key("#", ingredient().item(planks.nameId.toString()))
+                .key("|", ingredient().item(RegisteredItems.STICK)),
+            stackedResult(fence.nameId.toString(), 3)));
+
     registerBlock(fenceGate, fenceGate.name);
     FlammableBlockRegistry.getDefaultInstance().add(fenceGate, 20, 5);
+    addRecipe(
+        fenceGate.nameId,
+        shaped(
+            pattern("|#|", "|#|"),
+            keys()
+                .key("#", ingredient().item(planks.nameId.toString()))
+                .key("|", ingredient().item(RegisteredItems.STICK)),
+            stackedResult(fenceGate.nameId.toString(), 1)));
+
     registerBlock(pressurePlate, pressurePlate.name);
+    addDualTag("wooden_pressure_plates", new String[] {pressurePlate.name});
+    addRecipe(
+            pressurePlate.nameId,
+            shaped(
+                    pattern("##"),
+                    keys()
+                            .key("#", ingredient().item(planks.nameId.toString())),
+                    stackedResult(pressurePlate.nameId.toString(), 1)));
+
     registerBlock(sign, sign.name);
+    addRecipe(
+            sign.nameId,
+            shaped(
+                    pattern("###", "###", " | "),
+                    keys()
+                            .key("#", ingredient().item(planks.nameId.toString()))
+                            .key("|", ingredient().item(RegisteredItems.STICK)),
+                    stackedResult(sign.nameId.toString(), 3)));
+
     registerBlock(slab, slab.name);
     FlammableBlockRegistry.getDefaultInstance().add(slab, 20, 5);
+    addDualTag("wooden_slabs", new String[] {slab.name});
+    addRecipe(
+            slab.nameId,
+            shaped(
+                    pattern("###"),
+                    keys()
+                            .key("#", ingredient().item(planks.nameId.toString())),
+                    stackedResult(slab.nameId.toString(), 6)));
+
     registerBlock(stairs, stairs.name);
     FlammableBlockRegistry.getDefaultInstance().add(stairs, 20, 5);
+    addDualTag("wooden_stairs", new String[] {stairs.name});
+    addRecipe(
+            stairs.nameId,
+            shaped(
+                    pattern("#  ", "## ", "###"),
+                    keys()
+                            .key("#", ingredient().item(planks.nameId.toString())),
+                    stackedResult(stairs.nameId.toString(), 4)));
+
     registerBlock(trapdoor, trapdoor.name);
+    addDualTag("wooden_trapdoor", new String[] {trapdoor.name});
+    addRecipe(
+            trapdoor.nameId,
+            shaped(
+                    pattern("###", "###"),
+                    keys()
+                            .key("#", ingredient().item(planks.nameId.toString())),
+                    stackedResult(trapdoor.nameId.toString(), 2)));
+
     registerBlock(wood, wood.name);
     FlammableBlockRegistry.getDefaultInstance().add(wood, 5, 5);
+    addRecipe(
+            wood.nameId,
+            shaped(
+                    pattern("_", "#", "_"),
+                    keys()
+                            .key("#", ingredient().item(log.nameId.toString()))
+                            .key("_", ingredient().item(bark.nameId.toString())),
+                    stackedResult(wood.nameId.toString(), 1)));
+    addRecipe(
+            genericId("%s_wood_from_bark", name),
+            shaped(
+                    pattern("___", " # ", "___"),
+                    keys()
+                            .key("#", ingredient().item(strippedWood.nameId.toString()))
+                            .key("_", ingredient().item(bark.nameId.toString())),
+                    stackedResult(wood.nameId.toString(), 1)));
 
     registerBlock(strippedLog, strippedLog.name);
     FlammableBlockRegistry.getDefaultInstance().add(strippedLog, 5, 5);
+
     registerBlock(strippedWood, strippedWood.name);
     FlammableBlockRegistry.getDefaultInstance().add(strippedWood, 5, 5);
 
@@ -256,6 +378,17 @@ public abstract class TreeType {
     Registry.register(Registry.ITEM, TerraFeram.identifier(bark.name), bark);
     LogsToBark.put(log, bark, 4);
     LogsToBark.put(wood, bark, 6);
+
+    String[] logs = {log.name, wood.name, strippedLog.name, strippedWood.name};
+    String logsName = String.format("%s_logs", name);
+    addDualTag(logsName, logs);
+    addTag(new Identifier("logs_that_burn"), new String[] {"#" + logsName});
+
+    addRecipe(
+        planks.nameId,
+        shapeless(
+            ingredients().add(ingredient().tag(logsName)),
+            stackedResult(planks.nameId.toString(), 1)));
 
     return configured;
   }
@@ -273,9 +406,7 @@ public abstract class TreeType {
     if (block != null) {
       Registry.register(Registry.BLOCK, TerraFeram.identifier(name), block);
       Registry.register(
-          Registry.ITEM,
-          TerraFeram.identifier(name),
-          new BlockItem(block, DEFAULT_SETTINGS));
+          Registry.ITEM, TerraFeram.identifier(name), new BlockItem(block, DEFAULT_SETTINGS));
     }
   }
 
@@ -376,11 +507,11 @@ public abstract class TreeType {
     public Identifier nameId = nameId(name);
 
     public Map<Identifier, JModel> blockModels =
-            mapBuilder(
-                    new Pair<>(
-                            blockId,
-                            JModel.model("minecraft:block/cube_all")
-                                    .textures(textures().var("all", blockId.toString()))));
+        mapBuilder(
+            new Pair<>(
+                blockId,
+                JModel.model("minecraft:block/cube_all")
+                    .textures(textures().var("all", blockId.toString()))));
     public JModel itemModel = JModel.model(blockId);
 
     public JState blockState = state(variant().put("", JState.model(blockId)));

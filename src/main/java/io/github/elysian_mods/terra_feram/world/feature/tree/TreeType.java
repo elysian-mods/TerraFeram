@@ -43,7 +43,6 @@ import java.util.Random;
 import static io.github.elysian_mods.terra_feram.util.ARRPUtil.*;
 import static io.github.elysian_mods.terra_feram.util.ItemUtil.DEFAULT_SETTINGS;
 import static net.devtech.arrp.json.blockstate.JState.*;
-import static net.devtech.arrp.json.models.JModel.textures;
 import static net.devtech.arrp.json.recipe.JIngredient.ingredient;
 import static net.devtech.arrp.json.recipe.JIngredients.ingredients;
 import static net.devtech.arrp.json.recipe.JKeys.keys;
@@ -232,13 +231,13 @@ public abstract class TreeType {
     registerBlock(log, log.name);
     FlammableBlockRegistry.getDefaultInstance().add(log, 5, 5);
     addRecipe(
-            log.nameId,
-            shaped(
-                    pattern(" _ ", "_#_", " _ "),
-                    keys()
-                            .key("#", ingredient().item(strippedLog.nameId.toString()))
-                            .key("_", ingredient().item(bark.nameId.toString())),
-                    stackedResult(log.nameId.toString(), 1)));
+        log.nameId,
+        shaped(
+            pattern(" _ ", "_#_", " _ "),
+            keys()
+                .key("#", ingredient().item(strippedLog.nameId.toString()))
+                .key("_", ingredient().item(bark.nameId.toString())),
+            stackedResult(log.nameId.toString(), 1)));
 
     registerBlock(sapling, sapling.name);
 
@@ -246,12 +245,11 @@ public abstract class TreeType {
     FlammableBlockRegistry.getDefaultInstance().add(planks, 20, 5);
     addDualTag("planks", new String[] {planks.name});
     addRecipe(
-            genericId("%s_planks_from_bark", name),
-            shaped(
-                    pattern("###", "###", "###"),
-                    keys()
-                            .key("#", ingredient().item(bark.nameId.toString())),
-                    stackedResult(planks.nameId.toString(), 3)));
+        genericId("%s_planks_from_bark", name),
+        shaped(
+            pattern("###", "###", "###"),
+            keys().key("#", ingredient().item(bark.nameId.toString())),
+            stackedResult(planks.nameId.toString(), 3)));
 
     registerBlock(button, button.name);
     addDualTag("wooden_buttons", new String[] {button.name});
@@ -296,73 +294,69 @@ public abstract class TreeType {
     registerBlock(pressurePlate, pressurePlate.name);
     addDualTag("wooden_pressure_plates", new String[] {pressurePlate.name});
     addRecipe(
-            pressurePlate.nameId,
-            shaped(
-                    pattern("##"),
-                    keys()
-                            .key("#", ingredient().item(planks.nameId.toString())),
-                    stackedResult(pressurePlate.nameId.toString(), 1)));
+        pressurePlate.nameId,
+        shaped(
+            pattern("##"),
+            keys().key("#", ingredient().item(planks.nameId.toString())),
+            stackedResult(pressurePlate.nameId.toString(), 1)));
 
     registerBlock(sign, sign.name);
     addRecipe(
-            sign.nameId,
-            shaped(
-                    pattern("###", "###", " | "),
-                    keys()
-                            .key("#", ingredient().item(planks.nameId.toString()))
-                            .key("|", ingredient().item(RegisteredItems.STICK)),
-                    stackedResult(sign.nameId.toString(), 3)));
+        sign.nameId,
+        shaped(
+            pattern("###", "###", " | "),
+            keys()
+                .key("#", ingredient().item(planks.nameId.toString()))
+                .key("|", ingredient().item(RegisteredItems.STICK)),
+            stackedResult(sign.nameId.toString(), 3)));
 
     registerBlock(slab, slab.name);
     FlammableBlockRegistry.getDefaultInstance().add(slab, 20, 5);
     addDualTag("wooden_slabs", new String[] {slab.name});
     addRecipe(
-            slab.nameId,
-            shaped(
-                    pattern("###"),
-                    keys()
-                            .key("#", ingredient().item(planks.nameId.toString())),
-                    stackedResult(slab.nameId.toString(), 6)));
+        slab.nameId,
+        shaped(
+            pattern("###"),
+            keys().key("#", ingredient().item(planks.nameId.toString())),
+            stackedResult(slab.nameId.toString(), 6)));
 
     registerBlock(stairs, stairs.name);
     FlammableBlockRegistry.getDefaultInstance().add(stairs, 20, 5);
     addDualTag("wooden_stairs", new String[] {stairs.name});
     addRecipe(
-            stairs.nameId,
-            shaped(
-                    pattern("#  ", "## ", "###"),
-                    keys()
-                            .key("#", ingredient().item(planks.nameId.toString())),
-                    stackedResult(stairs.nameId.toString(), 4)));
+        stairs.nameId,
+        shaped(
+            pattern("#  ", "## ", "###"),
+            keys().key("#", ingredient().item(planks.nameId.toString())),
+            stackedResult(stairs.nameId.toString(), 4)));
 
     registerBlock(trapdoor, trapdoor.name);
     addDualTag("wooden_trapdoor", new String[] {trapdoor.name});
     addRecipe(
-            trapdoor.nameId,
-            shaped(
-                    pattern("###", "###"),
-                    keys()
-                            .key("#", ingredient().item(planks.nameId.toString())),
-                    stackedResult(trapdoor.nameId.toString(), 2)));
+        trapdoor.nameId,
+        shaped(
+            pattern("###", "###"),
+            keys().key("#", ingredient().item(planks.nameId.toString())),
+            stackedResult(trapdoor.nameId.toString(), 2)));
 
     registerBlock(wood, wood.name);
     FlammableBlockRegistry.getDefaultInstance().add(wood, 5, 5);
     addRecipe(
-            wood.nameId,
-            shaped(
-                    pattern("_", "#", "_"),
-                    keys()
-                            .key("#", ingredient().item(log.nameId.toString()))
-                            .key("_", ingredient().item(bark.nameId.toString())),
-                    stackedResult(wood.nameId.toString(), 1)));
+        wood.nameId,
+        shaped(
+            pattern("_", "#", "_"),
+            keys()
+                .key("#", ingredient().item(log.nameId.toString()))
+                .key("_", ingredient().item(bark.nameId.toString())),
+            stackedResult(wood.nameId.toString(), 1)));
     addRecipe(
-            genericId("%s_wood_from_bark", name),
-            shaped(
-                    pattern("___", " # ", "___"),
-                    keys()
-                            .key("#", ingredient().item(strippedWood.nameId.toString()))
-                            .key("_", ingredient().item(bark.nameId.toString())),
-                    stackedResult(wood.nameId.toString(), 1)));
+        genericId("%s_wood_from_bark", name),
+        shaped(
+            pattern("___", " # ", "___"),
+            keys()
+                .key("#", ingredient().item(strippedWood.nameId.toString()))
+                .key("_", ingredient().item(bark.nameId.toString())),
+            stackedResult(wood.nameId.toString(), 1)));
 
     registerBlock(strippedLog, strippedLog.name);
     FlammableBlockRegistry.getDefaultInstance().add(strippedLog, 5, 5);
@@ -393,15 +387,6 @@ public abstract class TreeType {
     return configured;
   }
 
-  @SafeVarargs
-  private <K, V> Map<K, V> mapBuilder(Pair<K, V>... entries) {
-    Map<K, V> map = new HashMap<>();
-    for (Pair<K, V> entry : entries) {
-      map.put(entry.getLeft(), entry.getRight());
-    }
-    return map;
-  }
-
   private void registerBlock(Block block, String name) {
     if (block != null) {
       Registry.register(Registry.BLOCK, TerraFeram.identifier(name), block);
@@ -419,20 +404,17 @@ public abstract class TreeType {
   }
 
   protected class Leaves extends LeavesBlock {
-    public String name = String.format("%s_leaves", TreeType.this.name);
-    public Identifier blockId = blockId(name);
-    public Identifier itemId = itemId(name);
-    public Identifier nameId = nameId(name);
+    public final String name = String.format("%s_leaves", TreeType.this.name);
+    public final Identifier blockId = blockId(name);
+    public final Identifier itemId = itemId(name);
+    public final Identifier nameId = nameId(name);
 
-    public Map<Identifier, JModel> blockModels =
-        mapBuilder(
-            new Pair<>(
-                blockId,
-                JModel.model("minecraft:block/leaves")
-                    .textures(textures().var("all", blockId.toString()))));
-    public JModel itemModel = JModel.model(blockId);
+    private final Map<String, Identifier> vars = mapBuilder(new Pair<>("all", blockId));
+    public final Map<Identifier, JModel> blockModels =
+        mapBuilder(modelBuilder(blockId, "leaves", vars));
+    public final JModel itemModel = JModel.model(blockId);
 
-    public JState blockState = state(variant().put("", JState.model(blockId)));
+    public final JState blockState = state(variant().put("", JState.model(blockId)));
 
     public Leaves() {
       super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_LEAVES));
@@ -440,33 +422,23 @@ public abstract class TreeType {
   }
 
   protected class Log extends PillarBlock {
-    public String name = String.format("%s_log", TreeType.this.name);
-    public Identifier blockId = blockId(name);
-    public Identifier itemId = itemId(name);
-    public Identifier nameId = nameId(name);
+    public final String name = String.format("%s_log", TreeType.this.name);
+    public final Identifier blockId = blockId(name);
+    public final Identifier itemId = itemId(name);
+    public final Identifier nameId = nameId(name);
 
-    public Identifier blockHorizontalId = genericId("block/%s_horizontal", name);
-    public Identifier blockTopId = genericId("block/%s_top", name);
+    public final Identifier blockHorizontalId = genericId("block/%s_horizontal", name);
+    public final Identifier blockTopId = genericId("block/%s_top", name);
 
-    public Map<Identifier, JModel> blockModels =
+    private final Map<String, Identifier> vars =
+        mapBuilder(new Pair<>("end", blockTopId), new Pair<>("side", blockId));
+    public final Map<Identifier, JModel> blockModels =
         mapBuilder(
-            new Pair<>(
-                blockId,
-                JModel.model("minecraft:block/cube_column")
-                    .textures(
-                        textures()
-                            .var("end", blockTopId.toString())
-                            .var("side", blockId.toString()))),
-            new Pair<>(
-                blockHorizontalId,
-                JModel.model("minecraft:block/cube_column_horizontal")
-                    .textures(
-                        textures()
-                            .var("end", blockTopId.toString())
-                            .var("side", blockId.toString()))));
-    public JModel itemModel = JModel.model(blockId);
+            modelBuilder(blockId, "cube_column", vars),
+            modelBuilder(blockId, "cube_column_horizontal", vars));
+    public final JModel itemModel = JModel.model(blockId);
 
-    public JState blockState =
+    public final JState blockState =
         state(
             variant()
                 .put("axis", "x", JState.model(blockHorizontalId).x(90).y(90))
@@ -479,21 +451,17 @@ public abstract class TreeType {
   }
 
   protected class Sapling extends SaplingBlock {
-    public String name = String.format("%s_sapling", TreeType.this.name);
-    public Identifier blockId = blockId(name);
-    public Identifier itemId = itemId(name);
-    public Identifier nameId = nameId(name);
+    public final String name = String.format("%s_sapling", TreeType.this.name);
+    public final Identifier blockId = blockId(name);
+    public final Identifier itemId = itemId(name);
+    public final Identifier nameId = nameId(name);
 
-    public Map<Identifier, JModel> blockModels =
-        mapBuilder(
-            new Pair<>(
-                blockId,
-                JModel.model("minecraft:block/cross")
-                    .textures(textures().var("cross", blockId.toString()))));
-    public JModel itemModel =
-        JModel.model("minecraft:item/generated").textures(textures().layer0(blockId.toString()));
+    private final Map<String, Identifier> vars = mapBuilder(new Pair<>("cross", blockId));
+    public final Map<Identifier, JModel> blockModels =
+        mapBuilder(modelBuilder(blockId, "cross", vars));
+    public final JModel itemModel = generatedItem(blockId);
 
-    public JState blockState = JState.state(variant().put("", JState.model(blockId)));
+    public final JState blockState = JState.state(variant().put("", JState.model(blockId)));
 
     public Sapling() {
       super(new Generator(), FabricBlockSettings.copyOf(RegisteredBlocks.OAK_SAPLING));
@@ -501,20 +469,17 @@ public abstract class TreeType {
   }
 
   protected class Planks extends Block {
-    public String name = String.format("%s_planks", TreeType.this.name);
-    public Identifier blockId = blockId(name);
-    public Identifier itemId = itemId(name);
-    public Identifier nameId = nameId(name);
+    public final String name = String.format("%s_planks", TreeType.this.name);
+    public final Identifier blockId = blockId(name);
+    public final Identifier itemId = itemId(name);
+    public final Identifier nameId = nameId(name);
 
-    public Map<Identifier, JModel> blockModels =
-        mapBuilder(
-            new Pair<>(
-                blockId,
-                JModel.model("minecraft:block/cube_all")
-                    .textures(textures().var("all", blockId.toString()))));
-    public JModel itemModel = JModel.model(blockId);
+    private final Map<String, Identifier> vars = mapBuilder(new Pair<>("all", blockId));
+    public final Map<Identifier, JModel> blockModels =
+        mapBuilder(modelBuilder(blockId, "cube_all", vars));
+    public final JModel itemModel = JModel.model(blockId);
 
-    public JState blockState = state(variant().put("", JState.model(blockId)));
+    public final JState blockState = state(variant().put("", JState.model(blockId)));
 
     public Planks() {
       super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_PLANKS));
@@ -522,31 +487,23 @@ public abstract class TreeType {
   }
 
   protected class Button extends WoodenButtonBlock {
-    public String name = String.format("%s_button", TreeType.this.name);
-    public Identifier blockId = blockId(name);
-    public Identifier itemId = itemId(name);
-    public Identifier nameId = nameId(name);
+    public final String name = String.format("%s_button", TreeType.this.name);
+    public final Identifier blockId = blockId(name);
+    public final Identifier itemId = itemId(name);
+    public final Identifier nameId = nameId(name);
 
-    public Identifier blockInventoryId = genericId("block/%s_inventory", name);
-    public Identifier blockPressedId = genericId("block/%s_pressed", name);
+    public final Identifier blockInventoryId = genericId("block/%s_inventory", name);
+    public final Identifier blockPressedId = genericId("block/%s_pressed", name);
 
-    public Map<Identifier, JModel> blockModels =
+    private final Map<String, Identifier> vars = mapBuilder(new Pair<>("texture", planks.blockId));
+    public final Map<Identifier, JModel> blockModels =
         mapBuilder(
-            new Pair<>(
-                blockId,
-                JModel.model("minecraft:block/button")
-                    .textures(textures().var("texture", planks.blockId.toString()))),
-            new Pair<>(
-                blockInventoryId,
-                JModel.model("minecraft:block/button_inventory")
-                    .textures(textures().var("texture", planks.blockId.toString()))),
-            new Pair<>(
-                blockPressedId,
-                JModel.model("minecraft:block/button_pressed")
-                    .textures(textures().var("texture", planks.blockId.toString()))));
-    public JModel itemModel = JModel.model(blockInventoryId);
+            modelBuilder(blockId, "button", vars),
+            modelBuilder(blockId, "button_inventory", vars),
+            modelBuilder(blockId, "button_pressed", vars));
+    public final JModel itemModel = JModel.model(blockInventoryId);
 
-    public JState blockState =
+    public final JState blockState =
         state(
             variant()
                 .put("face=ceiling,facing=east,powered=false", JState.model(blockId).x(180).y(270))
@@ -598,50 +555,27 @@ public abstract class TreeType {
   }
 
   protected class Door extends DoorBlock {
-    public String name = String.format("%s_door", TreeType.this.name);
-    public Identifier blockId = blockId(name);
-    public Identifier itemId = itemId(name);
-    public Identifier nameId = nameId(name);
+    public final String name = String.format("%s_door", TreeType.this.name);
+    public final Identifier blockId = blockId(name);
+    public final Identifier itemId = itemId(name);
+    public final Identifier nameId = nameId(name);
 
-    public Identifier blockBottomId = genericId("%s_bottom", name);
-    public Identifier blockBottomHingeId = genericId("%s_bottom_hinge", name);
-    public Identifier blockTopId = genericId("%s_top", name);
-    public Identifier blockTopHingeId = genericId("%s_top_hinge", name);
+    public final Identifier blockBottomId = genericId("%s_bottom", name);
+    public final Identifier blockBottomHingeId = genericId("%s_bottom_hinge", name);
+    public final Identifier blockTopId = genericId("%s_top", name);
+    public final Identifier blockTopHingeId = genericId("%s_top_hinge", name);
 
-    public Map<Identifier, JModel> blockModels =
+    private final Map<String, Identifier> vars =
+        mapBuilder(new Pair<>("top", blockTopId), new Pair<>("bottom", blockBottomId));
+    public final Map<Identifier, JModel> blockModels =
         mapBuilder(
-            new Pair<>(
-                blockBottomId,
-                JModel.model("minecraft:block/door_bottom")
-                    .textures(
-                        textures()
-                            .var("top", blockTopId.toString())
-                            .var("bottom", blockBottomId.toString()))),
-            new Pair<>(
-                blockBottomHingeId,
-                JModel.model("minecraft:block/door_bottom_rh")
-                    .textures(
-                        textures()
-                            .var("top", blockTopId.toString())
-                            .var("bottom", blockBottomId.toString()))),
-            new Pair<>(
-                blockTopId,
-                JModel.model("minecraft:block/door_top")
-                    .textures(
-                        textures()
-                            .var("top", blockTopId.toString())
-                            .var("bottom", blockBottomId.toString()))),
-            new Pair<>(
-                blockTopHingeId,
-                JModel.model("minecraft:block/door_top_rh")
-                    .textures(
-                        textures()
-                            .var("top", blockTopId.toString())
-                            .var("bottom", blockBottomId.toString()))));
-    public JModel itemModel =
-        JModel.model("minecraft:item/generated").textures(textures().layer0(itemId.toString()));
+            modelBuilder(blockBottomId, "door_bottom", vars),
+            modelBuilder(blockBottomId, "door_bottom_rh", vars),
+            modelBuilder(blockBottomId, "door_top", vars),
+            modelBuilder(blockBottomId, "door_top_rh", vars));
+    public final JModel itemModel = generatedItem(itemId);
 
-    public JState blockState =
+    public final JState blockState =
         state(
             variant()
                 .put("facing=east,half=lower,hinge=left,open=false", JState.model(blockBottomId))
@@ -732,32 +666,24 @@ public abstract class TreeType {
   }
 
   protected class Fence extends FenceBlock {
-    public String name = String.format("%s_fence", TreeType.this.name);
-    public Identifier blockId = blockId(name);
-    public Identifier itemId = itemId(name);
-    public Identifier nameId = nameId(name);
+    public final String name = String.format("%s_fence", TreeType.this.name);
+    public final Identifier blockId = blockId(name);
+    public final Identifier itemId = itemId(name);
+    public final Identifier nameId = nameId(name);
 
-    public Identifier blockInventoryId = genericId("block/%s_inventory", name);
-    public Identifier blockPostId = genericId("block/%s_post", name);
-    public Identifier blockSideId = genericId("block/%s_side", name);
+    public final Identifier blockInventoryId = genericId("block/%s_inventory", name);
+    public final Identifier blockPostId = genericId("block/%s_post", name);
+    public final Identifier blockSideId = genericId("block/%s_side", name);
 
-    public Map<Identifier, JModel> blockModels =
+    private final Map<String, Identifier> vars = mapBuilder(new Pair<>("texture", planks.blockId));
+    public final Map<Identifier, JModel> blockModels =
         mapBuilder(
-            new Pair<>(
-                blockInventoryId,
-                JModel.model("minecraft:block/fence_inventory")
-                    .textures(textures().var("texture", planks.blockId.toString()))),
-            new Pair<>(
-                blockPostId,
-                JModel.model("minecraft:block/fence_post")
-                    .textures(textures().var("texture", planks.blockId.toString()))),
-            new Pair<>(
-                blockSideId,
-                JModel.model("minecraft:block/fence_side")
-                    .textures(textures().var("texture", planks.blockId.toString()))));
-    public JModel itemModel = JModel.model(blockInventoryId);
+            modelBuilder(blockInventoryId, "fence_inventory", vars),
+            modelBuilder(blockPostId, "fence_post", vars),
+            modelBuilder(blockSideId, "fence_side", vars));
+    public final JModel itemModel = JModel.model(blockInventoryId);
 
-    public JState blockState =
+    public final JState blockState =
         state(
             multipart(model(blockPostId)),
             multipart(model(blockSideId).uvlock()).when(when().add("north", "true")),
@@ -771,36 +697,25 @@ public abstract class TreeType {
   }
 
   protected class FenceGate extends FenceGateBlock {
-    public String name = String.format("%s_fence_gate", TreeType.this.name);
-    public Identifier blockId = blockId(name);
-    public Identifier itemId = itemId(name);
-    public Identifier nameId = nameId(name);
+    public final String name = String.format("%s_fence_gate", TreeType.this.name);
+    public final Identifier blockId = blockId(name);
+    public final Identifier itemId = itemId(name);
+    public final Identifier nameId = nameId(name);
 
-    public Identifier blockOpenId = genericId("%s_open", name);
-    public Identifier blockWallId = genericId("%s_wall", name);
-    public Identifier blockWallOpenId = genericId("%s_wall_open", name);
+    public final Identifier blockOpenId = genericId("%s_open", name);
+    public final Identifier blockWallId = genericId("%s_wall", name);
+    public final Identifier blockWallOpenId = genericId("%s_wall_open", name);
 
-    public Map<Identifier, JModel> blockModels =
+    private final Map<String, Identifier> vars = texture(planks.blockId);
+    public final Map<Identifier, JModel> blockModels =
         mapBuilder(
-            new Pair<>(
-                blockId,
-                JModel.model("minecraft:block/template_fence_gate")
-                    .textures(textures().var("texture", planks.blockId.toString()))),
-            new Pair<>(
-                blockOpenId,
-                JModel.model("minecraft:block/template_fence_gate_open")
-                    .textures(textures().var("texture", planks.blockId.toString()))),
-            new Pair<>(
-                blockWallId,
-                JModel.model("minecraft:block/template_fence_gate_wall")
-                    .textures(textures().var("texture", planks.blockId.toString()))),
-            new Pair<>(
-                blockWallOpenId,
-                JModel.model("minecraft:block/template_fence_gate_wall_open")
-                    .textures(textures().var("texture", planks.blockId.toString()))));
-    public JModel itemModel = JModel.model(blockId);
+            modelBuilder(blockId, "template_fence_gate", vars),
+            modelBuilder(blockOpenId, "template_fence_gate_open", vars),
+            modelBuilder(blockWallId, "template_fence_gate_wall", vars),
+            modelBuilder(blockWallOpenId, "template_fence_gate_wall_open", vars));
+    public final JModel itemModel = JModel.model(blockId);
 
-    public JState blockState =
+    public final JState blockState =
         state(
             variant()
                 .put("facing=east,in_wall=false,open=false", model(blockId).uvlock().y(270))
@@ -826,26 +741,21 @@ public abstract class TreeType {
   }
 
   protected class PressurePlate extends PressurePlateBlock {
-    public String name = String.format("%s_pressure_plate", TreeType.this.name);
-    public Identifier blockId = blockId(name);
-    public Identifier itemId = itemId(name);
-    public Identifier nameId = nameId(name);
+    public final String name = String.format("%s_pressure_plate", TreeType.this.name);
+    public final Identifier blockId = blockId(name);
+    public final Identifier itemId = itemId(name);
+    public final Identifier nameId = nameId(name);
 
-    public Identifier blockDownId = genericId("block/%s_down", name);
+    public final Identifier blockDownId = genericId("block/%s_down", name);
 
-    public Map<Identifier, JModel> blockModels =
+    private final Map<String, Identifier> vars = texture(planks.blockId);
+    public final Map<Identifier, JModel> blockModels =
         mapBuilder(
-            new Pair<>(
-                blockId,
-                JModel.model("minecraft:block/pressure_plate_up")
-                    .textures(textures().var("texture", planks.blockId.toString()))),
-            new Pair<>(
-                blockDownId,
-                JModel.model("minecraft:block/pressure_plate_down")
-                    .textures(textures().var("texture", planks.blockId.toString()))));
-    public JModel itemModel = JModel.model(blockId);
+            modelBuilder(blockId, "pressure_plate_up", vars),
+            modelBuilder(blockDownId, "pressure_plate_down", vars));
+    public final JModel itemModel = JModel.model(blockId);
 
-    public JState blockState =
+    public final JState blockState =
         state(
             variant()
                 .put("powered", "false", JState.model(blockId))
@@ -859,20 +769,17 @@ public abstract class TreeType {
   }
 
   protected class Sign extends SignBlock {
-    public String name = String.format("%s_sign", TreeType.this.name);
-    public Identifier blockId = blockId(name);
-    public Identifier itemId = itemId(name);
-    public Identifier nameId = nameId(name);
+    public final String name = String.format("%s_sign", TreeType.this.name);
+    public final Identifier blockId = blockId(name);
+    public final Identifier itemId = itemId(name);
+    public final Identifier nameId = nameId(name);
 
-    public Map<Identifier, JModel> blockModels =
-        mapBuilder(
-            new Pair<>(
-                blockId,
-                JModel.model().textures(textures().var("particle", planks.blockId.toString()))));
-    public JModel itemModel =
-        JModel.model("minecraft:item/generated").textures(textures().layer0(itemId.toString()));
+    private final Map<String, Identifier> vars = mapBuilder(new Pair<>("particle", planks.blockId));
+    public final Map<Identifier, JModel> blockModels =
+        mapBuilder(modelBuilder(blockId, null, vars));
+    public final JModel itemModel = generatedItem(itemId);
 
-    public JState blockState = state(variant().put("", JState.model(blockId)));
+    public final JState blockState = state(variant().put("", JState.model(blockId)));
 
     public Sign() {
       super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_SIGN), TreeType.this.signColor);
@@ -880,34 +787,23 @@ public abstract class TreeType {
   }
 
   protected class Slab extends SlabBlock {
-    public String name = String.format("%s_slab", TreeType.this.name);
-    public Identifier blockId = blockId(name);
-    public Identifier itemId = itemId(name);
-    public Identifier nameId = nameId(name);
+    public final String name = String.format("%s_slab", TreeType.this.name);
+    public final Identifier blockId = blockId(name);
+    public final Identifier itemId = itemId(name);
+    public final Identifier nameId = nameId(name);
 
-    public Identifier blockTopId = genericId("block/%s_top", name);
+    public final Identifier blockTopId = genericId("block/%s_top", name);
 
-    public Map<Identifier, JModel> blockModels =
+    private final Map<String, Identifier> vars =
         mapBuilder(
-            new Pair<>(
-                blockId,
-                JModel.model("minecraft:block/slab")
-                    .textures(
-                        textures()
-                            .var("bottom", planks.blockId.toString())
-                            .var("top", planks.blockId.toString())
-                            .var("side", planks.blockId.toString()))),
-            new Pair<>(
-                blockTopId,
-                JModel.model("minecraft:block/slab_top")
-                    .textures(
-                        textures()
-                            .var("bottom", planks.blockId.toString())
-                            .var("top", planks.blockId.toString())
-                            .var("side", planks.blockId.toString()))));
-    public JModel itemModel = JModel.model(blockId);
+            new Pair<>("bottom", planks.blockId),
+            new Pair<>("top", planks.blockId),
+            new Pair<>("side", planks.blockId));
+    public final Map<Identifier, JModel> blockModels =
+        mapBuilder(modelBuilder(blockId, "slab", vars), modelBuilder(blockTopId, "slab_top", vars));
+    public final JModel itemModel = JModel.model(blockId);
 
-    public JState blockState =
+    public final JState blockState =
         state(
             variant()
                 .put("type", "bottom", JState.model(blockId))
@@ -920,43 +816,27 @@ public abstract class TreeType {
   }
 
   protected class Stairs extends StairsBlock {
-    public String name = String.format("%s_stairs", TreeType.this.name);
-    public Identifier blockId = blockId(name);
-    public Identifier itemId = itemId(name);
-    public Identifier nameId = nameId(name);
+    public final String name = String.format("%s_stairs", TreeType.this.name);
+    public final Identifier blockId = blockId(name);
+    public final Identifier itemId = itemId(name);
+    public final Identifier nameId = nameId(name);
 
-    public Identifier blockInnerId = genericId("block/%s_inner", name);
-    public Identifier blockOuterId = genericId("block/%s_outer", name);
+    public final Identifier blockInnerId = genericId("block/%s_inner", name);
+    public final Identifier blockOuterId = genericId("block/%s_outer", name);
 
-    public Map<Identifier, JModel> blockModels =
+    private final Map<String, Identifier> vars =
         mapBuilder(
-            new Pair<>(
-                blockId,
-                JModel.model("minecraft:block/stairs")
-                    .textures(
-                        textures()
-                            .var("bottom", planks.blockId.toString())
-                            .var("top", planks.blockId.toString())
-                            .var("side", planks.blockId.toString()))),
-            new Pair<>(
-                blockInnerId,
-                JModel.model("minecraft:block/inner_stairs")
-                    .textures(
-                        textures()
-                            .var("bottom", planks.blockId.toString())
-                            .var("top", planks.blockId.toString())
-                            .var("side", planks.blockId.toString()))),
-            new Pair<>(
-                blockOuterId,
-                JModel.model("minecraft:block/outer_stairs")
-                    .textures(
-                        textures()
-                            .var("bottom", planks.blockId.toString())
-                            .var("top", planks.blockId.toString())
-                            .var("side", planks.blockId.toString()))));
-    public JModel itemModel = JModel.model(blockId);
+            new Pair<>("bottom", planks.blockId),
+            new Pair<>("top", planks.blockId),
+            new Pair<>("side", planks.blockId));
+    public final Map<Identifier, JModel> blockModels =
+        mapBuilder(
+            modelBuilder(blockId, "stairs", vars),
+            modelBuilder(blockInnerId, "inner_stairs", vars),
+            modelBuilder(blockOuterId, "outer_stairs", vars));
+    public final JModel itemModel = JModel.model(blockId);
 
-    public JState blockState =
+    public final JState blockState =
         state(
             variant()
                 .put(
@@ -1050,33 +930,23 @@ public abstract class TreeType {
   }
 
   protected class StrippedLog extends PillarBlock {
-    public String name = String.format("stripped_%s_log", TreeType.this.name);
-    public Identifier blockId = blockId(name);
-    public Identifier itemId = itemId(name);
-    public Identifier nameId = nameId(name);
+    public final String name = String.format("stripped_%s_log", TreeType.this.name);
+    public final Identifier blockId = blockId(name);
+    public final Identifier itemId = itemId(name);
+    public final Identifier nameId = nameId(name);
 
-    public Identifier blockHorizontalId = genericId("block/%s_horizontal", name);
-    public Identifier blockTopId = genericId("block/%s_top", name);
+    public final Identifier blockHorizontalId = genericId("block/%s_horizontal", name);
+    public final Identifier blockTopId = genericId("block/%s_top", name);
 
-    public Map<Identifier, JModel> blockModels =
+    private final Map<String, Identifier> vars =
+        mapBuilder(new Pair<>("end", blockTopId), new Pair<>("side", blockId));
+    public final Map<Identifier, JModel> blockModels =
         mapBuilder(
-            new Pair<>(
-                blockId,
-                JModel.model("minecraft:block/cube_column")
-                    .textures(
-                        textures()
-                            .var("end", blockTopId.toString())
-                            .var("side", blockId.toString()))),
-            new Pair<>(
-                blockHorizontalId,
-                JModel.model("minecraft:block/cube_column_horizontal")
-                    .textures(
-                        textures()
-                            .var("end", blockTopId.toString())
-                            .var("side", blockId.toString()))));
-    public JModel itemModel = JModel.model(blockId);
+            modelBuilder(blockId, "cube_column", vars),
+            modelBuilder(blockId, "cube_column_horizontal", vars));
+    public final JModel itemModel = JModel.model(blockId);
 
-    public JState blockState =
+    public final JState blockState =
         state(
             variant()
                 .put("axis", "x", JState.model(blockHorizontalId).x(90).y(90))
@@ -1089,23 +959,18 @@ public abstract class TreeType {
   }
 
   protected class StrippedWood extends Block {
-    public String name = String.format("stripped_%s_wood", TreeType.this.name);
-    public Identifier blockId = blockId(name);
-    public Identifier itemId = itemId(name);
-    public Identifier nameId = nameId(name);
+    public final String name = String.format("stripped_%s_wood", TreeType.this.name);
+    public final Identifier blockId = blockId(name);
+    public final Identifier itemId = itemId(name);
+    public final Identifier nameId = nameId(name);
 
-    public Map<Identifier, JModel> blockModels =
-        mapBuilder(
-            new Pair<>(
-                blockId,
-                JModel.model("minecraft:block/cube_column")
-                    .textures(
-                        textures()
-                            .var("end", blockId.toString())
-                            .var("side", blockId.toString()))));
-    public JModel itemModel = JModel.model(blockId);
+    private final Map<String, Identifier> vars =
+        mapBuilder(new Pair<>("end", blockId), new Pair<>("side", blockId));
+    public final Map<Identifier, JModel> blockModels =
+        mapBuilder(modelBuilder(blockId, "cube_column", vars));
+    public final JModel itemModel = JModel.model(blockId);
 
-    public JState blockState =
+    public final JState blockState =
         state(
             variant()
                 .put("axis=x", JState.model(blockId).x(90).y(90))
@@ -1118,32 +983,24 @@ public abstract class TreeType {
   }
 
   protected class Trapdoor extends TrapdoorBlock {
-    public String name = String.format("%s_trapdoor", TreeType.this.name);
-    public Identifier blockId = blockId(name);
-    public Identifier itemId = itemId(name);
-    public Identifier nameId = nameId(name);
+    public final String name = String.format("%s_trapdoor", TreeType.this.name);
+    public final Identifier blockId = blockId(name);
+    public final Identifier itemId = itemId(name);
+    public final Identifier nameId = nameId(name);
 
-    public Identifier blockBottomId = genericId("block/%s_bottom", name);
-    public Identifier blockOpenId = genericId("block/%s_open", name);
-    public Identifier blockTopId = genericId("block/%s_top", name);
+    public final Identifier blockBottomId = genericId("block/%s_bottom", name);
+    public final Identifier blockOpenId = genericId("block/%s_open", name);
+    public final Identifier blockTopId = genericId("block/%s_top", name);
 
-    public Map<Identifier, JModel> blockModels =
+    private final Map<String, Identifier> vars = texture(blockId);
+    public final Map<Identifier, JModel> blockModels =
         mapBuilder(
-            new Pair<>(
-                blockBottomId,
-                JModel.model("minecraft:block/template_orientable_trapdoor_bottom")
-                    .textures(textures().var("texture", blockId.toString()))),
-            new Pair<>(
-                blockOpenId,
-                JModel.model("minecraft:block/template_orientable_trapdoor_open")
-                    .textures(textures().var("texture", blockId.toString()))),
-            new Pair<>(
-                blockTopId,
-                JModel.model("minecraft:block/template_orientable_trapdoor_top")
-                    .textures(textures().var("texture", blockId.toString()))));
-    public JModel itemModel = JModel.model(blockBottomId);
+            modelBuilder(blockBottomId, "template_orientable_trapdoor_bottom", vars),
+            modelBuilder(blockOpenId, "template_orientable_trapdoor_open", vars),
+            modelBuilder(blockId, "template_orientable_trapdoor_top", vars));
+    public final JModel itemModel = JModel.model(blockBottomId);
 
-    public JState blockState =
+    public final JState blockState =
         state(
             variant()
                 .put("facing=east,half=bottom,open=false", model(blockBottomId).y(90))
@@ -1169,23 +1026,18 @@ public abstract class TreeType {
   }
 
   protected class Wood extends Block {
-    public String name = String.format("%s_wood", TreeType.this.name);
-    public Identifier blockId = blockId(name);
-    public Identifier itemId = itemId(name);
-    public Identifier nameId = nameId(name);
+    public final String name = String.format("%s_wood", TreeType.this.name);
+    public final Identifier blockId = blockId(name);
+    public final Identifier itemId = itemId(name);
+    public final Identifier nameId = nameId(name);
 
-    public Map<Identifier, JModel> blockModels =
-        mapBuilder(
-            new Pair<>(
-                blockId,
-                JModel.model("minecraft:block/cube_column")
-                    .textures(
-                        textures()
-                            .var("end", blockId.toString())
-                            .var("side", blockId.toString()))));
-    public JModel itemModel = JModel.model(blockId);
+    private final Map<String, Identifier> vars =
+        mapBuilder(new Pair<>("end", blockId), new Pair<>("side", blockId));
+    public final Map<Identifier, JModel> blockModels =
+        mapBuilder(modelBuilder(blockId, "cube_column", vars));
+    public final JModel itemModel = JModel.model(blockId);
 
-    public JState blockState =
+    public final JState blockState =
         state(
             variant()
                 .put("axis=x", JState.model(blockId).x(90).y(90))
@@ -1198,12 +1050,11 @@ public abstract class TreeType {
   }
 
   protected class Bark extends Item {
-    public String name = String.format("%s_bark", TreeType.this.name);
-    public Identifier itemId = itemId(name);
-    public Identifier nameId = nameId(name);
+    public final String name = String.format("%s_bark", TreeType.this.name);
+    public final Identifier itemId = itemId(name);
+    public final Identifier nameId = nameId(name);
 
-    public JModel itemModel =
-        JModel.model("minecraft:item/generated").textures(textures().layer0(itemId.toString()));
+    public final JModel itemModel = generatedItem(itemId);
 
     public Bark() {
       super(DEFAULT_SETTINGS);

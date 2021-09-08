@@ -256,7 +256,7 @@ public abstract class TreeType {
     addRecipe(
         button.nameId,
         shapeless(
-            ingredients().add(ingredient().add(ingredient().item(planks.name))),
+            ingredients().add(ingredient().add(ingredient().item(planks.nameId.toString()))),
             stackedResult(button.nameId.toString(), 1)));
 
     registerBlock(door, door.name);
@@ -435,7 +435,7 @@ public abstract class TreeType {
     public final Map<Identifier, JModel> blockModels =
         mapBuilder(
             modelBuilder(blockId, "cube_column", vars),
-            modelBuilder(blockId, "cube_column_horizontal", vars));
+            modelBuilder(blockHorizontalId, "cube_column_horizontal", vars));
     public final JModel itemModel = JModel.model(blockId);
 
     public final JState blockState =
@@ -499,8 +499,8 @@ public abstract class TreeType {
     public final Map<Identifier, JModel> blockModels =
         mapBuilder(
             modelBuilder(blockId, "button", vars),
-            modelBuilder(blockId, "button_inventory", vars),
-            modelBuilder(blockId, "button_pressed", vars));
+            modelBuilder(blockInventoryId, "button_inventory", vars),
+            modelBuilder(blockPressedId, "button_pressed", vars));
     public final JModel itemModel = JModel.model(blockInventoryId);
 
     public final JState blockState =
@@ -570,9 +570,9 @@ public abstract class TreeType {
     public final Map<Identifier, JModel> blockModels =
         mapBuilder(
             modelBuilder(blockBottomId, "door_bottom", vars),
-            modelBuilder(blockBottomId, "door_bottom_rh", vars),
-            modelBuilder(blockBottomId, "door_top", vars),
-            modelBuilder(blockBottomId, "door_top_rh", vars));
+            modelBuilder(blockBottomHingeId, "door_bottom_rh", vars),
+            modelBuilder(blockTopId, "door_top", vars),
+            modelBuilder(blockTopHingeId, "door_top_rh", vars));
     public final JModel itemModel = generatedItem(itemId);
 
     public final JState blockState =
@@ -943,7 +943,7 @@ public abstract class TreeType {
     public final Map<Identifier, JModel> blockModels =
         mapBuilder(
             modelBuilder(blockId, "cube_column", vars),
-            modelBuilder(blockId, "cube_column_horizontal", vars));
+            modelBuilder(blockHorizontalId, "cube_column_horizontal", vars));
     public final JModel itemModel = JModel.model(blockId);
 
     public final JState blockState =
@@ -997,7 +997,7 @@ public abstract class TreeType {
         mapBuilder(
             modelBuilder(blockBottomId, "template_orientable_trapdoor_bottom", vars),
             modelBuilder(blockOpenId, "template_orientable_trapdoor_open", vars),
-            modelBuilder(blockId, "template_orientable_trapdoor_top", vars));
+            modelBuilder(blockTopId, "template_orientable_trapdoor_top", vars));
     public final JModel itemModel = JModel.model(blockBottomId);
 
     public final JState blockState =

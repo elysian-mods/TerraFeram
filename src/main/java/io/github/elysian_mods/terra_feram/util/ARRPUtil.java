@@ -44,9 +44,9 @@ public class ARRPUtil {
         JTag tag = JTag.tag();
         for (String element : elements) {
             if (element.charAt(0) == '#') {
-                tag.tag(new Identifier(element.substring(1)));
+                tag.tag(TerraFeram.identifier(element.substring(1)));
             } else {
-                tag.add(new Identifier(element));
+                tag.add(TerraFeram.identifier(element));
             }
         }
         TerraFeram.RESOURCE_PACK.addTag(id, tag);
@@ -54,10 +54,6 @@ public class ARRPUtil {
 
     public static Identifier blockId(String name) {
         return genericId("block/%s", name);
-    }
-
-    public static JModel blockParent(String parent) {
-        return model("minecraft:block/" + parent);
     }
 
     public static JModel generatedItem(Identifier itemId) {

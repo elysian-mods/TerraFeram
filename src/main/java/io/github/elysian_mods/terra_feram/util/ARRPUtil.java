@@ -27,9 +27,9 @@ public class ARRPUtil {
         TerraFeram.RESOURCE_PACK.addBlockState(blockState, id);
     }
 
-    public static void addDualTag(String name, String[] elements) {
-        addTag(new Identifier("blocks/" + name), elements);
-        addTag(new Identifier("items/" + name), elements);
+    public static void addDualTag(Identifier id, String[] elements) {
+        addTag(folder(id, "blocks"), elements);
+        addTag(folder(id, "items"), elements);
     }
 
     public static void addModel(Identifier id, JModel model) {
@@ -54,6 +54,10 @@ public class ARRPUtil {
 
     public static Identifier blockId(String name) {
         return genericId("block/%s", name);
+    }
+
+    public static Identifier folder(Identifier id, String folder) {
+        return new Identifier(id.getNamespace() + folder + "/" + id.getPath());
     }
 
     public static JModel generatedItem(Identifier itemId) {

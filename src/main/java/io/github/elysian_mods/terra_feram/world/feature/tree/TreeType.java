@@ -243,7 +243,7 @@ public abstract class TreeType {
 
     registerBlock(planks, planks.name);
     FlammableBlockRegistry.getDefaultInstance().add(planks, 20, 5);
-    addDualTag("planks", new String[] {planks.name});
+    addDualTag(new Identifier("wooden_planks"), new String[] {planks.name});
     addRecipe(
         genericId("%s_planks_from_bark", name),
         shaped(
@@ -252,7 +252,7 @@ public abstract class TreeType {
             stackedResult(planks.nameId.toString(), 3)));
 
     registerBlock(button, button.name);
-    addDualTag("wooden_buttons", new String[] {button.name});
+    addDualTag(new Identifier("wooden_buttons"), new String[] {button.name});
     addRecipe(
         button.nameId,
         shapeless(
@@ -260,7 +260,7 @@ public abstract class TreeType {
             stackedResult(button.nameId.toString(), 1)));
 
     registerBlock(door, door.name);
-    addDualTag("wooden_doors", new String[] {door.name});
+    addDualTag(new Identifier("wooden_doors"), new String[] {door.name});
     addRecipe(
         door.nameId,
         shaped(
@@ -270,7 +270,7 @@ public abstract class TreeType {
 
     registerBlock(fence, fence.name);
     FlammableBlockRegistry.getDefaultInstance().add(fence, 20, 5);
-    addDualTag("wooden_fences", new String[] {fence.name});
+    addDualTag(new Identifier("wooden_fences"), new String[] {fence.name});
     addRecipe(
         fence.nameId,
         shaped(
@@ -292,7 +292,7 @@ public abstract class TreeType {
             stackedResult(fenceGate.nameId.toString(), 1)));
 
     registerBlock(pressurePlate, pressurePlate.name);
-    addDualTag("wooden_pressure_plates", new String[] {pressurePlate.name});
+    addDualTag(new Identifier("wooden_pressure_plates"), new String[] {pressurePlate.name});
     addRecipe(
         pressurePlate.nameId,
         shaped(
@@ -312,7 +312,7 @@ public abstract class TreeType {
 
     registerBlock(slab, slab.name);
     FlammableBlockRegistry.getDefaultInstance().add(slab, 20, 5);
-    addDualTag("wooden_slabs", new String[] {slab.name});
+    addDualTag(new Identifier("wooden_slabs"), new String[] {slab.name});
     addRecipe(
         slab.nameId,
         shaped(
@@ -322,7 +322,7 @@ public abstract class TreeType {
 
     registerBlock(stairs, stairs.name);
     FlammableBlockRegistry.getDefaultInstance().add(stairs, 20, 5);
-    addDualTag("wooden_stairs", new String[] {stairs.name});
+    addDualTag(new Identifier("wooden_stairs"), new String[] {stairs.name});
     addRecipe(
         stairs.nameId,
         shaped(
@@ -331,7 +331,7 @@ public abstract class TreeType {
             stackedResult(stairs.nameId.toString(), 4)));
 
     registerBlock(trapdoor, trapdoor.name);
-    addDualTag("wooden_trapdoor", new String[] {trapdoor.name});
+    addDualTag(new Identifier("wooden_trapdoor"), new String[] {trapdoor.name});
     addRecipe(
         trapdoor.nameId,
         shaped(
@@ -374,14 +374,14 @@ public abstract class TreeType {
     LogsToBark.put(wood, bark, 6);
 
     String[] logs = {log.name, wood.name, strippedLog.name, strippedWood.name};
-    String logsName = String.format("%s_logs", name);
-    addDualTag(logsName, logs);
-    addTag(new Identifier("logs_that_burn"), new String[] {"#" + logsName});
+    Identifier logsId = TerraFeram.identifier(String.format("%s_logs", name));
+    addDualTag(logsId, logs);
+    addTag(new Identifier("logs_that_burn"), new String[] {"#" + logsId.toString()});
 
     addRecipe(
         planks.nameId,
         shapeless(
-            ingredients().add(ingredient().tag(logsName)),
+            ingredients().add(ingredient().tag(logsId.toString())),
             stackedResult(planks.nameId.toString(), 1)));
 
     return configured;
@@ -958,7 +958,7 @@ public abstract class TreeType {
     }
   }
 
-  protected class StrippedWood extends Block {
+  protected class StrippedWood extends PillarBlock {
     public final String name = String.format("stripped_%s_wood", TreeType.this.name);
     public final Identifier blockId = blockId(name);
     public final Identifier itemId = itemId(name);
@@ -1025,7 +1025,7 @@ public abstract class TreeType {
     }
   }
 
-  protected class Wood extends Block {
+  protected class Wood extends PillarBlock {
     public final String name = String.format("%s_wood", TreeType.this.name);
     public final Identifier blockId = blockId(name);
     public final Identifier itemId = itemId(name);
@@ -1040,9 +1040,9 @@ public abstract class TreeType {
     public final JState blockState =
         state(
             variant()
-                .put("axis=x", JState.model(blockId).x(90).y(90))
-                .put("axis=y", JState.model(blockId))
-                .put("axis=z", JState.model(blockId).x(90)));
+                .put("axis=x", JState.model(log.blockId).x(90).y(90))
+                .put("axis=y", JState.model(log.blockId))
+                .put("axis=z", JState.model(log.blockId).x(90)));
 
     public Wood() {
       super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_WOOD));

@@ -10,7 +10,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static net.devtech.arrp.json.models.JModel.model;

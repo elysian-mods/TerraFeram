@@ -376,7 +376,7 @@ public abstract class TreeType {
     String[] logs = {log.name, wood.name, strippedLog.name, strippedWood.name};
     Identifier logsId = TerraFeram.identifier(String.format("%s_logs", name));
     addDualTag(logsId, logs);
-    addTag(new Identifier("logs_that_burn"), new String[] {"#" + logsId.toString()});
+    addTag(new Identifier("logs_that_burn"), new String[] {"#" + logsId.getPath()});
 
     addRecipe(
         planks.nameId,

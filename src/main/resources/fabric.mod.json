@@ -20,7 +20,7 @@
       "io.github.elysian_mods.terra_feram.TerraFeram"
     ],
     "client": [
-      "io.github.elysian_mods.terra_feram.client.TerraFeram"
+      "io.github.elysian_mods.terra_feram.client.Client"
     ]
   },
   "mixins": [

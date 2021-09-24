@@ -1,9 +1,6 @@
 package io.github.elysian_mods.terra_feram;
 
-import io.github.elysian_mods.terra_feram.registry.RegisteredBlocks;
-import io.github.elysian_mods.terra_feram.registry.RegisteredFeatures;
-import io.github.elysian_mods.terra_feram.registry.RegisteredItems;
-import io.github.elysian_mods.terra_feram.registry.RegisteredStructures;
+import io.github.elysian_mods.terra_feram.registry.*;
 import net.devtech.arrp.api.RRPCallback;
 import net.devtech.arrp.api.RuntimeResourcePack;
 import net.fabricmc.api.ModInitializer;
@@ -32,6 +29,8 @@ public class TerraFeram implements ModInitializer {
 
     RegisteredBlocks.register();
     RegisteredItems.register();
+
+    RegisteredEntities.register();
 
     RRPCallback.BEFORE_VANILLA.register(a -> a.add(RESOURCE_PACK));
   }

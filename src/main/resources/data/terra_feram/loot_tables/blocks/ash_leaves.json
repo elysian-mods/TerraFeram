@@ -2,7 +2,7 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
+      "rolls": 1,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -38,7 +38,7 @@
                   ]
                 }
               ],
-              "name": "terra_feram:alder_leaves"
+              "name": "terra_feram:ash_leaves"
             },
             {
               "type": "minecraft:item",
@@ -57,14 +57,14 @@
                   ]
                 }
               ],
-              "name": "terra_feram:alder_sapling"
+              "name": "terra_feram:ash_sapling"
             }
           ]
         }
       ]
     },
     {
-      "rolls": 1.0,
+      "rolls": 1,
       "bonus_rolls": 0.0,
       "entries": [
         {

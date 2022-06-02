@@ -1,7 +1,9 @@
 package io.github.elysian_mods.terra_feram.block;
 
+import io.github.elysian_mods.terra_feram.client.RenderType;
 import io.github.elysian_mods.terra_feram.registry.RegisteredBlocks;
 import io.github.elysian_mods.terra_feram.registry.RegisteredItems;
+import net.devtech.arrp.json.blockstate.JState;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.item.ItemConvertible;
@@ -9,13 +11,30 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 
+import java.util.Map;
+
+import static io.github.elysian_mods.terra_feram.util.ARRPUtil.*;
+import static net.devtech.arrp.json.blockstate.JState.*;
+
 public class GinsengFlower extends BlockWrapper {
   public GinsengFlower() {
-    name = "ginseng_flower";
-    block = new GinsengFlowerBlock();
+    super("ginseng_flower");
+
+    block = new BGinsengFlower();
+    renderType = RenderType.TRANSPARENT;
+
+    blockModels = blockModels(Map.of(blockId, "cross"), Map.of("cross", blockId));
+    itemModel = generatedItem(blockId);
+
+    blockState =
+        state(
+            variant()
+                .put("age=0", JState.model(blockId))
+                .put("age=1", JState.model(blockId))
+                .put("age=2", JState.model(blockId)));
   }
 
-  public static class GinsengFlowerBlock extends CropBlock {
+  public static class BGinsengFlower extends CropBlock {
     public static final int MAX_AGE = 2;
     private static final VoxelShape[] AGE_TO_SHAPE =
         new VoxelShape[] {
@@ -24,7 +43,7 @@ public class GinsengFlower extends BlockWrapper {
           Block.createCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 10.0D, 11.0D)
         };
 
-    public GinsengFlowerBlock() {
+    public BGinsengFlower() {
       super(FabricBlockSettings.copyOf(RegisteredBlocks.OXEYE_DAISY).ticksRandomly());
     }
 

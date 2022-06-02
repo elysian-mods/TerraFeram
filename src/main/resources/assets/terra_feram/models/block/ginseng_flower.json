@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cross",
-  "textures": {
-    "cross": "terra_feram:block/ginseng_flower"
-  }
-}

@@ -2,12 +2,13 @@ package io.github.elysian_mods.terra_feram.util;
 
 import io.github.elysian_mods.terra_feram.TerraFeram;
 import net.devtech.arrp.json.blockstate.JState;
+import net.devtech.arrp.json.lang.JLang;
+import net.devtech.arrp.json.loot.JLootTable;
 import net.devtech.arrp.json.models.JModel;
 import net.devtech.arrp.json.models.JTextures;
 import net.devtech.arrp.json.recipe.JRecipe;
 import net.devtech.arrp.json.tags.JTag;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,8 @@ import static net.devtech.arrp.json.models.JModel.model;
 import static net.devtech.arrp.json.models.JModel.textures;
 
 public class ARRPUtil {
+    public static final Map<Identifier, JTag> tags = new HashMap<>();
+
     public static void addBlockModels(Map<Identifier, JModel> blockModels) {
         for (Map.Entry<Identifier, JModel> model : blockModels.entrySet()) {
             TerraFeram.RESOURCE_PACK.addModel(model.getValue(), model.getKey());
@@ -31,16 +34,23 @@ public class ARRPUtil {
         addTag(folder(id, "items"), elements);
     }
 
+    public static void addLootTable(Identifier id, JLootTable lootTable) {
+        TerraFeram.RESOURCE_PACK.addLootTable(id, lootTable);
+    }
+
     public static void addModel(Identifier id, JModel model) {
         TerraFeram.RESOURCE_PACK.addModel(model, id);
     }
 
-    public static void addRecipe(Identifier id, JRecipe recipe) {
-        TerraFeram.RESOURCE_PACK.addRecipe(id, recipe);
+    public static void addRecipes(Map<Identifier, JRecipe> recipes) {
+        for (Map.Entry<Identifier, JRecipe> recipe: recipes.entrySet()) {
+            TerraFeram.RESOURCE_PACK.addRecipe(recipe.getKey(), recipe.getValue());
+        }
     }
 
     public static void addTag(Identifier id, String[] elements) {
-        JTag tag = JTag.tag();
+        JTag tag = tags.containsKey(id) ? tags.get(id) : JTag.tag();
+
         for (String element : elements) {
             if (element.charAt(0) == '#') {
                 tag.tag(TerraFeram.identifier(element.substring(1)));
@@ -48,11 +58,25 @@ public class ARRPUtil {
                 tag.add(TerraFeram.identifier(element));
             }
         }
-        TerraFeram.RESOURCE_PACK.addTag(id, tag);
+
+        tags.put(id, tag);
     }
 
     public static Identifier blockId(String name) {
         return genericId("block/%s", name);
+    }
+
+    public static Map<Identifier, JModel> blockModels(Map<Identifier, String> parents, Map<String, Identifier> vars) {
+        Map<Identifier, JModel> blockModels = new HashMap<>();
+        for (Map.Entry<Identifier, String> parent : parents.entrySet()) {
+            JTextures textures = textures();
+            for (Map.Entry<String, Identifier> var: vars.entrySet()) {
+                textures = textures.var(var.getKey(), var.getValue().toString());
+            }
+            blockModels.put(parent.getKey(),
+                    model(!parent.getValue().isBlank() ? "minecraft:block/" + parent.getValue() : null).textures(textures));
+        }
+        return blockModels;
     }
 
     public static Identifier folder(Identifier id, String folder) {
@@ -71,22 +95,8 @@ public class ARRPUtil {
         return genericId("item/%s", name);
     }
 
-    @SafeVarargs
-    public static <K, V> Map<K, V> mapBuilder(Pair<K, V>... entries) {
-        Map<K, V> map = new HashMap<>();
-        for (Pair<K, V> entry : entries) {
-            map.put(entry.getLeft(), entry.getRight());
-        }
-        return map;
-    }
-
-    public static Pair<Identifier, JModel> modelBuilder(Identifier blockId, String parent,
-                                                        Map<String, Identifier> vars) {
-        JTextures textures = textures();
-        for (Map.Entry<String, Identifier> var : vars.entrySet()) {
-            textures = textures.var(var.getKey(), var.getValue().toString());
-        }
-        return new Pair<>(blockId, model(parent != null ? "minecraft:block/" + parent : null).textures(textures));
+    public static JModel itemModel(Identifier itemId) {
+        return JModel.model(itemId);
     }
 
     public static Identifier nameId(String name) {
@@ -94,6 +104,6 @@ public class ARRPUtil {
     }
 
     public static Map<String, Identifier> texture(Identifier blockId) {
-        return mapBuilder(new Pair<>("texture", blockId));
+        return Map.of("texture", blockId);
     }
 }

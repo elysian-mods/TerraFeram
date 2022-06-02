@@ -1,13 +1,17 @@
 package io.github.elysian_mods.terra_feram;
 
 import io.github.elysian_mods.terra_feram.registry.*;
+import io.github.elysian_mods.terra_feram.util.ARRPUtil;
 import net.devtech.arrp.api.RRPCallback;
 import net.devtech.arrp.api.RuntimeResourcePack;
+import net.devtech.arrp.json.tags.JTag;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+
+import java.util.Map;
 
 public class TerraFeram implements ModInitializer {
   public static final String MOD_ID = "terra_feram";
@@ -31,6 +35,10 @@ public class TerraFeram implements ModInitializer {
     RegisteredItems.register();
 
     RegisteredEntities.register();
+
+    for (Map.Entry<Identifier, JTag> tag : ARRPUtil.tags.entrySet()) {
+      RESOURCE_PACK.addTag(tag.getKey(), tag.getValue());
+    }
 
     RRPCallback.BEFORE_VANILLA.register(a -> a.add(RESOURCE_PACK));
   }

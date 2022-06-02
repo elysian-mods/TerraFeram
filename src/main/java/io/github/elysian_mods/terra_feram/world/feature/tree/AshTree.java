@@ -8,9 +8,10 @@ import net.minecraft.world.gen.trunk.StraightTrunkPlacer;
 
 import java.util.Arrays;
 
-public class AlderTree extends TreeType {
-  public AlderTree() {
-    super("alder");
+public class AshTree extends TreeType {
+  public AshTree() {
+    super("ash");
+    translation = "Ash";
 
     biomes =
         Arrays.asList(
@@ -29,6 +30,6 @@ public class AlderTree extends TreeType {
             UniformIntProvider.create(1, 2));
     size = new TwoLayersFeatureSize(2, 0, 2);
 
-    create();
+    configure();
   }
 }

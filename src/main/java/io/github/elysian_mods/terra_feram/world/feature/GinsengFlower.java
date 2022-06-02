@@ -16,10 +16,8 @@ import static net.minecraft.block.Block.NOTIFY_ALL;
 
 public class GinsengFlower extends ConfiguredFeatureWrapper<DefaultFeatureConfig> {
   public GinsengFlower() {
-    name = "ginseng_flower";
-    feature =
-        Registry.register(
-            Registry.FEATURE, TerraFeram.identifier(name), new GinsengFlowerFeature());
+    super("ginseng_flower");
+    feature = new GinsengFlowerFeature();
 
     config = new DefaultFeatureConfig();
 

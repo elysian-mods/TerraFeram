@@ -1,6 +1,9 @@
 package io.github.elysian_mods.terra_feram.world.feature.tree;
 
 import io.github.elysian_mods.terra_feram.TerraFeram;
+import io.github.elysian_mods.terra_feram.block.BlockWrapper;
+import io.github.elysian_mods.terra_feram.client.RenderType;
+import io.github.elysian_mods.terra_feram.item.ItemWrapper;
 import io.github.elysian_mods.terra_feram.mixin.AxeItemAccessor;
 import io.github.elysian_mods.terra_feram.registry.RegisteredBlocks;
 import io.github.elysian_mods.terra_feram.registry.RegisteredItems;
@@ -10,13 +13,10 @@ import net.devtech.arrp.json.models.JModel;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.sapling.SaplingGenerator;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 import net.minecraft.util.SignType;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -54,10 +54,12 @@ import static net.devtech.arrp.json.recipe.JResult.stackedResult;
 @SuppressWarnings("deprecation")
 public abstract class TreeType {
   public String name;
+  public String translation;
+
   protected SignType signColor = SignType.OAK;
 
   protected ConfiguredDecorator<?> decorator;
-  private ConfiguredFeature<?, ?> configured;
+  private ConfiguredFeature<TreeFeatureConfig, ?> configured;
   private ConfiguredFeature<?, ?> decorated;
 
   protected Collection<RegistryKey<Biome>> biomes;
@@ -93,6 +95,8 @@ public abstract class TreeType {
 
   protected Bark bark;
 
+  protected Identifier logsId;
+
   protected TreeType(String name) {
     this.name = name;
 
@@ -110,20 +114,23 @@ public abstract class TreeType {
     sign = new Sign();
     slab = new Slab();
     stairs = new Stairs();
-    strippedLog = new StrippedLog();
-    strippedWood = new StrippedWood();
     trapdoor = new Trapdoor();
     wood = new Wood();
 
+    strippedLog = new StrippedLog();
+    strippedWood = new StrippedWood();
+
     bark = new Bark();
+
+    logsId = genericId("%s_logs", name);
   }
 
-  private TreeFeatureConfig build() {
+  protected TreeFeatureConfig build() {
     return new TreeFeatureConfig.Builder(
-            new SimpleBlockStateProvider(log.getDefaultState()),
+            new SimpleBlockStateProvider(log.block.getDefaultState()),
             trunkPlacer,
-            new SimpleBlockStateProvider(leaves.getDefaultState()),
-            new SimpleBlockStateProvider(sapling.getDefaultState()),
+            new SimpleBlockStateProvider(leaves.block.getDefaultState()),
+            new SimpleBlockStateProvider(sapling.block.getDefaultState()),
             foliagePlacer,
             size)
         .ignoreVines()
@@ -131,7 +138,7 @@ public abstract class TreeType {
         .build();
   }
 
-  private void configure() {
+  protected void configure() {
     configured = Feature.TREE.configure(build());
     decorated =
         configured
@@ -146,918 +153,1020 @@ public abstract class TreeType {
     if (decorator != null) decorated = decorated.decorate(decorator);
   }
 
-  protected void create() {
-    configure();
-    implement();
-  }
-
-  private void implement() {
-    addModel(leaves.itemId, leaves.itemModel);
-    addBlockModels(leaves.blockModels);
-    addBlockState(leaves.nameId, leaves.blockState);
-
-    addModel(log.itemId, log.itemModel);
-    addBlockModels(log.blockModels);
-    addBlockState(log.nameId, log.blockState);
-
-    addModel(sapling.itemId, sapling.itemModel);
-    addBlockModels(sapling.blockModels);
-    addBlockState(sapling.nameId, sapling.blockState);
-
-    addModel(planks.itemId, planks.itemModel);
-    addBlockModels(planks.blockModels);
-    addBlockState(planks.nameId, planks.blockState);
-
-    addModel(button.itemId, button.itemModel);
-    addBlockModels(button.blockModels);
-    addBlockState(button.nameId, button.blockState);
-
-    addModel(door.itemId, door.itemModel);
-    addBlockModels(door.blockModels);
-    addBlockState(door.nameId, door.blockState);
-
-    addModel(fence.itemId, fence.itemModel);
-    addBlockModels(fence.blockModels);
-    addBlockState(fence.nameId, fence.blockState);
-
-    addModel(fenceGate.itemId, fenceGate.itemModel);
-    addBlockModels(fenceGate.blockModels);
-    addBlockState(fenceGate.nameId, fenceGate.blockState);
-
-    addModel(pressurePlate.itemId, pressurePlate.itemModel);
-    addBlockModels(pressurePlate.blockModels);
-    addBlockState(pressurePlate.nameId, pressurePlate.blockState);
-
-    addModel(sign.itemId, sign.itemModel);
-    addBlockModels(sign.blockModels);
-    addBlockState(sign.nameId, sign.blockState);
-
-    addModel(slab.itemId, slab.itemModel);
-    addBlockModels(slab.blockModels);
-    addBlockState(slab.nameId, slab.blockState);
-
-    addModel(stairs.itemId, stairs.itemModel);
-    addBlockModels(stairs.blockModels);
-    addBlockState(stairs.nameId, stairs.blockState);
-
-    addModel(strippedLog.itemId, strippedLog.itemModel);
-    addBlockModels(strippedLog.blockModels);
-    addBlockState(strippedLog.nameId, strippedLog.blockState);
-
-    addModel(strippedWood.itemId, strippedWood.itemModel);
-    addBlockModels(strippedWood.blockModels);
-    addBlockState(strippedWood.nameId, strippedWood.blockState);
-
-    addModel(trapdoor.itemId, trapdoor.itemModel);
-    addBlockModels(trapdoor.blockModels);
-    addBlockState(trapdoor.nameId, trapdoor.blockState);
-
-    addModel(wood.itemId, wood.itemModel);
-    addBlockModels(wood.blockModels);
-    addBlockState(wood.nameId, wood.blockState);
-
-    addModel(bark.itemId, bark.itemModel);
-  }
-
   public ConfiguredFeature<?, ?> register() {
     RegistryKey<ConfiguredFeature<?, ?>> key =
         RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, TerraFeram.identifier(name + "_tree"));
     Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, key.getValue(), decorated);
     BiomeModifications.addFeature(BiomeSelectors.includeByKey(biomes), step, key);
 
-    registerBlock(leaves, leaves.name);
-    FlammableBlockRegistry.getDefaultInstance().add(leaves, 60, 30);
+    leaves.register();
+    log.register();
+    sapling.register();
 
-    registerBlock(log, log.name);
-    FlammableBlockRegistry.getDefaultInstance().add(log, 5, 5);
-    addRecipe(
-        log.nameId,
-        shaped(
-            pattern(" _ ", "_#_", " _ "),
-            keys()
-                .key("#", ingredient().item(strippedLog.nameId.toString()))
-                .key("_", ingredient().item(bark.nameId.toString())),
-            stackedResult(log.nameId.toString(), 1)));
-
-    registerBlock(sapling, sapling.name);
-
-    registerBlock(planks, planks.name);
-    FlammableBlockRegistry.getDefaultInstance().add(planks, 20, 5);
+    planks.register();
     addDualTag(new Identifier("wooden_planks"), new String[] {planks.name});
-    addRecipe(
-        genericId("%s_planks_from_bark", name),
-        shaped(
-            pattern("###", "###", "###"),
-            keys().key("#", ingredient().item(bark.nameId.toString())),
-            stackedResult(planks.nameId.toString(), 3)));
 
-    registerBlock(button, button.name);
+    button.register();
     addDualTag(new Identifier("wooden_buttons"), new String[] {button.name});
-    addRecipe(
-        button.nameId,
-        shapeless(
-            ingredients().add(ingredient().add(ingredient().item(planks.nameId.toString()))),
-            stackedResult(button.nameId.toString(), 1)));
-
-    registerBlock(door, door.name);
+    door.register();
     addDualTag(new Identifier("wooden_doors"), new String[] {door.name});
-    addRecipe(
-        door.nameId,
-        shaped(
-            pattern("##", "##", "##"),
-            keys().key("#", ingredient().item(planks.nameId.toString())),
-            stackedResult(door.nameId.toString(), 3)));
-
-    registerBlock(fence, fence.name);
-    FlammableBlockRegistry.getDefaultInstance().add(fence, 20, 5);
+    fence.register();
     addDualTag(new Identifier("wooden_fences"), new String[] {fence.name});
-    addRecipe(
-        fence.nameId,
-        shaped(
-            pattern("#|#", "#|#"),
-            keys()
-                .key("#", ingredient().item(planks.nameId.toString()))
-                .key("|", ingredient().item(RegisteredItems.STICK)),
-            stackedResult(fence.nameId.toString(), 3)));
-
-    registerBlock(fenceGate, fenceGate.name);
-    FlammableBlockRegistry.getDefaultInstance().add(fenceGate, 20, 5);
-    addRecipe(
-        fenceGate.nameId,
-        shaped(
-            pattern("|#|", "|#|"),
-            keys()
-                .key("#", ingredient().item(planks.nameId.toString()))
-                .key("|", ingredient().item(RegisteredItems.STICK)),
-            stackedResult(fenceGate.nameId.toString(), 1)));
-
-    registerBlock(pressurePlate, pressurePlate.name);
+    fenceGate.register();
+    pressurePlate.register();
     addDualTag(new Identifier("wooden_pressure_plates"), new String[] {pressurePlate.name});
-    addRecipe(
-        pressurePlate.nameId,
-        shaped(
-            pattern("##"),
-            keys().key("#", ingredient().item(planks.nameId.toString())),
-            stackedResult(pressurePlate.nameId.toString(), 1)));
-
-    registerBlock(sign, sign.name);
-    addRecipe(
-        sign.nameId,
-        shaped(
-            pattern("###", "###", " | "),
-            keys()
-                .key("#", ingredient().item(planks.nameId.toString()))
-                .key("|", ingredient().item(RegisteredItems.STICK)),
-            stackedResult(sign.nameId.toString(), 3)));
-
-    registerBlock(slab, slab.name);
-    FlammableBlockRegistry.getDefaultInstance().add(slab, 20, 5);
+    sign.register();
+    slab.register();
     addDualTag(new Identifier("wooden_slabs"), new String[] {slab.name});
-    addRecipe(
-        slab.nameId,
-        shaped(
-            pattern("###"),
-            keys().key("#", ingredient().item(planks.nameId.toString())),
-            stackedResult(slab.nameId.toString(), 6)));
-
-    registerBlock(stairs, stairs.name);
-    FlammableBlockRegistry.getDefaultInstance().add(stairs, 20, 5);
+    stairs.register();
     addDualTag(new Identifier("wooden_stairs"), new String[] {stairs.name});
-    addRecipe(
-        stairs.nameId,
-        shaped(
-            pattern("#  ", "## ", "###"),
-            keys().key("#", ingredient().item(planks.nameId.toString())),
-            stackedResult(stairs.nameId.toString(), 4)));
-
-    registerBlock(trapdoor, trapdoor.name);
+    trapdoor.register();
     addDualTag(new Identifier("wooden_trapdoor"), new String[] {trapdoor.name});
-    addRecipe(
-        trapdoor.nameId,
-        shaped(
-            pattern("###", "###"),
-            keys().key("#", ingredient().item(planks.nameId.toString())),
-            stackedResult(trapdoor.nameId.toString(), 2)));
+    wood.register();
 
-    registerBlock(wood, wood.name);
-    FlammableBlockRegistry.getDefaultInstance().add(wood, 5, 5);
-    addRecipe(
-        wood.nameId,
-        shaped(
-            pattern("_", "#", "_"),
-            keys()
-                .key("#", ingredient().item(log.nameId.toString()))
-                .key("_", ingredient().item(bark.nameId.toString())),
-            stackedResult(wood.nameId.toString(), 1)));
-    addRecipe(
-        genericId("%s_wood_from_bark", name),
-        shaped(
-            pattern("___", " # ", "___"),
-            keys()
-                .key("#", ingredient().item(strippedWood.nameId.toString()))
-                .key("_", ingredient().item(bark.nameId.toString())),
-            stackedResult(wood.nameId.toString(), 1)));
-
-    registerBlock(strippedLog, strippedLog.name);
-    FlammableBlockRegistry.getDefaultInstance().add(strippedLog, 5, 5);
-
-    registerBlock(strippedWood, strippedWood.name);
-    FlammableBlockRegistry.getDefaultInstance().add(strippedWood, 5, 5);
+    strippedLog.register();
+    strippedWood.register();
 
     Map<Block, Block> stripper = new HashMap<>(AxeItemAccessor.getStrippedBlocks());
-    stripper.put(log, strippedLog);
-    stripper.put(wood, strippedWood);
+    stripper.put(log.block, strippedLog.block);
+    stripper.put(wood.block, strippedWood.block);
     AxeItemAccessor.setStrippedBlocks(stripper);
 
-    Registry.register(Registry.ITEM, TerraFeram.identifier(bark.name), bark);
-    LogsToBark.put(log, bark, 4);
-    LogsToBark.put(wood, bark, 6);
+    bark.register();
+    LogsToBark.put(log.block, bark.item, 4);
+    LogsToBark.put(wood.block, bark.item, 6);
 
     String[] logs = {log.name, wood.name, strippedLog.name, strippedWood.name};
-    Identifier logsId = TerraFeram.identifier(String.format("%s_logs", name));
     addDualTag(logsId, logs);
     addTag(new Identifier("logs_that_burn"), new String[] {"#" + logsId.getPath()});
 
-    addRecipe(
-        planks.nameId,
-        shapeless(
-            ingredients().add(ingredient().tag(logsId.toString())),
-            stackedResult(planks.nameId.toString(), 1)));
-
     return configured;
-  }
-
-  private void registerBlock(Block block, String name) {
-    if (block != null) {
-      Registry.register(Registry.BLOCK, TerraFeram.identifier(name), block);
-      Registry.register(
-          Registry.ITEM, TerraFeram.identifier(name), new BlockItem(block, DEFAULT_SETTINGS));
-    }
   }
 
   public class Generator extends SaplingGenerator {
     @Nullable
     @Override
     protected ConfiguredFeature<TreeFeatureConfig, ?> getTreeFeature(Random random, boolean bees) {
-      return (ConfiguredFeature<TreeFeatureConfig, ?>) TreeType.this.configured;
+      return TreeType.this.configured;
     }
   }
 
-  protected class Leaves extends LeavesBlock {
-    public final String name = String.format("%s_leaves", TreeType.this.name);
-    public final Identifier blockId = blockId(name);
-    public final Identifier itemId = itemId(name);
-    public final Identifier nameId = nameId(name);
+  protected class Leaves extends BlockWrapper {
+    protected Leaves() {
+      super(String.format("%s_leaves", TreeType.this.name));
+      translation = String.format("%s Leaves", TreeType.this.translation);
 
-    private final Map<String, Identifier> vars = mapBuilder(new Pair<>("all", blockId));
-    public final Map<Identifier, JModel> blockModels =
-        mapBuilder(modelBuilder(blockId, "leaves", vars));
-    public final JModel itemModel = JModel.model(blockId);
+      block = new BLeaves();
 
-    public final JState blockState = state(variant().put("", JState.model(blockId)));
+      blockModels = blockModels(Map.of(blockId, "leaves"), Map.of("all", blockId));
+      itemModel = itemModel(blockId);
 
-    public Leaves() {
-      super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_LEAVES));
+      blockState = state(variant().put("", JState.model(blockId)));
+
+      burn = 60;
+      spread = 30;
+    }
+
+    @Override
+    public Block register() {
+      return super.register();
+    }
+
+    protected class BLeaves extends LeavesBlock {
+      protected BLeaves() {
+        super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_LEAVES));
+      }
     }
   }
 
-  protected class Log extends PillarBlock {
-    public final String name = String.format("%s_log", TreeType.this.name);
-    public final Identifier blockId = blockId(name);
-    public final Identifier itemId = itemId(name);
-    public final Identifier nameId = nameId(name);
+  protected class Log extends BlockWrapper {
+    public Identifier blockHorizontalId = genericId("block/%s_horizontal", name);
+    public Identifier blockTopId = genericId("block/%s_top", name);
 
-    public final Identifier blockHorizontalId = genericId("block/%s_horizontal", name);
-    public final Identifier blockTopId = genericId("block/%s_top", name);
+    protected Log() {
+      super(String.format("%s_log", TreeType.this.name));
+      translation = String.format("%s Log", TreeType.this.translation);
 
-    private final Map<String, Identifier> vars =
-        mapBuilder(new Pair<>("end", blockTopId), new Pair<>("side", blockId));
-    public final Map<Identifier, JModel> blockModels =
-        mapBuilder(
-            modelBuilder(blockId, "cube_column", vars),
-            modelBuilder(blockHorizontalId, "cube_column_horizontal", vars));
-    public final JModel itemModel = JModel.model(blockId);
+      block = new BLog();
 
-    public final JState blockState =
-        state(
-            variant()
-                .put("axis", "x", JState.model(blockHorizontalId).x(90).y(90))
-                .put("axis", "y", JState.model(blockId))
-                .put("axis", "z", JState.model(blockHorizontalId).x(90)));
+      blockModels =
+          blockModels(
+              Map.of(blockId, "cube_column", blockHorizontalId, "cube_column_horizontal"),
+              Map.of("end", blockTopId, "side", blockId));
+      itemModel = itemModel(blockId);
 
-    public Log() {
-      super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_LOG));
+      blockState =
+          state(
+              variant()
+                  .put("axis", "x", JState.model(blockHorizontalId).x(90).y(90))
+                  .put("axis", "y", JState.model(blockId))
+                  .put("axis", "z", JState.model(blockHorizontalId).x(90)));
+
+      burn = 5;
+      spread = 5;
+    }
+
+    @Override
+    public Block register() {
+      recipes =
+          Map.of(
+              nameId,
+              shaped(
+                  pattern(" _ ", "_#_", " _ "),
+                  keys()
+                      .key("#", ingredient().item(strippedLog.nameId.toString()))
+                      .key("_", ingredient().item(bark.nameId.toString())),
+                  stackedResult(nameId.toString(), 1)));
+
+      return super.register();
+    }
+
+    protected class BLog extends PillarBlock {
+      protected BLog() {
+        super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_LOG));
+      }
     }
   }
 
-  protected class Sapling extends SaplingBlock {
-    public final String name = String.format("%s_sapling", TreeType.this.name);
-    public final Identifier blockId = blockId(name);
-    public final Identifier itemId = itemId(name);
-    public final Identifier nameId = nameId(name);
+  protected class Sapling extends BlockWrapper {
+    protected Sapling() {
+      super(String.format("%s_sapling", TreeType.this.name));
+      translation = String.format("%s Sapling", TreeType.this.translation);
 
-    private final Map<String, Identifier> vars = mapBuilder(new Pair<>("cross", blockId));
-    public final Map<Identifier, JModel> blockModels =
-        mapBuilder(modelBuilder(blockId, "cross", vars));
-    public final JModel itemModel = generatedItem(blockId);
+      block = new BSapling();
+      renderType = RenderType.TRANSPARENT;
 
-    public final JState blockState = JState.state(variant().put("", JState.model(blockId)));
+      blockModels = blockModels(Map.of(blockId, "cross"), Map.of("cross", blockId));
+      itemModel = generatedItem(blockId);
 
-    public Sapling() {
-      super(new Generator(), FabricBlockSettings.copyOf(RegisteredBlocks.OAK_SAPLING));
+      blockState = JState.state(variant().put("", JState.model(blockId)));
+    }
+
+    protected class BSapling extends SaplingBlock {
+      protected BSapling() {
+        super(new Generator(), FabricBlockSettings.copyOf(RegisteredBlocks.OAK_SAPLING));
+      }
     }
   }
 
-  protected class Planks extends Block {
-    public final String name = String.format("%s_planks", TreeType.this.name);
-    public final Identifier blockId = blockId(name);
-    public final Identifier itemId = itemId(name);
-    public final Identifier nameId = nameId(name);
+  protected class Planks extends BlockWrapper {
+    protected Planks() {
+      super(String.format("%s_planks", TreeType.this.name));
+      translation = String.format("%s Planks", TreeType.this.translation);
 
-    private final Map<String, Identifier> vars = mapBuilder(new Pair<>("all", blockId));
-    public final Map<Identifier, JModel> blockModels =
-        mapBuilder(modelBuilder(blockId, "cube_all", vars));
-    public final JModel itemModel = JModel.model(blockId);
+      block = new BPlanks();
 
-    public final JState blockState = state(variant().put("", JState.model(blockId)));
+      blockModels = blockModels(Map.of(blockId, "cube_all"), Map.of("all", blockId));
+      itemModel = itemModel(blockId);
 
-    public Planks() {
-      super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_PLANKS));
+      blockState = state(variant().put("", JState.model(blockId)));
+
+      burn = 20;
+      spread = 5;
+    }
+
+    @Override
+    public Block register() {
+      recipes =
+          Map.of(
+              nameId,
+              shapeless(
+                  ingredients().add(ingredient().tag(logsId.toString())),
+                  stackedResult(planks.nameId.toString(), 4)),
+              genericId("%s_planks_from_bark", name),
+              shaped(
+                  pattern("###", "###", "###"),
+                  keys().key("#", ingredient().item(bark.nameId.toString())),
+                  stackedResult(nameId.toString(), 3)));
+
+      return super.register();
+    }
+
+    protected class BPlanks extends Block {
+      protected BPlanks() {
+        super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_PLANKS));
+      }
     }
   }
 
-  protected class Button extends WoodenButtonBlock {
-    public final String name = String.format("%s_button", TreeType.this.name);
-    public final Identifier blockId = blockId(name);
-    public final Identifier itemId = itemId(name);
-    public final Identifier nameId = nameId(name);
+  protected class Button extends BlockWrapper {
+    public Identifier blockInventoryId = genericId("block/%s_inventory", name);
+    public Identifier blockPressedId = genericId("block/%s_pressed", name);
 
-    public final Identifier blockInventoryId = genericId("block/%s_inventory", name);
-    public final Identifier blockPressedId = genericId("block/%s_pressed", name);
+    protected Button() {
+      super(String.format("%s_button", TreeType.this.name));
+      translation = String.format("%s Button", TreeType.this.translation);
 
-    private final Map<String, Identifier> vars = mapBuilder(new Pair<>("texture", planks.blockId));
-    public final Map<Identifier, JModel> blockModels =
-        mapBuilder(
-            modelBuilder(blockId, "button", vars),
-            modelBuilder(blockInventoryId, "button_inventory", vars),
-            modelBuilder(blockPressedId, "button_pressed", vars));
-    public final JModel itemModel = JModel.model(blockInventoryId);
+      block = new BButton();
 
-    public final JState blockState =
-        state(
-            variant()
-                .put("face=ceiling,facing=east,powered=false", JState.model(blockId).x(180).y(270))
-                .put(
-                    "face=ceiling,facing=east,powered=true",
-                    JState.model(blockPressedId).x(180).y(270))
-                .put("face=ceiling,facing=north,powered=false", JState.model(blockId).x(180).y(180))
-                .put(
-                    "face=ceiling,facing=north,powered=true",
-                    JState.model(blockPressedId).x(180).y(180))
-                .put("face=ceiling,facing=south,powered=false", JState.model(blockId).x(180))
-                .put("face=ceiling,facing=south,powered=true", JState.model(blockPressedId).x(180))
-                .put("face=ceiling,facing=west,powered=false", JState.model(blockId).x(180).y(90))
-                .put("face=ceiling,facing=west,powered=true", JState.model(blockPressedId).y(90))
-                .put("face=floor,facing=east,powered=false", JState.model(blockId).y(90))
-                .put("face=floor,facing=east,powered=true", JState.model(blockPressedId).y(90))
-                .put("face=floor,facing=north,powered=false", JState.model(blockId))
-                .put("face=floor,facing=north,powered=true", JState.model(blockPressedId))
-                .put("face=floor,facing=south,powered=false", JState.model(blockId).y(180))
-                .put("face=floor,facing=south,powered=true", JState.model(blockPressedId).y(180))
-                .put("face=floor,facing=west,powered=false", JState.model(blockId).y(270))
-                .put("face=floor,facing=west,powered=true", JState.model(blockPressedId).y(270))
-                .put(
-                    "face=wall,facing=east,powered=false",
-                    JState.model(blockId).uvlock().x(90).y(90))
-                .put(
-                    "face=wall,facing=east,powered=true",
-                    JState.model(blockPressedId).uvlock().x(90).y(90))
-                .put("face=wall,facing=north,powered=false", JState.model(blockId).uvlock().x(90))
-                .put(
-                    "face=wall,facing=north,powered=true",
-                    JState.model(blockPressedId).uvlock().x(90))
-                .put(
-                    "face=wall,facing=south,powered=false",
-                    JState.model(blockId).uvlock().x(90).y(180))
-                .put(
-                    "face=wall,facing=south,powered=true",
-                    JState.model(blockPressedId).uvlock().x(90).y(180))
-                .put(
-                    "face=wall,facing=west,powered=false",
-                    JState.model(blockId).uvlock().x(90).y(270))
-                .put(
-                    "face=wall,facing=west,powered=true",
-                    JState.model(blockPressedId).uvlock().x(90).y(270)));
+      blockModels =
+          blockModels(
+              Map.of(
+                  blockId,
+                  "button",
+                  blockInventoryId,
+                  "button_inventory",
+                  blockPressedId,
+                  "button_pressed"),
+              texture(planks.blockId));
+      itemModel = JModel.model(blockInventoryId);
 
-    public Button() {
-      super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_BUTTON));
+      blockState =
+          state(
+              variant()
+                  .put(
+                      "face=ceiling,facing=east,powered=false", JState.model(blockId).x(180).y(270))
+                  .put(
+                      "face=ceiling,facing=east,powered=true",
+                      JState.model(blockPressedId).x(180).y(270))
+                  .put(
+                      "face=ceiling,facing=north,powered=false",
+                      JState.model(blockId).x(180).y(180))
+                  .put(
+                      "face=ceiling,facing=north,powered=true",
+                      JState.model(blockPressedId).x(180).y(180))
+                  .put("face=ceiling,facing=south,powered=false", JState.model(blockId).x(180))
+                  .put(
+                      "face=ceiling,facing=south,powered=true", JState.model(blockPressedId).x(180))
+                  .put("face=ceiling,facing=west,powered=false", JState.model(blockId).x(180).y(90))
+                  .put("face=ceiling,facing=west,powered=true", JState.model(blockPressedId).y(90))
+                  .put("face=floor,facing=east,powered=false", JState.model(blockId).y(90))
+                  .put("face=floor,facing=east,powered=true", JState.model(blockPressedId).y(90))
+                  .put("face=floor,facing=north,powered=false", JState.model(blockId))
+                  .put("face=floor,facing=north,powered=true", JState.model(blockPressedId))
+                  .put("face=floor,facing=south,powered=false", JState.model(blockId).y(180))
+                  .put("face=floor,facing=south,powered=true", JState.model(blockPressedId).y(180))
+                  .put("face=floor,facing=west,powered=false", JState.model(blockId).y(270))
+                  .put("face=floor,facing=west,powered=true", JState.model(blockPressedId).y(270))
+                  .put(
+                      "face=wall,facing=east,powered=false",
+                      JState.model(blockId).uvlock().x(90).y(90))
+                  .put(
+                      "face=wall,facing=east,powered=true",
+                      JState.model(blockPressedId).uvlock().x(90).y(90))
+                  .put("face=wall,facing=north,powered=false", JState.model(blockId).uvlock().x(90))
+                  .put(
+                      "face=wall,facing=north,powered=true",
+                      JState.model(blockPressedId).uvlock().x(90))
+                  .put(
+                      "face=wall,facing=south,powered=false",
+                      JState.model(blockId).uvlock().x(90).y(180))
+                  .put(
+                      "face=wall,facing=south,powered=true",
+                      JState.model(blockPressedId).uvlock().x(90).y(180))
+                  .put(
+                      "face=wall,facing=west,powered=false",
+                      JState.model(blockId).uvlock().x(90).y(270))
+                  .put(
+                      "face=wall,facing=west,powered=true",
+                      JState.model(blockPressedId).uvlock().x(90).y(270)));
+    }
+
+    @Override
+    public Block register() {
+      recipes =
+          Map.of(
+              nameId,
+              shapeless(
+                  ingredients().add(ingredient().add(ingredient().item(planks.nameId.toString()))),
+                  stackedResult(nameId.toString(), 1)));
+
+      return super.register();
+    }
+
+    protected class BButton extends WoodenButtonBlock {
+      protected BButton() {
+        super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_BUTTON));
+      }
     }
   }
 
-  protected class Door extends DoorBlock {
-    public final String name = String.format("%s_door", TreeType.this.name);
-    public final Identifier blockId = blockId(name);
-    public final Identifier itemId = itemId(name);
-    public final Identifier nameId = nameId(name);
+  protected class Door extends BlockWrapper {
+    public Identifier blockBottomId = genericId("block/%s_bottom", name);
+    public Identifier blockBottomHingeId = genericId("block/%s_bottom_hinge", name);
+    public Identifier blockTopId = genericId("block/%s_top", name);
+    public Identifier blockTopHingeId = genericId("block/%s_top_hinge", name);
 
-    public final Identifier blockBottomId = genericId("%s_bottom", name);
-    public final Identifier blockBottomHingeId = genericId("%s_bottom_hinge", name);
-    public final Identifier blockTopId = genericId("%s_top", name);
-    public final Identifier blockTopHingeId = genericId("%s_top_hinge", name);
+    protected Door() {
+      super(String.format("%s_door", TreeType.this.name));
+      translation = String.format("%s Door", TreeType.this.translation);
 
-    private final Map<String, Identifier> vars =
-        mapBuilder(new Pair<>("top", blockTopId), new Pair<>("bottom", blockBottomId));
-    public final Map<Identifier, JModel> blockModels =
-        mapBuilder(
-            modelBuilder(blockBottomId, "door_bottom", vars),
-            modelBuilder(blockBottomHingeId, "door_bottom_rh", vars),
-            modelBuilder(blockTopId, "door_top", vars),
-            modelBuilder(blockTopHingeId, "door_top_rh", vars));
-    public final JModel itemModel = generatedItem(itemId);
+      block = new BDoor();
 
-    public final JState blockState =
-        state(
-            variant()
-                .put("facing=east,half=lower,hinge=left,open=false", JState.model(blockBottomId))
-                .put(
-                    "facing=east,half=lower,hinge=left,open=true",
-                    JState.model(blockBottomHingeId).y(90))
-                .put(
-                    "facing=east,half=lower,hinge=right,open=false",
-                    JState.model(blockBottomHingeId))
-                .put(
-                    "facing=east,half=lower,hinge=right,open=true",
-                    JState.model(blockBottomId).y(270))
-                .put("facing=east,half=upper,hinge=left,open=false", JState.model(blockTopId))
-                .put(
-                    "facing=east,half=upper,hinge=left,open=true",
-                    JState.model(blockTopHingeId).y(90))
-                .put("facing=east,half=upper,hinge=right,open=false", JState.model(blockTopHingeId))
-                .put(
-                    "facing=east,half=upper,hinge=right,open=true", JState.model(blockTopId).y(270))
-                .put(
-                    "facing=north,half=lower,hinge=left,open=false",
-                    JState.model(blockBottomId).y(270))
-                .put(
-                    "facing=north,half=lower,hinge=left,open=true",
-                    JState.model(blockBottomHingeId))
-                .put(
-                    "facing=north,half=lower,hinge=right,open=false",
-                    JState.model(blockBottomHingeId).y(270))
-                .put(
-                    "facing=north,half=lower,hinge=right,open=true",
-                    JState.model(blockBottomId).y(180))
-                .put(
-                    "facing=north,half=upper,hinge=left,open=false",
-                    JState.model(blockTopId).y(270))
-                .put("facing=north,half=upper,hinge=left,open=true", JState.model(blockTopHingeId))
-                .put(
-                    "facing=north,half=upper,hinge=right,open=false",
-                    JState.model(blockTopHingeId).y(270))
-                .put(
-                    "facing=north,half=upper,hinge=right,open=true",
-                    JState.model(blockTopId).y(180))
-                .put(
-                    "facing=south,half=lower,hinge=left,open=false",
-                    JState.model(blockBottomId).y(90))
-                .put(
-                    "facing=south,half=lower,hinge=left,open=true",
-                    JState.model(blockBottomHingeId).y(180))
-                .put(
-                    "facing=south,half=lower,hinge=right,open=false",
-                    JState.model(blockBottomHingeId).y(90))
-                .put("facing=south,half=lower,hinge=right,open=true", JState.model(blockBottomId))
-                .put(
-                    "facing=south,half=upper,hinge=left,open=false", JState.model(blockTopId).y(90))
-                .put(
-                    "facing=south,half=upper,hinge=left,open=true",
-                    JState.model(blockTopHingeId).y(180))
-                .put(
-                    "facing=south,half=upper,hinge=right,open=false",
-                    JState.model(blockTopHingeId).y(90))
-                .put("facing=south,half=upper,hinge=right,open=true", JState.model(blockTopId))
-                .put(
-                    "facing=west,half=lower,hinge=left,open=false",
-                    JState.model(blockBottomId).y(180))
-                .put(
-                    "facing=west,half=lower,hinge=left,open=true",
-                    JState.model(blockBottomHingeId).y(270))
-                .put(
-                    "facing=west,half=lower,hinge=right,open=false",
-                    JState.model(blockBottomHingeId).y(180))
-                .put(
-                    "facing=west,half=lower,hinge=right,open=true",
-                    JState.model(blockBottomId).y(90))
-                .put(
-                    "facing=west,half=upper,hinge=left,open=false", JState.model(blockTopId).y(180))
-                .put(
-                    "facing=west,half=upper,hinge=left,open=true",
-                    JState.model(blockTopHingeId).y(270))
-                .put(
-                    "facing=west,half=upper,hinge=right,open=false",
-                    JState.model(blockTopHingeId).y(180))
-                .put(
-                    "facing=west,half=upper,hinge=right,open=true",
-                    JState.model(blockTopId).y(90)));
+      blockModels =
+          blockModels(
+              Map.of(
+                  blockBottomId,
+                  "door_bottom",
+                  blockBottomHingeId,
+                  "door_bottom_rh",
+                  blockTopId,
+                  "door_top",
+                  blockTopHingeId,
+                  "door_top_rh"),
+              Map.of("top", blockTopId, "bottom", blockBottomId));
+      itemModel = generatedItem(itemId);
 
-    public Door() {
-      super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_DOOR));
+      blockState =
+          state(
+              variant()
+                  .put("facing=east,half=lower,hinge=left,open=false", JState.model(blockBottomId))
+                  .put(
+                      "facing=east,half=lower,hinge=left,open=true",
+                      JState.model(blockBottomHingeId).y(90))
+                  .put(
+                      "facing=east,half=lower,hinge=right,open=false",
+                      JState.model(blockBottomHingeId))
+                  .put(
+                      "facing=east,half=lower,hinge=right,open=true",
+                      JState.model(blockBottomId).y(270))
+                  .put("facing=east,half=upper,hinge=left,open=false", JState.model(blockTopId))
+                  .put(
+                      "facing=east,half=upper,hinge=left,open=true",
+                      JState.model(blockTopHingeId).y(90))
+                  .put(
+                      "facing=east,half=upper,hinge=right,open=false",
+                      JState.model(blockTopHingeId))
+                  .put(
+                      "facing=east,half=upper,hinge=right,open=true",
+                      JState.model(blockTopId).y(270))
+                  .put(
+                      "facing=north,half=lower,hinge=left,open=false",
+                      JState.model(blockBottomId).y(270))
+                  .put(
+                      "facing=north,half=lower,hinge=left,open=true",
+                      JState.model(blockBottomHingeId))
+                  .put(
+                      "facing=north,half=lower,hinge=right,open=false",
+                      JState.model(blockBottomHingeId).y(270))
+                  .put(
+                      "facing=north,half=lower,hinge=right,open=true",
+                      JState.model(blockBottomId).y(180))
+                  .put(
+                      "facing=north,half=upper,hinge=left,open=false",
+                      JState.model(blockTopId).y(270))
+                  .put(
+                      "facing=north,half=upper,hinge=left,open=true", JState.model(blockTopHingeId))
+                  .put(
+                      "facing=north,half=upper,hinge=right,open=false",
+                      JState.model(blockTopHingeId).y(270))
+                  .put(
+                      "facing=north,half=upper,hinge=right,open=true",
+                      JState.model(blockTopId).y(180))
+                  .put(
+                      "facing=south,half=lower,hinge=left,open=false",
+                      JState.model(blockBottomId).y(90))
+                  .put(
+                      "facing=south,half=lower,hinge=left,open=true",
+                      JState.model(blockBottomHingeId).y(180))
+                  .put(
+                      "facing=south,half=lower,hinge=right,open=false",
+                      JState.model(blockBottomHingeId).y(90))
+                  .put("facing=south,half=lower,hinge=right,open=true", JState.model(blockBottomId))
+                  .put(
+                      "facing=south,half=upper,hinge=left,open=false",
+                      JState.model(blockTopId).y(90))
+                  .put(
+                      "facing=south,half=upper,hinge=left,open=true",
+                      JState.model(blockTopHingeId).y(180))
+                  .put(
+                      "facing=south,half=upper,hinge=right,open=false",
+                      JState.model(blockTopHingeId).y(90))
+                  .put("facing=south,half=upper,hinge=right,open=true", JState.model(blockTopId))
+                  .put(
+                      "facing=west,half=lower,hinge=left,open=false",
+                      JState.model(blockBottomId).y(180))
+                  .put(
+                      "facing=west,half=lower,hinge=left,open=true",
+                      JState.model(blockBottomHingeId).y(270))
+                  .put(
+                      "facing=west,half=lower,hinge=right,open=false",
+                      JState.model(blockBottomHingeId).y(180))
+                  .put(
+                      "facing=west,half=lower,hinge=right,open=true",
+                      JState.model(blockBottomId).y(90))
+                  .put(
+                      "facing=west,half=upper,hinge=left,open=false",
+                      JState.model(blockTopId).y(180))
+                  .put(
+                      "facing=west,half=upper,hinge=left,open=true",
+                      JState.model(blockTopHingeId).y(270))
+                  .put(
+                      "facing=west,half=upper,hinge=right,open=false",
+                      JState.model(blockTopHingeId).y(180))
+                  .put(
+                      "facing=west,half=upper,hinge=right,open=true",
+                      JState.model(blockTopId).y(90)));
+    }
+
+    @Override
+    public Block register() {
+      recipes =
+          Map.of(
+              nameId,
+              shaped(
+                  pattern("##", "##", "##"),
+                  keys().key("#", ingredient().item(planks.nameId.toString())),
+                  stackedResult(nameId.toString(), 3)));
+
+      return super.register();
+    }
+
+    protected class BDoor extends DoorBlock {
+      protected BDoor() {
+        super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_DOOR));
+      }
     }
   }
 
-  protected class Fence extends FenceBlock {
-    public final String name = String.format("%s_fence", TreeType.this.name);
-    public final Identifier blockId = blockId(name);
-    public final Identifier itemId = itemId(name);
-    public final Identifier nameId = nameId(name);
+  protected class Fence extends BlockWrapper {
+    public Identifier blockInventoryId = genericId("block/%s_inventory", name);
+    public Identifier blockPostId = genericId("block/%s_post", name);
+    public Identifier blockSideId = genericId("block/%s_side", name);
 
-    public final Identifier blockInventoryId = genericId("block/%s_inventory", name);
-    public final Identifier blockPostId = genericId("block/%s_post", name);
-    public final Identifier blockSideId = genericId("block/%s_side", name);
+    protected Fence() {
+      super(String.format("%s_fence", TreeType.this.name));
+      translation = String.format("%s Fence", TreeType.this.translation);
 
-    private final Map<String, Identifier> vars = mapBuilder(new Pair<>("texture", planks.blockId));
-    public final Map<Identifier, JModel> blockModels =
-        mapBuilder(
-            modelBuilder(blockInventoryId, "fence_inventory", vars),
-            modelBuilder(blockPostId, "fence_post", vars),
-            modelBuilder(blockSideId, "fence_side", vars));
-    public final JModel itemModel = JModel.model(blockInventoryId);
+      block = new BFence();
 
-    public final JState blockState =
-        state(
-            multipart(model(blockPostId)),
-            multipart(model(blockSideId).uvlock()).when(when().add("north", "true")),
-            multipart(model(blockSideId).uvlock().y(90)).when(when().add("east", "true")),
-            multipart(model(blockSideId).uvlock().y(180)).when(when().add("south", "true")),
-            multipart(model(blockSideId).uvlock().y(270)).when(when().add("west", "true")));
+      blockModels =
+          blockModels(
+              Map.of(
+                  blockInventoryId,
+                  "fence_inventory",
+                  blockPostId,
+                  "fence_post",
+                  blockSideId,
+                  "fence_side"),
+              Map.of("texture", planks.blockId));
+      itemModel = JModel.model(blockInventoryId);
 
-    public Fence() {
-      super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_FENCE));
+      blockState =
+          state(
+              multipart(model(blockPostId)),
+              multipart(model(blockSideId).uvlock()).when(when().add("north", "true")),
+              multipart(model(blockSideId).uvlock().y(90)).when(when().add("east", "true")),
+              multipart(model(blockSideId).uvlock().y(180)).when(when().add("south", "true")),
+              multipart(model(blockSideId).uvlock().y(270)).when(when().add("west", "true")));
+
+      burn = 20;
+      spread = 5;
+    }
+
+    @Override
+    public Block register() {
+      recipes =
+          Map.of(
+              nameId,
+              shaped(
+                  pattern("#|#", "#|#"),
+                  keys()
+                      .key("#", ingredient().item(planks.nameId.toString()))
+                      .key("|", ingredient().item(RegisteredItems.STICK)),
+                  stackedResult(nameId.toString(), 3)));
+
+      return super.register();
+    }
+
+    protected class BFence extends FenceBlock {
+      protected BFence() {
+        super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_FENCE));
+      }
     }
   }
 
-  protected class FenceGate extends FenceGateBlock {
-    public final String name = String.format("%s_fence_gate", TreeType.this.name);
-    public final Identifier blockId = blockId(name);
-    public final Identifier itemId = itemId(name);
-    public final Identifier nameId = nameId(name);
+  protected class FenceGate extends BlockWrapper {
+    public Identifier blockOpenId = genericId("%s_open", name);
+    public Identifier blockWallId = genericId("%s_wall", name);
+    public Identifier blockWallOpenId = genericId("%s_wall_open", name);
 
-    public final Identifier blockOpenId = genericId("%s_open", name);
-    public final Identifier blockWallId = genericId("%s_wall", name);
-    public final Identifier blockWallOpenId = genericId("%s_wall_open", name);
+    protected FenceGate() {
+      super(String.format("%s_fence_gate", TreeType.this.name));
+      translation = String.format("%s Fence Gate", TreeType.this.translation);
 
-    private final Map<String, Identifier> vars = texture(planks.blockId);
-    public final Map<Identifier, JModel> blockModels =
-        mapBuilder(
-            modelBuilder(blockId, "template_fence_gate", vars),
-            modelBuilder(blockOpenId, "template_fence_gate_open", vars),
-            modelBuilder(blockWallId, "template_fence_gate_wall", vars),
-            modelBuilder(blockWallOpenId, "template_fence_gate_wall_open", vars));
-    public final JModel itemModel = JModel.model(blockId);
+      block = new BFenceGate();
 
-    public final JState blockState =
-        state(
-            variant()
-                .put("facing=east,in_wall=false,open=false", model(blockId).uvlock().y(270))
-                .put("facing=east,in_wall=false,open=true", model(blockOpenId).uvlock().y(270))
-                .put("facing=east,in_wall=true,open=false", model(blockWallId).uvlock().y(270))
-                .put("facing=east,in_wall=true,open=true", model(blockWallOpenId).uvlock().y(270))
-                .put("facing=north,in_wall=false,open=false", model(blockId).uvlock().y(180))
-                .put("facing=north,in_wall=false,open=true", model(blockOpenId).uvlock().y(180))
-                .put("facing=north,in_wall=true,open=false", model(blockWallId).uvlock().y(180))
-                .put("facing=north,in_wall=true,open=true", model(blockWallOpenId).uvlock().y(180))
-                .put("facing=south,in_wall=false,open=false", model(blockId).uvlock())
-                .put("facing=south,in_wall=false,open=true", model(blockOpenId).uvlock())
-                .put("facing=south,in_wall=true,open=false", model(blockWallId).uvlock())
-                .put("facing=south,in_wall=true,open=true", model(blockWallOpenId).uvlock())
-                .put("facing=west,in_wall=false,open=false", model(blockId).uvlock().y(90))
-                .put("facing=west,in_wall=false,open=true", model(blockOpenId).uvlock().y(90))
-                .put("facing=west,in_wall=true,open=false", model(blockWallId).uvlock().y(90))
-                .put("facing=west,in_wall=true,open=true", model(blockWallOpenId).uvlock().y(90)));
+      blockModels =
+          blockModels(
+              Map.of(
+                  blockId,
+                  "template_fence_gate",
+                  blockOpenId,
+                  "template_fence_gate_open",
+                  blockWallId,
+                  "template_fence_gate_wall",
+                  blockWallOpenId,
+                  "template_fence_gate_wall_open"),
+              texture(planks.blockId));
+      itemModel = itemModel(blockId);
 
-    public FenceGate() {
-      super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_FENCE_GATE));
+      blockState =
+          state(
+              variant()
+                  .put("facing=east,in_wall=false,open=false", model(blockId).uvlock().y(270))
+                  .put("facing=east,in_wall=false,open=true", model(blockOpenId).uvlock().y(270))
+                  .put("facing=east,in_wall=true,open=false", model(blockWallId).uvlock().y(270))
+                  .put("facing=east,in_wall=true,open=true", model(blockWallOpenId).uvlock().y(270))
+                  .put("facing=north,in_wall=false,open=false", model(blockId).uvlock().y(180))
+                  .put("facing=north,in_wall=false,open=true", model(blockOpenId).uvlock().y(180))
+                  .put("facing=north,in_wall=true,open=false", model(blockWallId).uvlock().y(180))
+                  .put(
+                      "facing=north,in_wall=true,open=true", model(blockWallOpenId).uvlock().y(180))
+                  .put("facing=south,in_wall=false,open=false", model(blockId).uvlock())
+                  .put("facing=south,in_wall=false,open=true", model(blockOpenId).uvlock())
+                  .put("facing=south,in_wall=true,open=false", model(blockWallId).uvlock())
+                  .put("facing=south,in_wall=true,open=true", model(blockWallOpenId).uvlock())
+                  .put("facing=west,in_wall=false,open=false", model(blockId).uvlock().y(90))
+                  .put("facing=west,in_wall=false,open=true", model(blockOpenId).uvlock().y(90))
+                  .put("facing=west,in_wall=true,open=false", model(blockWallId).uvlock().y(90))
+                  .put(
+                      "facing=west,in_wall=true,open=true", model(blockWallOpenId).uvlock().y(90)));
+
+      burn = 20;
+      spread = 5;
+    }
+
+    @Override
+    public Block register() {
+      recipes =
+          Map.of(
+              nameId,
+              shaped(
+                  pattern("|#|", "|#|"),
+                  keys()
+                      .key("#", ingredient().item(planks.nameId.toString()))
+                      .key("|", ingredient().item(RegisteredItems.STICK)),
+                  stackedResult(nameId.toString(), 1)));
+
+      return super.register();
+    }
+
+    protected class BFenceGate extends FenceGateBlock {
+      protected BFenceGate() {
+        super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_FENCE_GATE));
+      }
     }
   }
 
-  protected class PressurePlate extends PressurePlateBlock {
-    public final String name = String.format("%s_pressure_plate", TreeType.this.name);
-    public final Identifier blockId = blockId(name);
-    public final Identifier itemId = itemId(name);
-    public final Identifier nameId = nameId(name);
+  protected class PressurePlate extends BlockWrapper {
+    public Identifier blockDownId = genericId("block/%s_down", name);
 
-    public final Identifier blockDownId = genericId("block/%s_down", name);
+    protected PressurePlate() {
+      super(String.format("%s_pressure_plate", TreeType.this.name));
+      translation = String.format("%s Pressure Plate", TreeType.this.translation);
 
-    private final Map<String, Identifier> vars = texture(planks.blockId);
-    public final Map<Identifier, JModel> blockModels =
-        mapBuilder(
-            modelBuilder(blockId, "pressure_plate_up", vars),
-            modelBuilder(blockDownId, "pressure_plate_down", vars));
-    public final JModel itemModel = JModel.model(blockId);
+      block = new BPressurePlate();
 
-    public final JState blockState =
-        state(
-            variant()
-                .put("powered", "false", JState.model(blockId))
-                .put("powered", "true", JState.model(blockDownId)));
+      blockModels =
+          blockModels(
+              Map.of(blockId, "pressure_plate_up", blockDownId, "pressure_plate_down"),
+              texture(planks.blockId));
+      itemModel = itemModel(blockId);
 
-    public PressurePlate() {
-      super(
-          ActivationRule.EVERYTHING,
-          FabricBlockSettings.copyOf(RegisteredBlocks.OAK_PRESSURE_PLATE));
+      blockState =
+          state(
+              variant()
+                  .put("powered", "false", JState.model(blockId))
+                  .put("powered", "true", JState.model(blockDownId)));
+    }
+
+    @Override
+    public Block register() {
+      recipes =
+          Map.of(
+              nameId,
+              shaped(
+                  pattern("##"),
+                  keys().key("#", ingredient().item(planks.nameId.toString())),
+                  stackedResult(nameId.toString(), 1)));
+
+      return super.register();
+    }
+
+    protected class BPressurePlate extends PressurePlateBlock {
+      protected BPressurePlate() {
+        super(
+            ActivationRule.EVERYTHING,
+            FabricBlockSettings.copyOf(RegisteredBlocks.OAK_PRESSURE_PLATE));
+      }
     }
   }
 
-  protected class Sign extends SignBlock {
-    public final String name = String.format("%s_sign", TreeType.this.name);
-    public final Identifier blockId = blockId(name);
-    public final Identifier itemId = itemId(name);
-    public final Identifier nameId = nameId(name);
+  protected class Sign extends BlockWrapper {
+    protected Sign() {
+      super(String.format("%s_sign", TreeType.this.name));
+      translation = String.format("%s Sign", TreeType.this.translation);
 
-    private final Map<String, Identifier> vars = mapBuilder(new Pair<>("particle", planks.blockId));
-    public final Map<Identifier, JModel> blockModels =
-        mapBuilder(modelBuilder(blockId, null, vars));
-    public final JModel itemModel = generatedItem(itemId);
+      block = new BSign();
 
-    public final JState blockState = state(variant().put("", JState.model(blockId)));
+      blockModels = blockModels(Map.of(blockId, ""), Map.of("particle", planks.blockId));
+      itemModel = generatedItem(itemId);
 
-    public Sign() {
-      super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_SIGN), TreeType.this.signColor);
+      blockState = state(variant().put("", JState.model(blockId)));
+    }
+
+    @Override
+    public Block register() {
+      recipes =
+          Map.of(
+              nameId,
+              shaped(
+                  pattern("###", "###", " | "),
+                  keys()
+                      .key("#", ingredient().item(planks.nameId.toString()))
+                      .key("|", ingredient().item(RegisteredItems.STICK)),
+                  stackedResult(nameId.toString(), 3)));
+
+      return super.register();
+    }
+
+    protected class BSign extends SignBlock {
+      protected BSign() {
+        super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_SIGN), TreeType.this.signColor);
+      }
     }
   }
 
-  protected class Slab extends SlabBlock {
-    public final String name = String.format("%s_slab", TreeType.this.name);
-    public final Identifier blockId = blockId(name);
-    public final Identifier itemId = itemId(name);
-    public final Identifier nameId = nameId(name);
+  protected class Slab extends BlockWrapper {
+    public Identifier blockTopId = genericId("block/%s_top", name);
 
-    public final Identifier blockTopId = genericId("block/%s_top", name);
+    protected Slab() {
+      super(String.format("%s_slab", TreeType.this.name));
+      translation = String.format("%s Slab", TreeType.this.translation);
 
-    private final Map<String, Identifier> vars =
-        mapBuilder(
-            new Pair<>("bottom", planks.blockId),
-            new Pair<>("top", planks.blockId),
-            new Pair<>("side", planks.blockId));
-    public final Map<Identifier, JModel> blockModels =
-        mapBuilder(modelBuilder(blockId, "slab", vars), modelBuilder(blockTopId, "slab_top", vars));
-    public final JModel itemModel = JModel.model(blockId);
+      block = new BSlab();
 
-    public final JState blockState =
-        state(
-            variant()
-                .put("type", "bottom", JState.model(blockId))
-                .put("type", "double", JState.model(planks.blockId))
-                .put("type", "top", JState.model(blockTopId)));
+      blockModels =
+          blockModels(
+              Map.of(blockId, "slab", blockTopId, "slab_top"),
+              Map.of("bottom", planks.blockId, "top", planks.blockId, "side", planks.blockId));
+      itemModel = itemModel(blockId);
 
-    public Slab() {
-      super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_SLAB));
+      blockState =
+          state(
+              variant()
+                  .put("type", "bottom", JState.model(blockId))
+                  .put("type", "double", JState.model(planks.blockId))
+                  .put("type", "top", JState.model(blockTopId)));
+
+      burn = 20;
+      spread = 5;
+    }
+
+    @Override
+    public Block register() {
+      recipes =
+          Map.of(
+              nameId,
+              shaped(
+                  pattern("###"),
+                  keys().key("#", ingredient().item(planks.nameId.toString())),
+                  stackedResult(nameId.toString(), 6)));
+
+      return super.register();
+    }
+
+    protected class BSlab extends SlabBlock {
+      protected BSlab() {
+        super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_SLAB));
+      }
     }
   }
 
-  protected class Stairs extends StairsBlock {
-    public final String name = String.format("%s_stairs", TreeType.this.name);
-    public final Identifier blockId = blockId(name);
-    public final Identifier itemId = itemId(name);
-    public final Identifier nameId = nameId(name);
+  protected class Stairs extends BlockWrapper {
+    public Identifier blockInnerId = genericId("block/%s_inner", name);
+    public Identifier blockOuterId = genericId("block/%s_outer", name);
 
-    public final Identifier blockInnerId = genericId("block/%s_inner", name);
-    public final Identifier blockOuterId = genericId("block/%s_outer", name);
+    protected Stairs() {
+      super(String.format("%s_stairs", TreeType.this.name));
+      translation = String.format("%s Stairs", TreeType.this.translation);
 
-    private final Map<String, Identifier> vars =
-        mapBuilder(
-            new Pair<>("bottom", planks.blockId),
-            new Pair<>("top", planks.blockId),
-            new Pair<>("side", planks.blockId));
-    public final Map<Identifier, JModel> blockModels =
-        mapBuilder(
-            modelBuilder(blockId, "stairs", vars),
-            modelBuilder(blockInnerId, "inner_stairs", vars),
-            modelBuilder(blockOuterId, "outer_stairs", vars));
-    public final JModel itemModel = JModel.model(blockId);
+      block = new BStairs();
 
-    public final JState blockState =
-        state(
-            variant()
-                .put(
-                    "facing=east,half=bottom,shape=inner_left", model(blockInnerId).uvlock().y(270))
-                .put("facing=east,half=bottom,shape=inner_right", model(blockInnerId))
-                .put(
-                    "facing=east,half=bottom,shape=outer_left", model(blockOuterId).uvlock().y(270))
-                .put("facing=east,half=bottom,shape=outer_right", model(blockOuterId))
-                .put("facing=east,half=bottom,shape=straight", model(blockId))
-                .put("facing=east,half=top,shape=inner_left", model(blockInnerId).uvlock().x(180))
-                .put(
-                    "facing=east,half=top,shape=inner_right",
-                    model(blockInnerId).uvlock().x(180).y(90))
-                .put("facing=east,half=top,shape=outer_left", model(blockOuterId).uvlock().x(180))
-                .put(
-                    "facing=east,half=top,shape=outer_right",
-                    model(blockOuterId).uvlock().x(180).y(90))
-                .put("facing=east,half=top,shape=straight", model(blockId).uvlock().x(180))
-                .put(
-                    "facing=north,half=bottom,shape=inner_left",
-                    model(blockInnerId).uvlock().y(180))
-                .put(
-                    "facing=north,half=bottom,shape=inner_right",
-                    model(blockInnerId).uvlock().y(270))
-                .put(
-                    "facing=north,half=bottom,shape=outer_left",
-                    model(blockOuterId).uvlock().y(180))
-                .put(
-                    "facing=north,half=bottom,shape=outer_right",
-                    model(blockOuterId).uvlock().y(270))
-                .put("facing=north,half=bottom,shape=straight", model(blockId).uvlock().y(270))
-                .put(
-                    "facing=north,half=top,shape=inner_left",
-                    model(blockInnerId).uvlock().x(180).y(270))
-                .put("facing=north,half=top,shape=inner_right", model(blockInnerId).uvlock().x(180))
-                .put(
-                    "facing=north,half=top,shape=outer_left",
-                    model(blockOuterId).uvlock().x(180).y(270))
-                .put("facing=north,half=top,shape=outer_right", model(blockOuterId).uvlock().x(180))
-                .put("facing=north,half=top,shape=straight", model(blockId).uvlock().x(180).y(270))
-                .put("facing=south,half=bottom,shape=inner_left", model(blockInnerId))
-                .put(
-                    "facing=south,half=bottom,shape=inner_right",
-                    model(blockInnerId).uvlock().y(90))
-                .put("facing=south,half=bottom,shape=outer_left", model(blockOuterId))
-                .put(
-                    "facing=south,half=bottom,shape=outer_right",
-                    model(blockOuterId).uvlock().y(90))
-                .put("facing=south,half=bottom,shape=straight", model(blockId).uvlock().y(90))
-                .put(
-                    "facing=south,half=top,shape=inner_left",
-                    model(blockInnerId).uvlock().x(180).y(90))
-                .put(
-                    "facing=south,half=top,shape=inner_right",
-                    model(blockInnerId).uvlock().x(180).y(180))
-                .put(
-                    "facing=south,half=top,shape=outer_left",
-                    model(blockOuterId).uvlock().x(180).y(90))
-                .put(
-                    "facing=south,half=top,shape=outer_right",
-                    model(blockOuterId).uvlock().x(180).y(180))
-                .put("facing=south,half=top,shape=straight", model(blockId).uvlock().x(180).y(90))
-                .put("facing=west,half=bottom,shape=inner_left", model(blockInnerId).uvlock().y(90))
-                .put(
-                    "facing=west,half=bottom,shape=inner_right",
-                    model(blockInnerId).uvlock().y(180))
-                .put("facing=west,half=bottom,shape=outer_left", model(blockOuterId).uvlock().y(90))
-                .put(
-                    "facing=west,half=bottom,shape=outer_right",
-                    model(blockOuterId).uvlock().y(180))
-                .put("facing=west,half=bottom,shape=straight", model(blockId).uvlock().y(180))
-                .put(
-                    "facing=west,half=top,shape=inner_left",
-                    model(blockInnerId).uvlock().x(180).y(180))
-                .put(
-                    "facing=west,half=top,shape=inner_right",
-                    model(blockInnerId).uvlock().x(180).y(270))
-                .put(
-                    "facing=west,half=top,shape=outer_left",
-                    model(blockOuterId).uvlock().x(180).y(180))
-                .put(
-                    "facing=west,half=top,shape=outer_right",
-                    model(blockOuterId).uvlock().x(180).y(270))
-                .put("facing=west,half=top,shape=straight", model(blockId).uvlock().x(180).y(180)));
+      blockModels =
+          blockModels(
+              Map.of(blockId, "stairs", blockInnerId, "inner_stairs", blockOuterId, "outer_stairs"),
+              Map.of("bottom", planks.blockId, "top", planks.blockId, "side", planks.blockId));
+      itemModel = itemModel(blockId);
 
-    public Stairs() {
-      super(
-          TreeType.this.planks.getDefaultState(),
-          FabricBlockSettings.copyOf(RegisteredBlocks.OAK_STAIRS));
+      blockState =
+          state(
+              variant()
+                  .put(
+                      "facing=east,half=bottom,shape=inner_left",
+                      model(blockInnerId).uvlock().y(270))
+                  .put("facing=east,half=bottom,shape=inner_right", model(blockInnerId))
+                  .put(
+                      "facing=east,half=bottom,shape=outer_left",
+                      model(blockOuterId).uvlock().y(270))
+                  .put("facing=east,half=bottom,shape=outer_right", model(blockOuterId))
+                  .put("facing=east,half=bottom,shape=straight", model(blockId))
+                  .put("facing=east,half=top,shape=inner_left", model(blockInnerId).uvlock().x(180))
+                  .put(
+                      "facing=east,half=top,shape=inner_right",
+                      model(blockInnerId).uvlock().x(180).y(90))
+                  .put("facing=east,half=top,shape=outer_left", model(blockOuterId).uvlock().x(180))
+                  .put(
+                      "facing=east,half=top,shape=outer_right",
+                      model(blockOuterId).uvlock().x(180).y(90))
+                  .put("facing=east,half=top,shape=straight", model(blockId).uvlock().x(180))
+                  .put(
+                      "facing=north,half=bottom,shape=inner_left",
+                      model(blockInnerId).uvlock().y(180))
+                  .put(
+                      "facing=north,half=bottom,shape=inner_right",
+                      model(blockInnerId).uvlock().y(270))
+                  .put(
+                      "facing=north,half=bottom,shape=outer_left",
+                      model(blockOuterId).uvlock().y(180))
+                  .put(
+                      "facing=north,half=bottom,shape=outer_right",
+                      model(blockOuterId).uvlock().y(270))
+                  .put("facing=north,half=bottom,shape=straight", model(blockId).uvlock().y(270))
+                  .put(
+                      "facing=north,half=top,shape=inner_left",
+                      model(blockInnerId).uvlock().x(180).y(270))
+                  .put(
+                      "facing=north,half=top,shape=inner_right",
+                      model(blockInnerId).uvlock().x(180))
+                  .put(
+                      "facing=north,half=top,shape=outer_left",
+                      model(blockOuterId).uvlock().x(180).y(270))
+                  .put(
+                      "facing=north,half=top,shape=outer_right",
+                      model(blockOuterId).uvlock().x(180))
+                  .put(
+                      "facing=north,half=top,shape=straight", model(blockId).uvlock().x(180).y(270))
+                  .put("facing=south,half=bottom,shape=inner_left", model(blockInnerId))
+                  .put(
+                      "facing=south,half=bottom,shape=inner_right",
+                      model(blockInnerId).uvlock().y(90))
+                  .put("facing=south,half=bottom,shape=outer_left", model(blockOuterId))
+                  .put(
+                      "facing=south,half=bottom,shape=outer_right",
+                      model(blockOuterId).uvlock().y(90))
+                  .put("facing=south,half=bottom,shape=straight", model(blockId).uvlock().y(90))
+                  .put(
+                      "facing=south,half=top,shape=inner_left",
+                      model(blockInnerId).uvlock().x(180).y(90))
+                  .put(
+                      "facing=south,half=top,shape=inner_right",
+                      model(blockInnerId).uvlock().x(180).y(180))
+                  .put(
+                      "facing=south,half=top,shape=outer_left",
+                      model(blockOuterId).uvlock().x(180).y(90))
+                  .put(
+                      "facing=south,half=top,shape=outer_right",
+                      model(blockOuterId).uvlock().x(180).y(180))
+                  .put("facing=south,half=top,shape=straight", model(blockId).uvlock().x(180).y(90))
+                  .put(
+                      "facing=west,half=bottom,shape=inner_left",
+                      model(blockInnerId).uvlock().y(90))
+                  .put(
+                      "facing=west,half=bottom,shape=inner_right",
+                      model(blockInnerId).uvlock().y(180))
+                  .put(
+                      "facing=west,half=bottom,shape=outer_left",
+                      model(blockOuterId).uvlock().y(90))
+                  .put(
+                      "facing=west,half=bottom,shape=outer_right",
+                      model(blockOuterId).uvlock().y(180))
+                  .put("facing=west,half=bottom,shape=straight", model(blockId).uvlock().y(180))
+                  .put(
+                      "facing=west,half=top,shape=inner_left",
+                      model(blockInnerId).uvlock().x(180).y(180))
+                  .put(
+                      "facing=west,half=top,shape=inner_right",
+                      model(blockInnerId).uvlock().x(180).y(270))
+                  .put(
+                      "facing=west,half=top,shape=outer_left",
+                      model(blockOuterId).uvlock().x(180).y(180))
+                  .put(
+                      "facing=west,half=top,shape=outer_right",
+                      model(blockOuterId).uvlock().x(180).y(270))
+                  .put(
+                      "facing=west,half=top,shape=straight",
+                      model(blockId).uvlock().x(180).y(180)));
+
+      burn = 20;
+      spread = 5;
+    }
+
+    @Override
+    public Block register() {
+      recipes =
+          Map.of(
+              nameId,
+              shaped(
+                  pattern("#  ", "## ", "###"),
+                  keys().key("#", ingredient().item(planks.nameId.toString())),
+                  stackedResult(nameId.toString(), 4)));
+
+      return super.register();
+    }
+
+    protected class BStairs extends StairsBlock {
+      protected BStairs() {
+        super(
+            TreeType.this.planks.block.getDefaultState(),
+            FabricBlockSettings.copyOf(RegisteredBlocks.OAK_STAIRS));
+      }
     }
   }
 
-  protected class StrippedLog extends PillarBlock {
-    public final String name = String.format("stripped_%s_log", TreeType.this.name);
-    public final Identifier blockId = blockId(name);
-    public final Identifier itemId = itemId(name);
-    public final Identifier nameId = nameId(name);
+  protected class Trapdoor extends BlockWrapper {
+    public Identifier blockBottomId = genericId("block/%s_bottom", name);
+    public Identifier blockOpenId = genericId("block/%s_open", name);
+    public Identifier blockTopId = genericId("block/%s_top", name);
 
-    public final Identifier blockHorizontalId = genericId("block/%s_horizontal", name);
-    public final Identifier blockTopId = genericId("block/%s_top", name);
+    protected Trapdoor() {
+      super(String.format("%s_trapdoor", TreeType.this.name));
+      translation = String.format("%s Trapdoor", TreeType.this.translation);
 
-    private final Map<String, Identifier> vars =
-        mapBuilder(new Pair<>("end", blockTopId), new Pair<>("side", blockId));
-    public final Map<Identifier, JModel> blockModels =
-        mapBuilder(
-            modelBuilder(blockId, "cube_column", vars),
-            modelBuilder(blockHorizontalId, "cube_column_horizontal", vars));
-    public final JModel itemModel = JModel.model(blockId);
+      block = new BTrapdoor();
 
-    public final JState blockState =
-        state(
-            variant()
-                .put("axis", "x", JState.model(blockHorizontalId).x(90).y(90))
-                .put("axis", "y", JState.model(blockId))
-                .put("axis", "z", JState.model(blockHorizontalId).x(90)));
+      blockModels =
+          blockModels(
+              Map.of(
+                  blockBottomId,
+                  "template_orientable_trapdoor_bottom",
+                  blockOpenId,
+                  "template_orientable_trapdoor_open",
+                  blockTopId,
+                  "template_orientable_trapdoor_top"),
+              texture(blockId));
+      itemModel = JModel.model(blockBottomId);
 
-    public StrippedLog() {
-      super(FabricBlockSettings.copyOf(RegisteredBlocks.STRIPPED_OAK_LOG));
+      blockState =
+          state(
+              variant()
+                  .put("facing=east,half=bottom,open=false", model(blockBottomId).y(90))
+                  .put("facing=east,half=bottom,open=true", model(blockOpenId).y(90))
+                  .put("facing=east,half=top,open=false", model(blockTopId).y(90))
+                  .put("facing=east,half=top,open=true", model(blockOpenId).x(180).y(270))
+                  .put("facing=north,half=bottom,open=false", model(blockBottomId))
+                  .put("facing=north,half=bottom,open=true", model(blockOpenId))
+                  .put("facing=north,half=top,open=false", model(blockTopId))
+                  .put("facing=north,half=top,open=true", model(blockOpenId).x(180).y(180))
+                  .put("facing=south,half=bottom,open=false", model(blockBottomId).y(180))
+                  .put("facing=south,half=bottom,open=true", model(blockOpenId).y(180))
+                  .put("facing=south,half=top,open=false", model(blockTopId).y(180))
+                  .put("facing=south,half=top,open=true", model(blockOpenId).x(180).y(0))
+                  .put("facing=west,half=bottom,open=false", model(blockBottomId).y(270))
+                  .put("facing=west,half=bottom,open=true", model(blockOpenId).y(270))
+                  .put("facing=west,half=top,open=false", model(blockTopId).y(270))
+                  .put("facing=west,half=top,open=true", model(blockOpenId).x(180).y(90)));
+    }
+
+    @Override
+    public Block register() {
+      recipes =
+          Map.of(
+              nameId,
+              shaped(
+                  pattern("###", "###"),
+                  keys().key("#", ingredient().item(planks.nameId.toString())),
+                  stackedResult(nameId.toString(), 2)));
+
+      return super.register();
+    }
+
+    protected class BTrapdoor extends TrapdoorBlock {
+      protected BTrapdoor() {
+        super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_TRAPDOOR));
+      }
     }
   }
 
-  protected class StrippedWood extends PillarBlock {
-    public final String name = String.format("stripped_%s_wood", TreeType.this.name);
-    public final Identifier blockId = blockId(name);
-    public final Identifier itemId = itemId(name);
-    public final Identifier nameId = nameId(name);
+  protected class Wood extends BlockWrapper {
+    protected Wood() {
+      super(String.format("%s_wood", TreeType.this.name));
+      translation = String.format("%s Wood", TreeType.this.translation);
 
-    private final Map<String, Identifier> vars =
-        mapBuilder(new Pair<>("end", blockId), new Pair<>("side", blockId));
-    public final Map<Identifier, JModel> blockModels =
-        mapBuilder(modelBuilder(blockId, "cube_column", vars));
-    public final JModel itemModel = JModel.model(blockId);
+      block = new BWood();
 
-    public final JState blockState =
-        state(
-            variant()
-                .put("axis=x", JState.model(blockId).x(90).y(90))
-                .put("axis=y", JState.model(blockId))
-                .put("axis=z", JState.model(blockId).x(90)));
+      blockModels =
+          blockModels(
+              Map.of(blockId, "cube_column"), Map.of("end", log.blockId, "side", log.blockId));
+      itemModel = itemModel(blockId);
 
-    public StrippedWood() {
-      super(FabricBlockSettings.copyOf(RegisteredBlocks.STRIPPED_OAK_WOOD));
+      blockState =
+          state(
+              variant()
+                  .put("axis=x", JState.model(log.blockId).x(90).y(90))
+                  .put("axis=y", JState.model(log.blockId))
+                  .put("axis=z", JState.model(log.blockId).x(90)));
+    }
+
+    @Override
+    public Block register() {
+      recipes =
+          Map.of(
+              nameId,
+              shaped(
+                  pattern("_", "#", "_"),
+                  keys()
+                      .key("#", ingredient().item(log.nameId.toString()))
+                      .key("_", ingredient().item(bark.nameId.toString())),
+                  stackedResult(nameId.toString(), 1)),
+              genericId("%s_wood_from_stripped", name),
+              shaped(
+                  pattern("___", " # ", "___"),
+                  keys()
+                      .key("#", ingredient().item(strippedWood.nameId.toString()))
+                      .key("_", ingredient().item(bark.nameId.toString())),
+                  stackedResult(nameId.toString(), 1)));
+
+      return super.register();
+    }
+
+    protected class BWood extends PillarBlock {
+      protected BWood() {
+        super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_WOOD));
+      }
     }
   }
 
-  protected class Trapdoor extends TrapdoorBlock {
-    public final String name = String.format("%s_trapdoor", TreeType.this.name);
-    public final Identifier blockId = blockId(name);
-    public final Identifier itemId = itemId(name);
-    public final Identifier nameId = nameId(name);
+  protected class StrippedLog extends BlockWrapper {
+    public Identifier blockHorizontalId = genericId("block/%s_horizontal", name);
+    public Identifier blockTopId = genericId("block/%s_top", name);
 
-    public final Identifier blockBottomId = genericId("block/%s_bottom", name);
-    public final Identifier blockOpenId = genericId("block/%s_open", name);
-    public final Identifier blockTopId = genericId("block/%s_top", name);
+    protected StrippedLog() {
+      super(String.format("stripped_%s_log", TreeType.this.name));
+      translation = String.format("Stripped %s Log", TreeType.this.translation);
 
-    private final Map<String, Identifier> vars = texture(blockId);
-    public final Map<Identifier, JModel> blockModels =
-        mapBuilder(
-            modelBuilder(blockBottomId, "template_orientable_trapdoor_bottom", vars),
-            modelBuilder(blockOpenId, "template_orientable_trapdoor_open", vars),
-            modelBuilder(blockTopId, "template_orientable_trapdoor_top", vars));
-    public final JModel itemModel = JModel.model(blockBottomId);
+      block = new BStrippedLog();
 
-    public final JState blockState =
-        state(
-            variant()
-                .put("facing=east,half=bottom,open=false", model(blockBottomId).y(90))
-                .put("facing=east,half=bottom,open=true", model(blockOpenId).y(90))
-                .put("facing=east,half=top,open=false", model(blockTopId).y(90))
-                .put("facing=east,half=top,open=true", model(blockOpenId).x(180).y(270))
-                .put("facing=north,half=bottom,open=false", model(blockBottomId))
-                .put("facing=north,half=bottom,open=true", model(blockOpenId))
-                .put("facing=north,half=top,open=false", model(blockTopId))
-                .put("facing=north,half=top,open=true", model(blockOpenId).x(180).y(180))
-                .put("facing=south,half=bottom,open=false", model(blockBottomId).y(180))
-                .put("facing=south,half=bottom,open=true", model(blockOpenId).y(180))
-                .put("facing=south,half=top,open=false", model(blockTopId).y(180))
-                .put("facing=south,half=top,open=true", model(blockOpenId).x(180).y(0))
-                .put("facing=west,half=bottom,open=false", model(blockBottomId).y(270))
-                .put("facing=west,half=bottom,open=true", model(blockOpenId).y(270))
-                .put("facing=west,half=top,open=false", model(blockTopId).y(270))
-                .put("facing=west,half=top,open=true", model(blockOpenId).x(180).y(90)));
+      blockModels =
+          blockModels(
+              Map.of(blockId, "cube_column", blockHorizontalId, "cube_column_horizontal"),
+              Map.of("end", blockTopId, "side", blockId));
+      itemModel = itemModel(blockId);
 
-    public Trapdoor() {
-      super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_TRAPDOOR));
+      blockState =
+          state(
+              variant()
+                  .put("axis", "x", JState.model(blockHorizontalId).x(90).y(90))
+                  .put("axis", "y", JState.model(blockId))
+                  .put("axis", "z", JState.model(blockHorizontalId).x(90)));
+
+      burn = 5;
+      spread = 5;
+    }
+
+    protected class BStrippedLog extends PillarBlock {
+      protected BStrippedLog() {
+        super(FabricBlockSettings.copyOf(RegisteredBlocks.STRIPPED_OAK_LOG));
+      }
     }
   }
 
-  protected class Wood extends PillarBlock {
-    public final String name = String.format("%s_wood", TreeType.this.name);
-    public final Identifier blockId = blockId(name);
-    public final Identifier itemId = itemId(name);
-    public final Identifier nameId = nameId(name);
+  protected class StrippedWood extends BlockWrapper {
+    protected StrippedWood() {
+      super(String.format("stripped_%s_wood", TreeType.this.name));
+      translation = String.format("Stripped %s Wood", TreeType.this.translation);
 
-    private final Map<String, Identifier> vars =
-        mapBuilder(new Pair<>("end", blockId), new Pair<>("side", blockId));
-    public final Map<Identifier, JModel> blockModels =
-        mapBuilder(modelBuilder(blockId, "cube_column", vars));
-    public final JModel itemModel = JModel.model(blockId);
+      block = new BStrippedWood();
 
-    public final JState blockState =
-        state(
-            variant()
-                .put("axis=x", JState.model(log.blockId).x(90).y(90))
-                .put("axis=y", JState.model(log.blockId))
-                .put("axis=z", JState.model(log.blockId).x(90)));
+      blockModels =
+          blockModels(
+              Map.of(blockId, "cube_column"),
+              Map.of("end", strippedLog.blockId, "side", strippedLog.blockId));
+      itemModel = itemModel(blockId);
 
-    public Wood() {
-      super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_WOOD));
+      blockState =
+          state(
+              variant()
+                  .put("axis=x", JState.model(blockId).x(90).y(90))
+                  .put("axis=y", JState.model(blockId))
+                  .put("axis=z", JState.model(blockId).x(90)));
+
+      burn = 5;
+      spread = 5;
+    }
+
+    protected class BStrippedWood extends PillarBlock {
+      protected BStrippedWood() {
+        super(FabricBlockSettings.copyOf(RegisteredBlocks.STRIPPED_OAK_WOOD));
+      }
     }
   }
 
-  protected class Bark extends Item {
-    public final String name = String.format("%s_bark", TreeType.this.name);
-    public final Identifier itemId = itemId(name);
-    public final Identifier nameId = nameId(name);
+  protected class Bark extends ItemWrapper {
+    protected Bark() {
+      super(String.format("%s_bark", TreeType.this.name));
+      translation = String.format("%s Bark", TreeType.this.translation);
 
-    public final JModel itemModel = generatedItem(itemId);
+      item = new IBark();
 
-    public Bark() {
-      super(DEFAULT_SETTINGS);
+      itemModel = generatedItem(itemId);
+    }
+
+    protected class IBark extends Item {
+      protected IBark() {
+        super(DEFAULT_SETTINGS);
+      }
     }
   }
 }

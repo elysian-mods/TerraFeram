@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "terra_feram:ash_log",
+    "terra_feram:ash_wood",
+    "terra_feram:stripped_ash_log",
+    "terra_feram:stripped_ash_wood"
+  ]
+}

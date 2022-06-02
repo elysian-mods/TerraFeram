@@ -35,7 +35,11 @@ public abstract class ConfiguredFeatureWrapper<FC extends FeatureConfig> {
   protected float extraChance = 1;
   protected int extraCount = 1;
 
-  public void configure() {
+  public ConfiguredFeatureWrapper(String name) {
+    this.name = name;
+  }
+
+  protected void configure() {
     configuration = feature.configure(config);
     decorated =
         configuration
@@ -51,6 +55,8 @@ public abstract class ConfiguredFeatureWrapper<FC extends FeatureConfig> {
   }
 
   public ConfiguredFeature<?, ?> register() {
+    Registry.register(Registry.FEATURE, TerraFeram.identifier(name), feature);
+
     RegistryKey<ConfiguredFeature<?, ?>> key =
         RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, TerraFeram.identifier(name));
     Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, key.getValue(), decorated);

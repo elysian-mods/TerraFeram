@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import java.util.HashMap;
 
 public class LogsToBark {
-  private static HashMap<Block, Pair<Item, Integer>> MAP =
+  private static final HashMap<Block, Pair<Item, Integer>> MAP =
       new HashMap<>() {
         {
           put(RegisteredBlocks.OAK_LOG, new Pair<>(RegisteredItems.OAK_BARK, 4));

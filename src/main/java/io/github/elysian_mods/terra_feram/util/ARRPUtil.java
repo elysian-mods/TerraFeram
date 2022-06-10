@@ -18,6 +18,7 @@ import static net.devtech.arrp.json.models.JModel.textures;
 
 public class ARRPUtil {
     public static final Map<Identifier, JTag> tags = new HashMap<>();
+    public static final JLang lang = JLang.lang();
 
     public static void addBlockModels(Map<Identifier, JModel> blockModels) {
         for (Map.Entry<Identifier, JModel> model : blockModels.entrySet()) {

@@ -29,12 +29,13 @@ public class TerraFeram implements ModInitializer {
   @Override
   public void onInitialize() {
     RegisteredFeatures.register();
-    RegisteredStructures.register();
 
     RegisteredBlocks.register();
     RegisteredItems.register();
 
     RegisteredEntities.register();
+
+    RESOURCE_PACK.addLang(new Identifier("en_us"), ARRPUtil.lang);
 
     for (Map.Entry<Identifier, JTag> tag : ARRPUtil.tags.entrySet()) {
       RESOURCE_PACK.addTag(tag.getKey(), tag.getValue());

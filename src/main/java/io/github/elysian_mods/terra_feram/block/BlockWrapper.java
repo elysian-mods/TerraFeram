@@ -59,6 +59,9 @@ public abstract class BlockWrapper {
       addLootTable(blockId, lootTable);
     }
 
+    lang.block(nameId, translation);
+    lang.item(nameId, translation);
+
     if (burn > 0) {
       FlammableBlockRegistry.getDefaultInstance().add(block, burn, spread);
     }

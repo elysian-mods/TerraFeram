@@ -5,8 +5,7 @@
   "compatibilityLevel": "JAVA_16",
   "mixins": [
     "AxeItemAccessor",
-    "BarkFromStrip",
-    "RecipeInjector"
+    "BarkFromStrip"
   ],
   "client": [
   ],

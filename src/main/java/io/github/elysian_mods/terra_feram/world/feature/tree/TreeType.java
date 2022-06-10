@@ -1,6 +1,5 @@
 package io.github.elysian_mods.terra_feram.world.feature.tree;
 
-import io.github.elysian_mods.terra_feram.TerraFeram;
 import io.github.elysian_mods.terra_feram.block.BlockWrapper;
 import io.github.elysian_mods.terra_feram.client.RenderType;
 import io.github.elysian_mods.terra_feram.item.ItemWrapper;
@@ -8,37 +7,29 @@ import io.github.elysian_mods.terra_feram.mixin.AxeItemAccessor;
 import io.github.elysian_mods.terra_feram.registry.RegisteredBlocks;
 import io.github.elysian_mods.terra_feram.registry.RegisteredItems;
 import io.github.elysian_mods.terra_feram.util.LogsToBark;
+import io.github.elysian_mods.terra_feram.world.feature.FeatureWrapper;
 import net.devtech.arrp.json.blockstate.JState;
 import net.devtech.arrp.json.models.JModel;
-import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
-import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.sapling.SaplingGenerator;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.SignType;
-import net.minecraft.util.registry.BuiltinRegistries;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.decorator.*;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraft.world.gen.feature.size.FeatureSize;
 import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
 import net.minecraft.world.gen.foliage.FoliagePlacer;
-import net.minecraft.world.gen.stateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.trunk.TrunkPlacer;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import static io.github.elysian_mods.terra_feram.util.ARRPUtil.*;
 import static io.github.elysian_mods.terra_feram.util.ItemUtil.DEFAULT_SETTINGS;
@@ -51,25 +42,11 @@ import static net.devtech.arrp.json.recipe.JRecipe.shaped;
 import static net.devtech.arrp.json.recipe.JRecipe.shapeless;
 import static net.devtech.arrp.json.recipe.JResult.stackedResult;
 
-@SuppressWarnings("deprecation")
-public abstract class TreeType {
-  public String name;
+public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
+  public String type;
   public String translation;
 
   protected SignType signColor = SignType.OAK;
-
-  protected ConfiguredDecorator<?> decorator;
-  private ConfiguredFeature<TreeFeatureConfig, ?> configured;
-  private ConfiguredFeature<?, ?> decorated;
-
-  protected Collection<RegistryKey<Biome>> biomes;
-  protected Heightmap.Type heightmap = Heightmap.Type.WORLD_SURFACE_WG;
-  protected int maxWaterDepth = 0;
-  protected GenerationStep.Feature step = GenerationStep.Feature.VEGETAL_DECORATION;
-
-  protected int baseCount = 0;
-  protected float extraChance = 1;
-  protected int extraCount = 1;
 
   protected TrunkPlacer trunkPlacer;
   protected FoliagePlacer foliagePlacer;
@@ -98,7 +75,11 @@ public abstract class TreeType {
   protected Identifier logsId;
 
   protected TreeType(String name) {
-    this.name = name;
+    super(name + "_tree");
+    translation = StringUtils.capitalize(name);
+    type = name;
+
+    feature = Feature.TREE;
 
     leaves = new Leaves();
     log = new Log();
@@ -125,40 +106,7 @@ public abstract class TreeType {
     logsId = genericId("%s_logs", name);
   }
 
-  protected TreeFeatureConfig build() {
-    return new TreeFeatureConfig.Builder(
-            new SimpleBlockStateProvider(log.block.getDefaultState()),
-            trunkPlacer,
-            new SimpleBlockStateProvider(leaves.block.getDefaultState()),
-            new SimpleBlockStateProvider(sapling.block.getDefaultState()),
-            foliagePlacer,
-            size)
-        .ignoreVines()
-        .forceDirt()
-        .build();
-  }
-
-  protected void configure() {
-    configured = Feature.TREE.configure(build());
-    decorated =
-        configured
-            .decorate(Decorator.HEIGHTMAP.configure(new HeightmapDecoratorConfig(heightmap)))
-            .decorate(
-                Decorator.WATER_DEPTH_THRESHOLD.configure(
-                    new WaterDepthThresholdDecoratorConfig(maxWaterDepth)))
-            .spreadHorizontally()
-            .decorate(
-                Decorator.COUNT_EXTRA.configure(
-                    new CountExtraDecoratorConfig(baseCount, extraChance, extraCount)));
-    if (decorator != null) decorated = decorated.decorate(decorator);
-  }
-
-  public ConfiguredFeature<?, ?> register() {
-    RegistryKey<ConfiguredFeature<?, ?>> key =
-        RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, TerraFeram.identifier(name + "_tree"));
-    Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, key.getValue(), decorated);
-    BiomeModifications.addFeature(BiomeSelectors.includeByKey(biomes), step, key);
-
+  public RegistryEntry<ConfiguredFeature<TreeFeatureConfig, ?>> register() {
     leaves.register();
     log.register();
     sapling.register();
@@ -200,20 +148,20 @@ public abstract class TreeType {
     addDualTag(logsId, logs);
     addTag(new Identifier("logs_that_burn"), new String[] {"#" + logsId.getPath()});
 
-    return configured;
+    return super.register();
   }
 
   public class Generator extends SaplingGenerator {
     @Nullable
     @Override
-    protected ConfiguredFeature<TreeFeatureConfig, ?> getTreeFeature(Random random, boolean bees) {
+    protected RegistryEntry<? extends ConfiguredFeature<?, ?>> getTreeFeature(Random random, boolean bees) {
       return TreeType.this.configured;
     }
   }
 
   protected class Leaves extends BlockWrapper {
     protected Leaves() {
-      super(String.format("%s_leaves", TreeType.this.name));
+      super(String.format("%s_leaves", TreeType.this.type));
       translation = String.format("%s Leaves", TreeType.this.translation);
 
       block = new BLeaves();
@@ -244,7 +192,7 @@ public abstract class TreeType {
     public Identifier blockTopId = genericId("block/%s_top", name);
 
     protected Log() {
-      super(String.format("%s_log", TreeType.this.name));
+      super(String.format("%s_log", TreeType.this.type));
       translation = String.format("%s Log", TreeType.this.translation);
 
       block = new BLog();
@@ -290,7 +238,7 @@ public abstract class TreeType {
 
   protected class Sapling extends BlockWrapper {
     protected Sapling() {
-      super(String.format("%s_sapling", TreeType.this.name));
+      super(String.format("%s_sapling", TreeType.this.type));
       translation = String.format("%s Sapling", TreeType.this.translation);
 
       block = new BSapling();
@@ -311,7 +259,7 @@ public abstract class TreeType {
 
   protected class Planks extends BlockWrapper {
     protected Planks() {
-      super(String.format("%s_planks", TreeType.this.name));
+      super(String.format("%s_planks", TreeType.this.type));
       translation = String.format("%s Planks", TreeType.this.translation);
 
       block = new BPlanks();
@@ -354,7 +302,7 @@ public abstract class TreeType {
     public Identifier blockPressedId = genericId("block/%s_pressed", name);
 
     protected Button() {
-      super(String.format("%s_button", TreeType.this.name));
+      super(String.format("%s_button", TreeType.this.type));
       translation = String.format("%s Button", TreeType.this.translation);
 
       block = new BButton();
@@ -448,7 +396,7 @@ public abstract class TreeType {
     public Identifier blockTopHingeId = genericId("block/%s_top_hinge", name);
 
     protected Door() {
-      super(String.format("%s_door", TreeType.this.name));
+      super(String.format("%s_door", TreeType.this.type));
       translation = String.format("%s Door", TreeType.this.translation);
 
       block = new BDoor();
@@ -585,7 +533,7 @@ public abstract class TreeType {
     public Identifier blockSideId = genericId("block/%s_side", name);
 
     protected Fence() {
-      super(String.format("%s_fence", TreeType.this.name));
+      super(String.format("%s_fence", TreeType.this.type));
       translation = String.format("%s Fence", TreeType.this.translation);
 
       block = new BFence();
@@ -642,7 +590,7 @@ public abstract class TreeType {
     public Identifier blockWallOpenId = genericId("%s_wall_open", name);
 
     protected FenceGate() {
-      super(String.format("%s_fence_gate", TreeType.this.name));
+      super(String.format("%s_fence_gate", TreeType.this.type));
       translation = String.format("%s Fence Gate", TreeType.this.translation);
 
       block = new BFenceGate();
@@ -713,7 +661,7 @@ public abstract class TreeType {
     public Identifier blockDownId = genericId("block/%s_down", name);
 
     protected PressurePlate() {
-      super(String.format("%s_pressure_plate", TreeType.this.name));
+      super(String.format("%s_pressure_plate", TreeType.this.type));
       translation = String.format("%s Pressure Plate", TreeType.this.translation);
 
       block = new BPressurePlate();
@@ -755,7 +703,7 @@ public abstract class TreeType {
 
   protected class Sign extends BlockWrapper {
     protected Sign() {
-      super(String.format("%s_sign", TreeType.this.name));
+      super(String.format("%s_sign", TreeType.this.type));
       translation = String.format("%s Sign", TreeType.this.translation);
 
       block = new BSign();
@@ -792,7 +740,7 @@ public abstract class TreeType {
     public Identifier blockTopId = genericId("block/%s_top", name);
 
     protected Slab() {
-      super(String.format("%s_slab", TreeType.this.name));
+      super(String.format("%s_slab", TreeType.this.type));
       translation = String.format("%s Slab", TreeType.this.translation);
 
       block = new BSlab();
@@ -839,7 +787,7 @@ public abstract class TreeType {
     public Identifier blockOuterId = genericId("block/%s_outer", name);
 
     protected Stairs() {
-      super(String.format("%s_stairs", TreeType.this.name));
+      super(String.format("%s_stairs", TreeType.this.type));
       translation = String.format("%s Stairs", TreeType.this.translation);
 
       block = new BStairs();
@@ -981,7 +929,7 @@ public abstract class TreeType {
     public Identifier blockTopId = genericId("block/%s_top", name);
 
     protected Trapdoor() {
-      super(String.format("%s_trapdoor", TreeType.this.name));
+      super(String.format("%s_trapdoor", TreeType.this.type));
       translation = String.format("%s Trapdoor", TreeType.this.translation);
 
       block = new BTrapdoor();
@@ -1041,7 +989,7 @@ public abstract class TreeType {
 
   protected class Wood extends BlockWrapper {
     protected Wood() {
-      super(String.format("%s_wood", TreeType.this.name));
+      super(String.format("%s_wood", TreeType.this.type));
       translation = String.format("%s Wood", TreeType.this.translation);
 
       block = new BWood();
@@ -1093,7 +1041,7 @@ public abstract class TreeType {
     public Identifier blockTopId = genericId("block/%s_top", name);
 
     protected StrippedLog() {
-      super(String.format("stripped_%s_log", TreeType.this.name));
+      super(String.format("stripped_%s_log", TreeType.this.type));
       translation = String.format("Stripped %s Log", TreeType.this.translation);
 
       block = new BStrippedLog();
@@ -1124,7 +1072,7 @@ public abstract class TreeType {
 
   protected class StrippedWood extends BlockWrapper {
     protected StrippedWood() {
-      super(String.format("stripped_%s_wood", TreeType.this.name));
+      super(String.format("stripped_%s_wood", TreeType.this.type));
       translation = String.format("Stripped %s Wood", TreeType.this.translation);
 
       block = new BStrippedWood();
@@ -1155,7 +1103,7 @@ public abstract class TreeType {
 
   protected class Bark extends ItemWrapper {
     protected Bark() {
-      super(String.format("%s_bark", TreeType.this.name));
+      super(String.format("%s_bark", TreeType.this.type));
       translation = String.format("%s Bark", TreeType.this.translation);
 
       item = new IBark();

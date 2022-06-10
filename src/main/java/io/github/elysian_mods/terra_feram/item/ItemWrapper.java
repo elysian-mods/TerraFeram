@@ -35,6 +35,8 @@ public abstract class ItemWrapper {
       addRecipes(recipes);
     }
 
+    lang.item(nameId, translation);
+
     return Registry.register(Registry.ITEM, nameId, item);
   }
 }

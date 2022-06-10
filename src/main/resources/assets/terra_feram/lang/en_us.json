@@ -1,13 +1,3 @@
 {
-  "block.terra_feram.ash_leaves": "Ash Leaves",
-  "block.terra_feram.ash_log": "Ash Log",
-  "block.terra_feram.ash_sapling": "Ash Sapling",
-  "block.terra_feram.ash_planks": "Ash Planks",
-  "block.terra_feram.ginseng_flower": "Ginseng",
-  "item.terra_feram.ginseng_flower": "Ash Bark",
-  "item.terra_feram.ash_leaves": "Ash Leaves",
-  "item.terra_feram.ash_log": "Ash Log",
-  "item.terra_feram.ash_sapling": "Ash Sapling",
-  "item.terra_feram.ginseng_root": "Ginseng Root",
   "itemGroup.terra_feram.general": "Terra Feram"
 }

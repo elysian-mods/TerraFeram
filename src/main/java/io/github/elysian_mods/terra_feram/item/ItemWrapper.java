@@ -6,6 +6,8 @@ import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static io.github.elysian_mods.terra_feram.util.ARRPUtil.*;
@@ -20,7 +22,8 @@ public abstract class ItemWrapper {
 
   protected JModel itemModel;
 
-  protected Map<Identifier, JRecipe> recipes;
+  protected Map<Identifier, JRecipe> recipes = new HashMap<>();
+  protected List<Identifier> itemTags = List.of();
 
   public ItemWrapper(String name) {
     this.name = name;
@@ -31,8 +34,10 @@ public abstract class ItemWrapper {
   public Item register() {
     addModel(itemId, itemModel);
 
-    if (recipes != null) {
-      addRecipes(recipes);
+    addRecipes(recipes);
+
+    for (Identifier tag : itemTags) {
+      addTag(folder(tag, "items"), new String[] {name});
     }
 
     lang.item(nameId, translation);

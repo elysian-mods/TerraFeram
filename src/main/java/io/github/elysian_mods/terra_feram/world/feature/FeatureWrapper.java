@@ -19,7 +19,7 @@ public abstract class FeatureWrapper<FC extends FeatureConfig> {
   }
 
   public RegistryEntry<ConfiguredFeature<FC, ?>> register() {
-    configured = ConfiguredFeatures.register(TerraFeram.identifier(name).toString(), feature, config);
+    configured = ConfiguredFeatures.register(TerraFeram.id(name).toString(), feature, config);
     return configured;
   }
 }

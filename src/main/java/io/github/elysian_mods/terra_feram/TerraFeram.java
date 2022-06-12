@@ -20,11 +20,12 @@ public class TerraFeram implements ModInitializer {
 
   public static final ItemGroup GENERAL =
       FabricItemGroupBuilder.build(
-          identifier("general"), () -> new ItemStack(RegisteredBlocks.AZALEA));
+          id("general"), () -> new ItemStack(RegisteredBlocks.AZALEA));
 
-  public static Identifier identifier(String name) {
+  public static Identifier id(String name) {
     return new Identifier(MOD_ID, name);
   }
+  public static Identifier common_id(String name) { return new Identifier("c", name);}
 
   @Override
   public void onInitialize() {
@@ -35,12 +36,9 @@ public class TerraFeram implements ModInitializer {
 
     RegisteredEntities.register();
 
+    RegisteredTags.register();
+
     RESOURCE_PACK.addLang(new Identifier("en_us"), ARRPUtil.lang);
-
-    for (Map.Entry<Identifier, JTag> tag : ARRPUtil.tags.entrySet()) {
-      RESOURCE_PACK.addTag(tag.getKey(), tag.getValue());
-    }
-
     RRPCallback.BEFORE_VANILLA.register(a -> a.add(RESOURCE_PACK));
   }
 }

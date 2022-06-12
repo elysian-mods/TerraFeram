@@ -12,6 +12,8 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static io.github.elysian_mods.terra_feram.util.ARRPUtil.*;
@@ -32,8 +34,11 @@ public abstract class BlockWrapper {
   protected JModel itemModel;
   protected JState blockState;
 
-  protected Map<Identifier, JRecipe> recipes;
+  protected Map<Identifier, JRecipe> recipes = new HashMap<>();
   protected JLootTable lootTable;
+
+  protected List<Identifier> blockTags = List.of();
+  protected List<Identifier> itemTags = List.of();
 
   protected int burn = 0;
   protected int spread = 0;
@@ -52,11 +57,16 @@ public abstract class BlockWrapper {
     addModel(itemId, itemModel);
     addBlockState(nameId, blockState);
 
-    if (recipes != null) {
-      addRecipes(recipes);
-    }
+    addRecipes(recipes);
     if (lootTable != null) {
       addLootTable(blockId, lootTable);
+    }
+
+    for (Identifier tag : blockTags) {
+      addTag(folder(tag, "blocks"), new String[] {name});
+    }
+    for (Identifier tag : itemTags) {
+      addTag(folder(tag, "items"), new String[] {name});
     }
 
     lang.block(nameId, translation);

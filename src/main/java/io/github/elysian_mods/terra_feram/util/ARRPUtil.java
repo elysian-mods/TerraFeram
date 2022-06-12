@@ -13,11 +13,11 @@ import net.minecraft.util.Identifier;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.github.elysian_mods.terra_feram.registry.RegisteredTags.TAGS;
 import static net.devtech.arrp.json.models.JModel.model;
 import static net.devtech.arrp.json.models.JModel.textures;
 
 public class ARRPUtil {
-    public static final Map<Identifier, JTag> tags = new HashMap<>();
     public static final JLang lang = JLang.lang();
 
     public static void addBlockModels(Map<Identifier, JModel> blockModels) {
@@ -30,8 +30,16 @@ public class ARRPUtil {
         TerraFeram.RESOURCE_PACK.addBlockState(blockState, id);
     }
 
-    public static void addDualTag(Identifier id, String[] elements) {
+    public static void addBlockTag(Identifier id, String[] elements) {
         addTag(folder(id, "blocks"), elements);
+    }
+
+    public static void addDualTag(Identifier id, String[] elements) {
+        addBlockTag(id, elements);
+        addItemTag(id, elements);
+    }
+
+    public static void addItemTag(Identifier id, String[] elements) {
         addTag(folder(id, "items"), elements);
     }
 
@@ -49,18 +57,22 @@ public class ARRPUtil {
         }
     }
 
+    public static void addSubTag(String tag) {
+        addDualTag(new Identifier(tag), new String[] {"#" + tag});
+    }
+
     public static void addTag(Identifier id, String[] elements) {
-        JTag tag = tags.containsKey(id) ? tags.get(id) : JTag.tag();
+        JTag tag = TAGS.containsKey(id) ? TAGS.get(id) : JTag.tag();
 
         for (String element : elements) {
             if (element.charAt(0) == '#') {
-                tag.tag(TerraFeram.identifier(element.substring(1)));
+                tag.tag(TerraFeram.id(element.substring(1)));
             } else {
-                tag.add(TerraFeram.identifier(element));
+                tag.add(TerraFeram.id(element));
             }
         }
 
-        tags.put(id, tag);
+        TAGS.put(id, tag);
     }
 
     public static Identifier blockId(String name) {
@@ -89,7 +101,7 @@ public class ARRPUtil {
     }
 
     public static Identifier genericId(String format, String name) {
-        return TerraFeram.identifier(String.format(format, name));
+        return TerraFeram.id(String.format(format, name));
     }
 
     public static Identifier itemId(String name) {
@@ -101,7 +113,7 @@ public class ARRPUtil {
     }
 
     public static Identifier nameId(String name) {
-        return TerraFeram.identifier(name);
+        return TerraFeram.id(name);
     }
 
     public static Map<String, Identifier> texture(Identifier blockId) {

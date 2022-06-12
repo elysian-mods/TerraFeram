@@ -1,5 +1,6 @@
 package io.github.elysian_mods.terra_feram.world.feature.tree;
 
+import io.github.elysian_mods.terra_feram.TerraFeram;
 import io.github.elysian_mods.terra_feram.block.BlockWrapper;
 import io.github.elysian_mods.terra_feram.client.RenderType;
 import io.github.elysian_mods.terra_feram.item.ItemWrapper;
@@ -29,6 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static io.github.elysian_mods.terra_feram.util.ARRPUtil.*;
@@ -79,6 +81,8 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
     translation = StringUtils.capitalize(name);
     type = name;
 
+    logsId = genericId("%s_logs", name);
+
     feature = Feature.TREE;
 
     leaves = new Leaves();
@@ -102,8 +106,6 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
     strippedWood = new StrippedWood();
 
     bark = new Bark();
-
-    logsId = genericId("%s_logs", name);
   }
 
   public RegistryEntry<ConfiguredFeature<TreeFeatureConfig, ?>> register() {
@@ -112,24 +114,15 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
     sapling.register();
 
     planks.register();
-    addDualTag(new Identifier("wooden_planks"), new String[] {planks.name});
-
     button.register();
-    addDualTag(new Identifier("wooden_buttons"), new String[] {button.name});
     door.register();
-    addDualTag(new Identifier("wooden_doors"), new String[] {door.name});
     fence.register();
-    addDualTag(new Identifier("wooden_fences"), new String[] {fence.name});
     fenceGate.register();
     pressurePlate.register();
-    addDualTag(new Identifier("wooden_pressure_plates"), new String[] {pressurePlate.name});
     sign.register();
     slab.register();
-    addDualTag(new Identifier("wooden_slabs"), new String[] {slab.name});
     stairs.register();
-    addDualTag(new Identifier("wooden_stairs"), new String[] {stairs.name});
     trapdoor.register();
-    addDualTag(new Identifier("wooden_trapdoor"), new String[] {trapdoor.name});
     wood.register();
 
     strippedLog.register();
@@ -144,9 +137,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
     LogsToBark.put(log.block, bark.item, 4);
     LogsToBark.put(wood.block, bark.item, 6);
 
-    String[] logs = {log.name, wood.name, strippedLog.name, strippedWood.name};
-    addDualTag(logsId, logs);
-    addTag(new Identifier("logs_that_burn"), new String[] {"#" + logsId.getPath()});
+    addDualTag(new Identifier("logs_that_burn"), new String[] {"#" + logsId.getPath()});
 
     return super.register();
   }
@@ -173,6 +164,9 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
 
       burn = 60;
       spread = 30;
+
+      blockTags = List.of(new Identifier("leaves"), TerraFeram.common_id("leaves"));
+      itemTags = blockTags;
     }
 
     @Override
@@ -212,6 +206,9 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
 
       burn = 5;
       spread = 5;
+
+      blockTags = List.of(logsId, new Identifier("overworld_natural_logs"));
+      itemTags = blockTags;
     }
 
     @Override
@@ -248,6 +245,9 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       itemModel = generatedItem(blockId);
 
       blockState = JState.state(variant().put("", JState.model(blockId)));
+
+      blockTags = List.of(new Identifier("saplings"), TerraFeram.common_id("saplings"));
+      itemTags = blockTags;
     }
 
     protected class BSapling extends SaplingBlock {
@@ -271,6 +271,9 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
 
       burn = 20;
       spread = 5;
+
+      blockTags = List.of(new Identifier("planks"), TerraFeram.common_id("planks_that_burn"));
+      itemTags = blockTags;
     }
 
     @Override
@@ -368,6 +371,9 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
                   .put(
                       "face=wall,facing=west,powered=true",
                       JState.model(blockPressedId).uvlock().x(90).y(270)));
+
+      blockTags = List.of(TerraFeram.id("wooden_buttons"));
+      itemTags = blockTags;
     }
 
     @Override
@@ -505,6 +511,9 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
                   .put(
                       "facing=west,half=upper,hinge=right,open=true",
                       JState.model(blockTopId).y(90)));
+
+      blockTags = List.of(TerraFeram.id("wooden_doors"));
+      itemTags = blockTags;
     }
 
     @Override
@@ -560,6 +569,9 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
 
       burn = 20;
       spread = 5;
+
+      blockTags = List.of(TerraFeram.id("wooden_fences"));
+      itemTags = blockTags;
     }
 
     @Override
@@ -633,6 +645,9 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
 
       burn = 20;
       spread = 5;
+
+      blockTags = List.of(TerraFeram.common_id("fence_gates"));
+      itemTags = blockTags;
     }
 
     @Override
@@ -677,6 +692,9 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
               variant()
                   .put("powered", "false", JState.model(blockId))
                   .put("powered", "true", JState.model(blockDownId)));
+
+      blockTags = List.of(TerraFeram.id("wooden_pressure_plates"));
+      itemTags = blockTags;
     }
 
     @Override
@@ -712,6 +730,8 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       itemModel = generatedItem(itemId);
 
       blockState = state(variant().put("", JState.model(blockId)));
+
+      itemTags = List.of(new Identifier("signs"));
     }
 
     @Override
@@ -760,6 +780,9 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
 
       burn = 20;
       spread = 5;
+
+      blockTags = List.of(TerraFeram.id("wooden_slabs"));
+      itemTags = blockTags;
     }
 
     @Override
@@ -899,6 +922,9 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
 
       burn = 20;
       spread = 5;
+
+      blockTags = List.of(TerraFeram.id("wooden_stairs"));
+      itemTags = blockTags;
     }
 
     @Override
@@ -965,6 +991,9 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
                   .put("facing=west,half=bottom,open=true", model(blockOpenId).y(270))
                   .put("facing=west,half=top,open=false", model(blockTopId).y(270))
                   .put("facing=west,half=top,open=true", model(blockOpenId).x(180).y(90)));
+
+      blockTags = List.of(TerraFeram.id("wooden_trapdoors"));
+      itemTags = blockTags;
     }
 
     @Override
@@ -1005,6 +1034,12 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
                   .put("axis=x", JState.model(blockId).x(90).y(90))
                   .put("axis=y", JState.model(blockId))
                   .put("axis=z", JState.model(blockId).x(90)));
+
+      burn = 5;
+      spread = 5;
+
+      blockTags = List.of(logsId);
+      itemTags = blockTags;
     }
 
     @Override
@@ -1061,6 +1096,9 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
 
       burn = 5;
       spread = 5;
+
+      blockTags = List.of(logsId);
+      itemTags = blockTags;
     }
 
     protected class BStrippedLog extends PillarBlock {
@@ -1092,6 +1130,9 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
 
       burn = 5;
       spread = 5;
+
+      blockTags = List.of(logsId);
+      itemTags = blockTags;
     }
 
     protected class BStrippedWood extends PillarBlock {
@@ -1109,6 +1150,8 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       item = new IBark();
 
       itemModel = generatedItem(itemId);
+
+      itemTags = List.of(TerraFeram.id("bark"));
     }
 
     protected class IBark extends Item {

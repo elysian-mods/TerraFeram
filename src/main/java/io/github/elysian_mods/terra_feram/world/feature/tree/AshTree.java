@@ -1,14 +1,11 @@
 package io.github.elysian_mods.terra_feram.world.feature.tree;
 
 import net.minecraft.util.math.intprovider.UniformIntProvider;
-import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
 import net.minecraft.world.gen.foliage.SpruceFoliagePlacer;
 import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 import net.minecraft.world.gen.trunk.StraightTrunkPlacer;
-
-import java.util.Arrays;
 
 public class AshTree extends TreeType {
   public AshTree() {

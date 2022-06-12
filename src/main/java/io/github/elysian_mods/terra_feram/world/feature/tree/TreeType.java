@@ -14,7 +14,6 @@ import net.devtech.arrp.json.models.JModel;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.sapling.SaplingGenerator;
-import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.SignType;
 import net.minecraft.util.math.random.Random;
@@ -155,7 +154,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       super(String.format("%s_leaves", TreeType.this.type));
       translation = String.format("%s Leaves", TreeType.this.translation);
 
-      block = new BLeaves();
+      block = new Block();
 
       blockModels = blockModels(Map.of(blockId, "leaves"), Map.of("all", blockId));
       itemModel = itemModel(blockId);
@@ -170,12 +169,12 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
     }
 
     @Override
-    public Block register() {
+    public net.minecraft.block.Block register() {
       return super.register();
     }
 
-    protected class BLeaves extends LeavesBlock {
-      protected BLeaves() {
+    protected class Block extends LeavesBlock {
+      protected Block() {
         super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_LEAVES));
       }
     }
@@ -189,7 +188,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       super(String.format("%s_log", TreeType.this.type));
       translation = String.format("%s Log", TreeType.this.translation);
 
-      block = new BLog();
+      block = new Block();
 
       blockModels =
           blockModels(
@@ -212,7 +211,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
     }
 
     @Override
-    public Block register() {
+    public net.minecraft.block.Block register() {
       recipes =
           Map.of(
               nameId,
@@ -226,8 +225,8 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       return super.register();
     }
 
-    protected class BLog extends PillarBlock {
-      protected BLog() {
+    protected class Block extends PillarBlock {
+      protected Block() {
         super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_LOG));
       }
     }
@@ -238,7 +237,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       super(String.format("%s_sapling", TreeType.this.type));
       translation = String.format("%s Sapling", TreeType.this.translation);
 
-      block = new BSapling();
+      block = new Block();
       renderType = RenderType.TRANSPARENT;
 
       blockModels = blockModels(Map.of(blockId, "cross"), Map.of("cross", blockId));
@@ -250,8 +249,8 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       itemTags = blockTags;
     }
 
-    protected class BSapling extends SaplingBlock {
-      protected BSapling() {
+    protected class Block extends SaplingBlock {
+      protected Block() {
         super(new Generator(), FabricBlockSettings.copyOf(RegisteredBlocks.OAK_SAPLING));
       }
     }
@@ -262,7 +261,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       super(String.format("%s_planks", TreeType.this.type));
       translation = String.format("%s Planks", TreeType.this.translation);
 
-      block = new BPlanks();
+      block = new Block();
 
       blockModels = blockModels(Map.of(blockId, "cube_all"), Map.of("all", blockId));
       itemModel = itemModel(blockId);
@@ -277,7 +276,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
     }
 
     @Override
-    public Block register() {
+    public net.minecraft.block.Block register() {
       recipes =
           Map.of(
               nameId,
@@ -293,8 +292,8 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       return super.register();
     }
 
-    protected class BPlanks extends Block {
-      protected BPlanks() {
+    protected class Block extends net.minecraft.block.Block {
+      protected Block() {
         super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_PLANKS));
       }
     }
@@ -308,7 +307,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       super(String.format("%s_button", TreeType.this.type));
       translation = String.format("%s Button", TreeType.this.translation);
 
-      block = new BButton();
+      block = new Block();
 
       blockModels =
           blockModels(
@@ -377,7 +376,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
     }
 
     @Override
-    public Block register() {
+    public net.minecraft.block.Block register() {
       recipes =
           Map.of(
               nameId,
@@ -388,8 +387,8 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       return super.register();
     }
 
-    protected class BButton extends WoodenButtonBlock {
-      protected BButton() {
+    protected class Block extends WoodenButtonBlock {
+      protected Block() {
         super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_BUTTON));
       }
     }
@@ -405,7 +404,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       super(String.format("%s_door", TreeType.this.type));
       translation = String.format("%s Door", TreeType.this.translation);
 
-      block = new BDoor();
+      block = new Block();
 
       blockModels =
           blockModels(
@@ -517,7 +516,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
     }
 
     @Override
-    public Block register() {
+    public net.minecraft.block.Block register() {
       recipes =
           Map.of(
               nameId,
@@ -529,8 +528,8 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       return super.register();
     }
 
-    protected class BDoor extends DoorBlock {
-      protected BDoor() {
+    protected class Block extends DoorBlock {
+      protected Block() {
         super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_DOOR));
       }
     }
@@ -545,7 +544,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       super(String.format("%s_fence", TreeType.this.type));
       translation = String.format("%s Fence", TreeType.this.translation);
 
-      block = new BFence();
+      block = new Block();
 
       blockModels =
           blockModels(
@@ -575,7 +574,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
     }
 
     @Override
-    public Block register() {
+    public net.minecraft.block.Block register() {
       recipes =
           Map.of(
               nameId,
@@ -589,8 +588,8 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       return super.register();
     }
 
-    protected class BFence extends FenceBlock {
-      protected BFence() {
+    protected class Block extends FenceBlock {
+      protected Block() {
         super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_FENCE));
       }
     }
@@ -605,7 +604,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       super(String.format("%s_fence_gate", TreeType.this.type));
       translation = String.format("%s Fence Gate", TreeType.this.translation);
 
-      block = new BFenceGate();
+      block = new Block();
 
       blockModels =
           blockModels(
@@ -651,7 +650,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
     }
 
     @Override
-    public Block register() {
+    public net.minecraft.block.Block register() {
       recipes =
           Map.of(
               nameId,
@@ -665,8 +664,8 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       return super.register();
     }
 
-    protected class BFenceGate extends FenceGateBlock {
-      protected BFenceGate() {
+    protected class Block extends FenceGateBlock {
+      protected Block() {
         super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_FENCE_GATE));
       }
     }
@@ -679,7 +678,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       super(String.format("%s_pressure_plate", TreeType.this.type));
       translation = String.format("%s Pressure Plate", TreeType.this.translation);
 
-      block = new BPressurePlate();
+      block = new Block();
 
       blockModels =
           blockModels(
@@ -698,7 +697,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
     }
 
     @Override
-    public Block register() {
+    public net.minecraft.block.Block register() {
       recipes =
           Map.of(
               nameId,
@@ -710,8 +709,8 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       return super.register();
     }
 
-    protected class BPressurePlate extends PressurePlateBlock {
-      protected BPressurePlate() {
+    protected class Block extends PressurePlateBlock {
+      protected Block() {
         super(
             ActivationRule.EVERYTHING,
             FabricBlockSettings.copyOf(RegisteredBlocks.OAK_PRESSURE_PLATE));
@@ -724,7 +723,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       super(String.format("%s_sign", TreeType.this.type));
       translation = String.format("%s Sign", TreeType.this.translation);
 
-      block = new BSign();
+      block = new Block();
 
       blockModels = blockModels(Map.of(blockId, ""), Map.of("particle", planks.blockId));
       itemModel = generatedItem(itemId);
@@ -735,7 +734,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
     }
 
     @Override
-    public Block register() {
+    public net.minecraft.block.Block register() {
       recipes =
           Map.of(
               nameId,
@@ -749,8 +748,8 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       return super.register();
     }
 
-    protected class BSign extends SignBlock {
-      protected BSign() {
+    protected class Block extends SignBlock {
+      protected Block() {
         super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_SIGN), TreeType.this.signColor);
       }
     }
@@ -763,7 +762,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       super(String.format("%s_slab", TreeType.this.type));
       translation = String.format("%s Slab", TreeType.this.translation);
 
-      block = new BSlab();
+      block = new Block();
 
       blockModels =
           blockModels(
@@ -786,7 +785,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
     }
 
     @Override
-    public Block register() {
+    public net.minecraft.block.Block register() {
       recipes =
           Map.of(
               nameId,
@@ -798,8 +797,8 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       return super.register();
     }
 
-    protected class BSlab extends SlabBlock {
-      protected BSlab() {
+    protected class Block extends SlabBlock {
+      protected Block() {
         super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_SLAB));
       }
     }
@@ -813,7 +812,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       super(String.format("%s_stairs", TreeType.this.type));
       translation = String.format("%s Stairs", TreeType.this.translation);
 
-      block = new BStairs();
+      block = new Block();
 
       blockModels =
           blockModels(
@@ -928,7 +927,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
     }
 
     @Override
-    public Block register() {
+    public net.minecraft.block.Block register() {
       recipes =
           Map.of(
               nameId,
@@ -940,8 +939,8 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       return super.register();
     }
 
-    protected class BStairs extends StairsBlock {
-      protected BStairs() {
+    protected class Block extends StairsBlock {
+      protected Block() {
         super(
             TreeType.this.planks.block.getDefaultState(),
             FabricBlockSettings.copyOf(RegisteredBlocks.OAK_STAIRS));
@@ -958,7 +957,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       super(String.format("%s_trapdoor", TreeType.this.type));
       translation = String.format("%s Trapdoor", TreeType.this.translation);
 
-      block = new BTrapdoor();
+      block = new Block();
 
       blockModels =
           blockModels(
@@ -997,7 +996,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
     }
 
     @Override
-    public Block register() {
+    public net.minecraft.block.Block register() {
       recipes =
           Map.of(
               nameId,
@@ -1009,8 +1008,8 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       return super.register();
     }
 
-    protected class BTrapdoor extends TrapdoorBlock {
-      protected BTrapdoor() {
+    protected class Block extends TrapdoorBlock {
+      protected Block() {
         super(FabricBlockSettings.copyOf(RegisteredBlocks.OAK_TRAPDOOR));
       }
     }
@@ -1079,7 +1078,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       super(String.format("stripped_%s_log", TreeType.this.type));
       translation = String.format("Stripped %s Log", TreeType.this.translation);
 
-      block = new BStrippedLog();
+      block = new Block();
 
       blockModels =
           blockModels(
@@ -1101,8 +1100,8 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       itemTags = blockTags;
     }
 
-    protected class BStrippedLog extends PillarBlock {
-      protected BStrippedLog() {
+    protected class Block extends PillarBlock {
+      protected Block() {
         super(FabricBlockSettings.copyOf(RegisteredBlocks.STRIPPED_OAK_LOG));
       }
     }
@@ -1113,7 +1112,7 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       super(String.format("stripped_%s_wood", TreeType.this.type));
       translation = String.format("Stripped %s Wood", TreeType.this.translation);
 
-      block = new BStrippedWood();
+      block = new Block();
 
       blockModels =
           blockModels(
@@ -1135,8 +1134,8 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       itemTags = blockTags;
     }
 
-    protected class BStrippedWood extends PillarBlock {
-      protected BStrippedWood() {
+    protected class Block extends PillarBlock {
+      protected Block() {
         super(FabricBlockSettings.copyOf(RegisteredBlocks.STRIPPED_OAK_WOOD));
       }
     }
@@ -1147,15 +1146,15 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       super(String.format("%s_bark", TreeType.this.type));
       translation = String.format("%s Bark", TreeType.this.translation);
 
-      item = new IBark();
+      item = new Item();
 
       itemModel = generatedItem(itemId);
 
       itemTags = List.of(TerraFeram.id("bark"));
     }
 
-    protected class IBark extends Item {
-      protected IBark() {
+    protected class Item extends net.minecraft.item.Item {
+      protected Item() {
         super(DEFAULT_SETTINGS);
       }
     }

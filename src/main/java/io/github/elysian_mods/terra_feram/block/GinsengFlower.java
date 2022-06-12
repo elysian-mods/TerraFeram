@@ -21,7 +21,7 @@ public class GinsengFlower extends BlockWrapper {
     super("ginseng_flower");
     translation = "Ginseng Flower";
 
-    block = new BGinsengFlower();
+    block = new Block();
     renderType = RenderType.TRANSPARENT;
 
     blockModels = blockModels(Map.of(blockId, "cross"), Map.of("cross", blockId));
@@ -35,7 +35,7 @@ public class GinsengFlower extends BlockWrapper {
                 .put("age=2", JState.model(blockId)));
   }
 
-  public static class BGinsengFlower extends CropBlock {
+  public static class Block extends net.minecraft.block.CropBlock {
     public static final int MAX_AGE = 2;
     private static final VoxelShape[] AGE_TO_SHAPE =
         new VoxelShape[] {
@@ -44,7 +44,7 @@ public class GinsengFlower extends BlockWrapper {
           Block.createCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 10.0D, 11.0D)
         };
 
-    public BGinsengFlower() {
+    public Block() {
       super(FabricBlockSettings.copyOf(RegisteredBlocks.OXEYE_DAISY).ticksRandomly());
     }
 

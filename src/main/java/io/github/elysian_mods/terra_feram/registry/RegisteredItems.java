@@ -1,31 +1,19 @@
 package io.github.elysian_mods.terra_feram.registry;
 
 import io.github.elysian_mods.terra_feram.TerraFeram;
-import io.github.elysian_mods.terra_feram.item.GinsengRoot;
+import io.github.elysian_mods.terra_feram.item.*;
 import io.github.elysian_mods.terra_feram.util.ItemUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.registry.Registry;
 
 public class RegisteredItems extends Items {
-  public static final Item OAK_BARK =
-      Registry.register(
-          Registry.ITEM, TerraFeram.id("oak_bark"), new Item(ItemUtil.DEFAULT_SETTINGS));
-  public static final Item SPRUCE_BARK =
-      Registry.register(
-          Registry.ITEM, TerraFeram.id("spruce_bark"), new Item(ItemUtil.DEFAULT_SETTINGS));
-  public static final Item BIRCH_BARK =
-      Registry.register(
-          Registry.ITEM, TerraFeram.id("birch_bark"), new Item(ItemUtil.DEFAULT_SETTINGS));
-  public static final Item JUNGLE_BARK =
-      Registry.register(
-          Registry.ITEM, TerraFeram.id("jungle_bark"), new Item(ItemUtil.DEFAULT_SETTINGS));
-  public static final Item ACACIA_BARK =
-      Registry.register(
-          Registry.ITEM, TerraFeram.id("acacia_bark"), new Item(ItemUtil.DEFAULT_SETTINGS));
-  public static final Item DARK_OAK_BARK =
-      Registry.register(
-          Registry.ITEM, TerraFeram.id("dark_oak_bark"), new Item(ItemUtil.DEFAULT_SETTINGS));
+  public static final Item OAK_BARK = new OakBark().register();
+  public static final Item SPRUCE_BARK = new SpruceBark().register();
+  public static final Item BIRCH_BARK = new BirchBark().register();
+  public static final Item JUNGLE_BARK = new JungleBark().register();
+  public static final Item ACACIA_BARK = new AcaciaBark().register();
+  public static final Item DARK_OAK_BARK = new DarkOakBark().register();
 
   public static final Item ASH_LEAVES = Registry.ITEM.get(TerraFeram.id("ash_leaves"));
   public static final Item ASH_LOG = Registry.ITEM.get(TerraFeram.id("ash_log"));

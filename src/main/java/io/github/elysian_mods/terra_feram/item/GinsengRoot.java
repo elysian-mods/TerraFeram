@@ -10,6 +10,8 @@ public class GinsengRoot extends ItemWrapper {
 
   public GinsengRoot() {
     super("ginseng_root");
+    translation = "Ginseng Root";
+
     item = new IGinsengRoot();
 
     itemModel = generatedItem(itemId);

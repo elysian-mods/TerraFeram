@@ -1002,9 +1002,9 @@ public abstract class TreeType extends FeatureWrapper<TreeFeatureConfig> {
       blockState =
           state(
               variant()
-                  .put("axis=x", JState.model(log.blockId).x(90).y(90))
-                  .put("axis=y", JState.model(log.blockId))
-                  .put("axis=z", JState.model(log.blockId).x(90)));
+                  .put("axis=x", JState.model(blockId).x(90).y(90))
+                  .put("axis=y", JState.model(blockId))
+                  .put("axis=z", JState.model(blockId).x(90)));
     }
 
     @Override

@@ -19,6 +19,7 @@ import static net.devtech.arrp.json.blockstate.JState.*;
 public class GinsengFlower extends BlockWrapper {
   public GinsengFlower() {
     super("ginseng_flower");
+    translation = "Ginseng Flower";
 
     block = new BGinsengFlower();
     renderType = RenderType.TRANSPARENT;
